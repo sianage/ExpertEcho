@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}my blog{% endblock %}
+{% block content %}
+    <h1>Philosophy Blog Entries</h1>
+
+    {% for post in posts %}
+        {% if post.category.category == "Philosophy" %}
+        <div id="post_list">
+            {% if user.is_authenticated %}
+                {% if user.id == post.author.id %}
+                    <div id="edit-delete">
+                        <button onclick="{% url 'update_post' post.pk %}" id="edit_blog_btn">Edit</button>
+                        <button onclick="{% url 'delete_post' post.pk %}" id="delete_blog_btn">Delete</button>
+                    </div>
+                {% endif %}
+            {% endif %}
+            <a href="{% url 'post_detail' post.pk %}">
+                <h2 id="post_title">
+                    <strong>{{ post.title }}</strong>
+                </h2>
+                <div id="post_info">
+                    <p class="date">
+                        <strong>Published {{ post.publish }} by {{ post.author }}</strong>
+                    </p>
+                </div>
+            </a>
+        </div>
+        <br>
+        {% endif %}
+    {% endfor %}
+
+    {# {% include "pagination.html" with page=posts %} #}
+{% endblock %}

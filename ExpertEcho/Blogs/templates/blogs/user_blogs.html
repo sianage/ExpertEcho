@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>user blogs</h1>
+
+    {% for post in post_list %}
+
+        <div id="debate_list">
+            <div id="debate">
+                <strong><h2><a href="{% url 'MainApp:post_detail' post.pk %}">{{ post.title }}</a></h2></strong>
+                    <!--<h3>Category: {{ debate.category.category }}</h3>-->
+                </br>
+            </div>
+        </div>
+        <br>
+    {% endfor %}
+    {#{% include "pagination.html" with page=debate_list %}#}
+{% endblock %}

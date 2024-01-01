@@ -1,0 +1,13 @@
+{% extends 'MainApp/base.html' %}
+{% block content %}
+<h1>register</h1>
+
+<div class="form-group">
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class="btn btn-secondary">Register</button>
+    </form>
+</div>
+
+{% endblock %}

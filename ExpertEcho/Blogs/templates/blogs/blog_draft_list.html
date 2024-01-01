@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}Draft Blog Posts{% endblock %}
+
+{% block content %}
+<h1>Unpublished Drafts</h1>
+{% if draft_posts %}
+    {% for post in draft_posts %}
+<div id="draft_div">
+  <li><a href="{% url 'MainApp:post_detail' post.pk %}">{{ post.title }} (created {{ post.created }})</a></li><br>
+</div>
+    {% endfor %}
+{% else %}
+  <p>No draft blog posts found.</p>
+{% endif %}
+{% endblock %}

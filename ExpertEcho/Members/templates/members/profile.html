@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}profile{% endblock %}
+
+{% block content %}
+</div>
+<div id="user_profile">
+    <div id="profile_pic">
+        {% if profile.profile_picture %}
+            <img src="{{ profile.profile_picture.url }}">
+        {% endif %}
+    </div>
+
+    <h1>{{ profile.user.first_name }} {{profile.user.last_name }}</h1>
+    <div id="academic_field">
+        <strong>Academic Field: {{ profile.academic_field }}</strong>
+    </div>
+
+    </br></br>
+    {{ profile.bio|ljust:10|striptags|safe|linebreaksbr }}
+    </br>
+    <h1><strong>Links</strong></h1>
+    </br>
+
+<div class="user-content-buttons">
+    <div class="profile-button">
+        <a href="{% url 'MainApp:user_blogs' %}?author={{ profile.user.id }}" class="profile_button">Blogs</a>
+    </div>
+    <br>
+    <div class="profile-button">
+        <a href="{% url 'MainApp:user_debates' %}?author={{ profile.user.id }}" class="profile_button">Debates</a>
+    </div>
+    <br>
+</div>
+
+    <br><br><br>
+    {% if profile.github_url %}
+        Github: <a href="{{ profile.github_url }}">{{ profile.github_url }}</a>
+        <br>
+    {% endif %}
+    {% if profile.linkedin_url %}
+        LinkedIn: <a href="{{ profile.linkedin_url }}">{{ profile.linkedin_url }}</a>
+        <br>
+{% endif %}
+
+    <br>
+
+
+
+
+
+    <h3>Follows</h3>
+    {% for following in profile.follows.all %}
+        <a href="{% url 'profile_page' following.user.profile.id %}">@{{ following }}</a><br>
+    {% endfor %}
+    <br>
+    <h3>Followed by</h3>
+    {% for following in profile.followed_by.all %}
+        <a href="{% url 'profile_page' following.user.profile.id %}">@{{ following }}</a><br>
+    {% endfor %}
+    <br>
+    <a href="{% url 'MainApp:conversation_detail' receiver_id=profile.user.id %}" class="message_button">Message {{profile.user.username}}</a>
+    <br>
+    <br>
+
+    <form method="post" class="follow-form">
+        {% csrf_token %}
+        {% if profile in user.profile.follows.all %}
+        <button class="follow_unfollow_btn" name="follow" value="unfollow"
+                type="submit">Unfollow {{ profile.user.username }}</button>
+        {% else %}
+                <button class="follow_unfollow_btn" name="follow" value="follow"
+                type="submit">Follow {{ profile.user.username }}</button>
+        {% endif %}
+    </form>
+    <br>
+
+
+</div>
+{% endblock %}

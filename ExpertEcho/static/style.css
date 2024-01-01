@@ -1,0 +1,626 @@
+body {
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(to bottom, #3055ab, #f5f7fc); /* Faint blue gradient from top to bottom */
+  font-family: Arial, sans-serif;
+}
+
+.form-control{
+    text-align:left;
+}
+#post_body {
+    text-align: left;
+    color: black;
+    width: 80%;
+    margin: auto;
+    padding: 0 20px; /* 10px padding on left and right */
+    min-height: 100vh; /* Minimum height of the viewport */
+    background-color: white;
+}
+
+.navbar{
+    position:fixed;
+    top: 0;
+    width: 100%;
+    z-index: 999;
+}
+#message-separator {
+  border: none;
+  border-top: 1px solid black; /* Adjust color and thickness as needed */
+  margin: 10px 0; /* Add margin to create spacing */
+}
+#home_submit{
+    margin: auto;
+    margin-left: 10px;
+    margin-right: 10px;
+    position: relative;
+    background-color: #96a1e0;
+    top: 10;
+    left: 60;
+}
+#edit_profile_media{
+    border: solid;
+    width:250px;
+    height:250px;
+    margin:auto;
+    float:center;
+}
+#edit_profile_fields{
+    width:400px;
+}
+#edit_settings_fields{
+    width:500px;
+}
+.conversation-list {
+background-color:transparent;
+list-style: none;
+padding: 0;
+}
+
+.convo-list-element {
+margin-bottom: 10px;
+}
+.poll-form {
+    width: 70%; /* Adjust the form width as needed */
+    margin: 0 auto; /* Center the form horizontally */
+}
+
+.choice-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.choice-table td {
+    padding: 8px;
+    border: 1px solid #ddd;
+}
+.button-link {
+display: inline-block;
+padding: 10px 20px;
+background-color: #007bff;
+color: white;
+text-decoration: none;
+border: none;
+border-radius: 5px;
+cursor: pointer;
+}
+
+#edit_settings{
+    width:600px;
+    height:700px;
+    margin:auto;
+    float:center;
+}
+#edit_div{
+    margin:auto;
+    float:center;
+    width:500px;
+    height:700px;
+    border:solid;
+}
+#profile_pic{
+    height: 75px;
+    width: 75px;
+    box-sizing: border-box;
+    padding: 5px;
+    overflow:hidden;
+    margin: auto;
+    margin-top: 10px;
+    border: ridge 10px #acb02e;
+}
+#edit_note_button{
+    color: white;
+    background-color: black;
+}
+#delete_note_button{
+    color: white;
+    background-color: black;
+}
+#edit_note_button:hover{
+    color: red;
+}
+#delete_note_button:hover{
+    color: red;
+}
+#profile_pic img{
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+#note_wrapper{
+    height: 550px;
+    width:50%;
+    overflow:auto;
+    margin-left:50px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 20px #6f8dd6; /* Darker shadow */
+
+    transition: transform 0.3s ease-in-out; /* Apply transition to the transform property */
+}
+
+#note_wrapper:hover {
+    box-shadow: 0 2px 20px #6f8dd6; /* Darker shadow */
+
+}
+
+#note_list{
+    width:100%;
+    margin:auto;
+    float:left;
+    bottom: 20;
+    margin-bottom: 20px;
+}
+#whole_note{
+    display:flex;
+}
+#note_pic{
+    height: 75px;
+    width: 75px;
+    box-sizing: border-box;
+    padding: 5px;
+    overflow:hidden;
+}
+#note_pic img{
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+#note_text{
+    margin-left: 10px;
+}
+#note_div {
+    border-style: 1px solid;
+    border-color: black;
+    padding: 12px 25px;
+    display: flex;
+    align-items: center;
+    transition: border-style 0.3s ease-in-out;
+}
+
+#note_div:hover {
+    border-style: outset;
+    border-color: #656d9e;
+}
+
+#home_note {
+    display: block;
+    height: 300px;
+    width: 500px;
+    float: right;
+    margin-right: 50px;
+    overflow-y: auto;
+    margin-bottom: 10px;
+    margin-top: 20px;
+    background-color: #96a1e0;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.4); /* Darker shadow */
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+#home_note:hover {
+    transform: scale(1.05);
+    box-shadow: 0 5px 30px rgba(0, 0, 0, 0.6); /* Darker shadow */
+}
+#home_submit_btn_div{
+    text-align:center;
+    margin:auto;
+    position:relative;
+    right: 180;
+    background-color: blue;
+    top: 120;
+}
+#home_submit_btn{
+    color:white;
+    background-color: black;
+    align: center;
+    width: 100px;
+    height: 50px;
+}
+#post_form{
+    color: grey;
+}
+
+#comments{
+    text-align: left;
+    margin-left: 20px;
+    margin-right: 20px;
+    padding:20px;
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.6);
+}
+.result-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.result-item {
+    display: flex;
+    align-items: center;
+    width: 50%;
+    margin: 10px auto;
+}
+
+.bar-container {
+    flex: 1;
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    margin-right: 5px;
+}
+
+.bar {
+    height: 20px;
+    background-color: #007BFF;
+}
+
+.result-info {
+    text-align: left;
+}
+debate{
+    border: solid black;
+}
+#debate_list{
+    color:black;
+    text-align:center;
+    border: solid 2px;
+    background-color: white;
+    border-style: outset;
+    block-size: auto;
+    padding: 10px;
+    margin-left: 20px;
+    margin-right: 20px;
+    /*box-shadow: 10px 10px 100px blue inset;*/
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+
+}
+.message_button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    text-decoration: none;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.follow-form{
+    display: inline-block;
+    margin: 0; /* Remove any default margin */
+    padding: 0; /* Remove padding */
+    border: none; /* Remove border */
+    background: none; /* Remove background */
+}
+.follow_unfollow_btn{
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    text-decoration: none;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+#poll_list_item{
+    color:black;
+    text-align:center;
+    border: solid 2px;
+    background-color: white;
+    border-style: outset;
+    block-size: auto;
+    padding: 10px;
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-bottom: 5px;
+    /*box-shadow: 10px 10px 100px grey inset;*/
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+#poll_list_item:hover{
+    background-color: #d9d9d9;
+    transform: scale(1.01);
+    box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.3), 10px 10px 40px rgba(0, 0, 0, 0.2);
+}
+#debate_list:hover{
+    background-color: #d9d9d9;
+    transform: scale(1.01);
+    box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.3), 10px 10px 40px rgba(0, 0, 0, 0.2);
+}
+#profile_picture{
+    height: 200;
+    width: 200;
+}
+.center{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10px;
+}
+#profile_card{
+    background-color: white;
+}
+#post_info{
+    text-align: center;
+    color:white;
+}
+
+#post_title{
+    text-align: center;
+    color: black;
+}
+#post_list {
+    background-color: white;
+    color: black;
+    border-style: groove;
+    block-size: auto;
+    padding: 10px;
+    margin-left: 20px;
+    margin-right: 20px;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+#edit_delete{
+    text-align: center;
+}
+#edit-delete{
+    text-align: center;
+}
+#delete_blog_btn{
+    color: white;
+    background-color: black;
+}
+#edit_blog_btn{
+    color: white;
+    background-color: black;
+}
+#post_list:hover {
+    background-color: #d9d9d9;
+    transform: scale(1.01);
+    box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.3), 10px 10px 40px rgba(0, 0, 0, 0.2);
+}
+/* home button */
+#btn{
+    background-color: white;
+    border: none;
+}
+#profile_pic{
+    height: 200;
+    width: 200;
+}
+#about_div{
+    text-align:center;
+}
+#about_p_div{
+    margin-left: 50px;
+    margin-right: 50px;
+    margin-bottom: 20px;
+    text-align: left;
+}
+#welcome_div{
+    text-align:center;
+}
+#welcome_p_div{
+    margin-left: 50px;
+    margin-right: 50px;
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+#academic_field{
+    text-align: center;
+}
+#page_num_of{
+    color: black;
+    padding-bottom: 20px;
+    font-weight: bold;
+    text-align: center;
+}
+#draft_div{
+    text-align: center;
+    color: black;
+    background-color: transparent;
+}
+#user_profile{
+    text-align: left;
+    margin: auto;
+    color:black;
+    width: 60%;
+    float: center;
+    padding-bottom: 20px;
+    border: solid 2px;
+    margin-top: 5px;
+    background-color: #e4e9f2;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.profile-button {
+    flex: 1;
+    margin-right: 10px;
+}
+p{
+    color: black;
+    text-align: center;
+}
+/* navbar background */
+.navbar ul{
+  list-style: none;
+  background-color: white;
+  padding: 0;
+  margin: 0;
+  text-align: center;
+}
+.navbar li{
+  display: inline-block;
+}
+#register_list{
+    background-color: white;
+    text-align: left;
+}
+h1{
+    color: black;
+    text-align: center;
+}
+h3{
+    color: black;
+    text-align: center;
+}
+#EDbuttons{
+    text-align: center;
+}
+#debate_comments{
+    color: white;
+    text-align: center;
+}
+ul {
+  background: white;
+  text-align: center;
+  padding: 5px;
+}
+#list_id:hover{
+    background-color: #a16c6c;
+}
+#list_id{
+    padding: 10px;
+    background-color:#b5b5b5;
+    margin: 0 0 0px 0;
+    color: black;
+    space-between: 5px;
+}
+href{
+    color: white;
+}
+.navbar a{
+  text-decoration: none;
+  color: black;
+  width: 100px;
+  display: block;
+  padding: 25px 20px;
+  font-size: 15px;
+  text-align: left;
+}
+/* dropdown text color */
+.navbar a:hover{
+  transition: .3s;
+  color: #b50202;
+}
+.button{
+   color:#fafafc;
+   border:none;
+}
+.profile_button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+}
+.profile_button:hover {
+    background-color: #0056b3;
+}
+/* Dropdown Button */
+.dropbtn {
+ background-color: white;
+ color: black;
+ padding: 25px 50px;
+ font-size: 16px;
+ transition: .5s;
+ border: none;
+}
+
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+ position: relative;
+ display: inline-block;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+ display: none;
+ position: absolute;
+ background-color: white;
+ min-width: 140px;
+ box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+ z-index: 1;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+ color: black;
+ padding: 12px 25px;
+ text-decoration: none;
+ display: block;
+ border-style: outset;
+ border-color: #d9d9d9;
+}
+
+/* Change color of dropdown background on hover */
+.dropdown-content a:hover {
+    transition: .3s;
+    background-color: #d9d9d9;
+}
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {
+    display: block;
+    transition: .3s;
+}
+
+/* Change the background color of the dropdown button when the dropdown content is shown */
+.dropdown:hover .dropbtn{
+    color: #b50202;
+    background-color: #d9d9d9;
+}
+
+img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.container{
+  min-height: 10vh;
+  position:relative;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  text-align:center;
+  margin-top: 70px;
+  color:#fafafc;
+}
+
+.centered{
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%, -50%);
+  font-size: 50;
+}
+.center-content {
+    text-align: center;
+}
+
+.expert-list-item {
+    margin: 0 auto;
+    text-align: left;
+    border: 1px solid black; /* Optional border for visual separation */
+    padding: 10px; /* Optional padding for spacing */
+    max-width: 400px; /* Optional maximum width to control width of the content */
+    margin-bottom: 10px;
+}
+form {
+  box-sizing: border-box;
+  padding: 2rem;
+  background-color: transparent;
+  border: none;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+#post{
+    width: 5em;
+    height: 2em;
+}
