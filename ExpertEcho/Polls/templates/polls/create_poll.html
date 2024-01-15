@@ -1,0 +1,45 @@
+{% extends "MainApp/base.html" %}
+{% block content %}
+<h1>Create Poll</h1>
+<form action="{% url 'create_poll' %}" method="post">
+    {% csrf_token %}
+    {{ poll_form.as_p }}
+    <hr>
+    {{ choice_formset.management_form }}
+    <table>
+        {% for form in choice_formset %}
+            <tr>
+                <td>{{ form.choice.label_tag }}</td>
+                <td>{{ form.choice }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+    <button type="button" class="add-form-row">Add Choice</button>
+    <input type="submit" value="Create Poll">
+</form>
+
+<script>
+    // JavaScript code to handle adding new choice form rows dynamically
+    document.addEventListener('DOMContentLoaded', function() {
+        const addButton = document.querySelector('.add-form-row');
+        addButton.addEventListener('click', function() {
+            const formset = document.querySelector('#id_choices-TOTAL_FORMS');
+            const newFormIndex = parseInt(formset.value);
+            const formTable = document.querySelector('table');
+
+            const newForm = document.createElement('tr');
+            newForm.innerHTML = `
+                <td>
+                    <label for="id_choices-${newFormIndex}-choice">Choice</label>
+                </td>
+                <td>
+                    <input type="text" name="choices-${newFormIndex}-choice" required>
+                </td>
+            `;
+
+            formTable.appendChild(newForm);
+            formset.value = newFormIndex + 1;
+        });
+    });
+</script>
+{% endblock %}

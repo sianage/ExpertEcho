@@ -88,7 +88,7 @@
                    {% else %}
                     <a href="#">Create Profile</a>
                    {% endif %}
-                <a href="#">Logout</a>
+                <a href="{% url 'logout' %}">Logout</a>
                 <a href="#">Write Blog</a>
                 <a href="#">Create Debate</a>
                 <a href="#">Create Poll</a>
@@ -106,12 +106,12 @@
            {% else %}
            <li>
              <div>
-                 <a class="nav-link" href="#">Register</a>
+                 <a class="nav-link" href="{% url 'register' %}">Register</a>
              </div>
           </li>
            <li>
              <div>
-                 <a class="nav-link" href="#">Login</a>
+                 <a class="nav-link" href="{% url 'login' %}">Login</a>
              </div>
           </li>
            {% endif %}

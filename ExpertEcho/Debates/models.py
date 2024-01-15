@@ -1,12 +1,17 @@
+from ckeditor.fields import RichTextField
 from django.db import models
+
+from Blogs.models import Category
+from Members.models import CustomUser
+
 
 class Debate(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="debates")
     title = models.CharField(max_length=255)
     description = models.TextField()
     created = models.DateTimeField(auto_now_add=True)
-    author = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name='author')
-    opponent = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name='opponent')
+    author = models.ForeignKey(CustomUser, on_delete=models.CASCADE, null=True, related_name='author')
+    opponent = models.ForeignKey(CustomUser, on_delete=models.CASCADE, null=True, related_name='opponent')
     class Meta:
         ordering = ['created']
         indexes = [models.Index(fields=['created']),]
@@ -19,7 +24,7 @@ class Comment(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     #user
-    commenter_name = models.ForeignKey(User, on_delete=models.CASCADE)
+    commenter_name = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     #form.media in view (tut 21)
     body = RichTextField(blank=True, null=True)
 

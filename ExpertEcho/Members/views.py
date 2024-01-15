@@ -7,7 +7,7 @@ from django.views import generic
 #from .forms import EditSettingsForm, EditPasswordForm  # Import your custom forms
 
 from django.contrib.auth import authenticate, login, update_session_auth_hash
-from django.contrib.auth.forms import UserCreationForm, UserChangeForm
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm, AuthenticationForm
 from django.urls import reverse_lazy
 from django import forms
 from django.contrib.auth.forms import UserChangeForm
@@ -18,7 +18,11 @@ from django.urls import reverse_lazy
 from django.views.generic import DetailView, ListView, CreateView
 from storages.backends.s3boto3 import S3Boto3Storage
 
-from ExpertEcho.Members.models import Profile
+from Blogs.models import Post
+from Homepage.forms import NoteForm
+from Homepage.models import Note
+from Members.forms import SignUpForm, EditSettingsForm, EditPasswordForm
+from Members.models import Profile
 
 '''
 from MainApp.forms import NoteForm
@@ -30,7 +34,7 @@ from .forms import SignUpForm, ProfilePageForm, EditPasswordForm, EditSettingsFo
 
 class EditProfilePageView(generic.UpdateView):
     model = Profile
-    template_name = 'registration/edit_profile_page.html'
+    template_name = 'members/edit_profile_page.html'
     fields = ['bio', 'github_url', 'linkedin_url', 'academic_field', 'profile_picture']
     success_url = reverse_lazy('MainApp:home')
 
@@ -54,7 +58,7 @@ def medicine_profile_list(request):
 class CreateProfileView(CreateView):
     model = Profile
     fields = ['bio', 'github_url', 'linkedin_url', 'academic_field', 'profile_picture']
-    template_name = "registration/create_profile.html"
+    template_name = "members/create_profile.html"
 
     # fields = '__all__'
 
@@ -69,7 +73,7 @@ class CreateProfileView(CreateView):
     success_url = reverse_lazy('login')'''
 
 
-def UserRegisterView(request):
+'''def UserRegisterView(request):
     form = SignUpForm()
     if request.method == "POST":
         form = SignUpForm(request.POST)
@@ -80,9 +84,30 @@ def UserRegisterView(request):
             # login user
             user = authenticate(username=username, password=password)
             login(request, user)
-            return redirect('MainApp:home')
-    return render(request, 'registration/register.html', {'form': form})
+            return redirect('home')
+    return render(request, 'members/register.html', {'form': form})
 
+def UserLoginView(request):
+    return render(request, 'members/login.html')'''
+def custom_user_registration_view(request):
+    template_name = 'registration/register.html'
+    form = UserCreationForm(request.POST or None)
+    if request.method == 'POST' and form.is_valid():
+        user = form.save()
+        login(request, user)
+        return redirect('home')  # Change 'home' to the name of your home view
+    return render(request, template_name, {'form': form})
+
+def custom_user_login_view(request):
+    template_name = 'registration/login.html'
+    if request.method == 'POST':
+        form = AuthenticationForm(request, request.POST)
+        if form.is_valid():
+            login(request, form.get_user())
+            return redirect('home')  # Change 'home' to the name of your home view
+    else:
+        form = AuthenticationForm(request)
+    return render(request, template_name, {'form': form})
 
 class UserEditView(generic.UpdateView):
     template_name = 'edit_profile.html'
@@ -190,7 +215,7 @@ def ProfileView(request, pk):
                 current_user_profile.follows.add(profile)
             current_user_profile.save()
 
-        return render(request, 'registration/user_profile.html', {'profile': profile, 'note': note, 'form': form, 'posts': posts})
+        return render(request, 'members/user_profile.html', {'profile': profile, 'note': note, 'form': form, 'posts': posts})
     else:
         return redirect('MainApp:home')
 

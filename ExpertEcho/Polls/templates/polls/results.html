@@ -1,0 +1,18 @@
+{% extends "MainApp/base.html" %}
+{% block content %}
+<h1>Results</h1>
+<h1>{{ poll.title }}</h1>
+<ul class="result-list">
+    {% for choice in choices %}
+        <div class="result-item">
+            <div class="result-info">
+                <h2>{{ choice.choice }}</h2>
+                <p>{{ choice.percentage|floatformat:"1" }}% ({{ choice.votes }} vote{{ choice.votes|pluralize }})</p>
+            </div>
+            <div class="bar-container">
+                <div class="bar" style="width: {{ choice.percentage }}%;"></div>
+            </div>
+        </div>
+    {% endfor %}
+</ul>
+{% endblock %}

@@ -31,7 +31,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('Homepage.urls')),
     path('blogs/', include('Blogs.urls')),
-    path('Members/', include('django.contrib.auth.urls')),
+    path('members/', include('django.contrib.auth.urls')),
     path('members/', include('Members.urls')),
     # path('poll/', include('Polls.urls')),
     # path('debates/', include('Debates.urls')),    # Add the URL for the Debates app

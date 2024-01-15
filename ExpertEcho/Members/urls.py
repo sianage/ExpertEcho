@@ -1,13 +1,11 @@
-from django.urls import path, include
+from django.urls import path
 
 from . import views
-from .views import UserRegisterView, UserEditView, ProfileView, CreateProfileView, EditProfilePageView
-
-#app_name = 'Members'
+from .views import custom_user_login_view, UserEditView, ProfileView, CreateProfileView, EditProfilePageView, custom_user_registration_view
 
 urlpatterns = [
-    path('register/', views.UserRegisterView, name="register"),
-    #settings?
+    path('login/', views.custom_user_login_view, name="login"),
+    path('register/', views.custom_user_registration_view, name="register"),
     path('edit_profile/', UserEditView.as_view(), name="edit_profile"),
     path('<int:pk>/profile/', views.ProfileView, name="profile_page"),
     path('create_profile/', CreateProfileView.as_view(), name="create_profile_page"),

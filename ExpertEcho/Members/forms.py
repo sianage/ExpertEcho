@@ -1,16 +1,23 @@
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.contrib.auth.models import User
 from django import forms
-from MainApp.models import Profile
+from Members.models import Profile, Message
+from Blogs.models import Category
 from storages.backends.s3boto3 import S3Boto3Storage
 
 
-from MainApp.models import Profile, Category
 choices = Category.objects.all().values_list('category', 'category')
 choice_list = []
 for item in choices:
     choice_list.append(item)
 
+class SignUpForm(UserCreationForm):
+    email = forms.EmailField()
+    first_name = forms.CharField(max_length=100)
+    last_name = forms.CharField(max_length=100)
+    class Meta:
+        model = User
+        fields = ('username', 'first_name', 'last_name', 'email', 'password1', 'password2')
 
 class ProfilePageForm(forms.ModelForm):
     profile_picture = forms.ImageField(widget=forms.ClearableFileInput(attrs={'class': 'form-control'}))
@@ -29,7 +36,7 @@ class ProfilePageForm(forms.ModelForm):
             'profile_picture': forms.ClearableFileInput(attrs={'class': 'form-control'}),
         }
 
-class SignUpForm(UserCreationForm):
+class CustomUserCreationForm(UserCreationForm):
     email = forms.EmailField()
     first_name = forms.CharField(max_length=100)
     last_name = forms.CharField(max_length=100)

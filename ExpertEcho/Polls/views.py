@@ -2,10 +2,8 @@ from django.forms import formset_factory
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import ListView, DetailView
-from MainApp.models import Debate
 from .forms import ChoiceFormSet, PollForm, ChoiceForm
 from .models import Poll, Choice, Vote
-# Create your views here.
 from django.urls import reverse_lazy, reverse
 from django.contrib.auth.decorators import login_required
 
@@ -56,10 +54,6 @@ def results(request, poll_id):
             choice.percentage = 0
 
     return render(request, 'poll/results.html', {'poll': poll, 'choices': choices, 'total_votes': total_votes})
-
-
-from .models import Category
-
 
 def CreatePollView(request):
     ChoiceFormSet = formset_factory(ChoiceForm, extra=1)

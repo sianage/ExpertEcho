@@ -1,9 +1,12 @@
 from django.forms import TextInput, CharField
 
-from .models import Post, Category, User, Note, Comment
+from ExpertEcho.Blogs.models import Post, Category, User
+from ExpertEcho.Debates.models import Comment
+from ExpertEcho.Homepage.models import Note
 from .models import Debate
 from django import forms
-from .models import Profile, Message
+from ExpertEcho.Members.models import Profile, Message
+from ExpertEcho.Blogs.forms import author_list, choice_list
 
 class CommentForm(forms.ModelForm):
     class Meta:

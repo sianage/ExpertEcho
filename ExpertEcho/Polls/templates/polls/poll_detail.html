@@ -1,0 +1,14 @@
+{% extends "MainApp/base.html" %}
+{% block content %}
+<h1>{{ poll.title }}</h1>
+<form action="{% url 'vote' poll.id %}" method="post">
+    {% csrf_token %}
+    <fieldset>
+        {% for choice in poll.choice_set.all %}
+           <input type="radio" name="choice" id="choice{{ choice.id }}" value="{{ choice.id }}">
+           <label for="choice{{ choice.id }}">{{choice.choice}}</label>
+        {% endfor %}
+    </fieldset>
+    <input type="submit" value="Vote">
+</form>
+{% endblock %}

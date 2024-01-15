@@ -2,7 +2,8 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.db.models import Sum
 
-from MainApp.models import Category
+from Blogs.models import Category
+
 
 class Poll(models.Model):
     title = models.CharField(max_length=255)
