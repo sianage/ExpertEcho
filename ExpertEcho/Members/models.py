@@ -2,6 +2,8 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, Permis
 from django.db import models
 from django.utils import timezone
 from ExpertEcho.fields import FIELD_CHOICES  # Import the choices
+from django.contrib.auth.hashers import make_password, check_password
+from django.core.validators import MinValueValidator
 
 class AcademicField(models.Model):
     name = models.CharField(max_length=30, choices=FIELD_CHOICES, unique=True)
@@ -15,10 +17,12 @@ class CustomUserManager(BaseUserManager):
             raise ValueError('The Email field must be set')
         email = self.normalize_email(email)
         user = self.model(email=email, **extra_fields)
-        user.set_password(password)
+        user.password = make_password(password)
         user.save(using=self._db)
         return user
 
+    def check_password(self, user, password):
+        return check_password(password, user.password)
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True)
@@ -44,12 +48,15 @@ class Profile(models.Model):
     email = models.EmailField()
 
     # Expert-specific fields
+    years_of_experience = models.IntegerField(
+        validators=[MinValueValidator(5)],
+        help_text="Enter your years of experience (minimum: 5)"
+    )
     has_masters = models.BooleanField(default=False)
     has_phd = models.BooleanField(default=False)
     university = models.CharField(max_length=100)
     job_history = models.TextField(blank=True)
     academic_field = models.CharField(max_length=20, choices=FIELD_CHOICES)
-    political_spectrum = models.CharField(max_length=100)
     bio = models.TextField(blank=True)
     profile_picture = models.ImageField(upload_to='profile_pictures/', blank=True, null=True)
 
@@ -68,4 +75,3 @@ class Message(models.Model):
 
     class Meta:
         ordering = ['timestamp']
-

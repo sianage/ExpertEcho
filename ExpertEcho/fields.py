@@ -1,5 +1,5 @@
 FIELD_CHOICES = [
-    ('field1', 'Philosophy'),
+    ('field1', 'Finance'),
     ('field2', 'Economics'),
     ('field3', 'Law'),
     ('field3', 'Medicine'),
