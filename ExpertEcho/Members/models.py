@@ -61,7 +61,7 @@ class Profile(models.Model):
     has_phd = models.BooleanField(default=False)
     university = models.CharField(max_length=100)
     job_history = models.TextField(blank=True)
-    academic_field = models.CharField(max_length=20, choices=FIELD_CHOICES)
+    academic_field = models.CharField(max_length=20, choices=FIELD_CHOICES, default='None Selected')
     bio = models.TextField(blank=True)
     profile_picture = models.ImageField(upload_to='profile_pictures/', blank=True, null=True)
 
