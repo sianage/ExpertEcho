@@ -33,6 +33,6 @@ urlpatterns = [
     path('blogs/', include('Blogs.urls')),
     path('members/', include('django.contrib.auth.urls')),
     path('members/', include('Members.urls')),
-    # path('poll/', include('Polls.urls')),
-    # path('debates/', include('Debates.urls')),    # Add the URL for the Debates app
+    path('poll/', include('Polls.urls')),
+    path('debates/', include('Debates.urls')),    # Add the URL for the Debates app
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

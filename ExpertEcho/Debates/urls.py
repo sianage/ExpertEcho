@@ -3,7 +3,7 @@ from . import views
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from ExpertEcho.Blogs.views import (UpdateBlogView, DeleteBlogView, user_blogs, philosophy_view, medicine_view,
+from Blogs.views import (UpdateBlogView, DeleteBlogView, user_blogs, philosophy_view, medicine_view,
                                     polisci_view, economics_view, AddBlogView, post_detail)
 from .views import user_debate_list, debate_list, economics_debate_list, polisci_debate_list, medicine_debate_list, \
     debate_detail, AddDebateView

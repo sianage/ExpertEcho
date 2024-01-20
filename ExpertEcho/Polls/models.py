@@ -2,6 +2,8 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.db.models import Sum
 
+import Blogs.models
+
 from Blogs.models import Category
 
 

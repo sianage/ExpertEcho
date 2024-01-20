@@ -1,7 +1,12 @@
+import sys
+#print(sys.path)
+
+sys.path.append('C:/Users/siana/OneDrive/Desktop/ExpertEcho/ExpertEcho')  # Replace with the actual path to ExpertEcho
+
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin, Group, Permission
 from django.db import models
 from django.utils import timezone
-from ExpertEcho.fields import FIELD_CHOICES  # Import the choices
+from fields import FIELD_CHOICES
 from django.contrib.auth.hashers import make_password, check_password
 from django.core.validators import MinValueValidator
 
@@ -28,8 +33,8 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True)
     is_expert = models.BooleanField(default=False)  # Identifies if the user is an expert
     date_joined = models.DateTimeField(default=timezone.now)
-    #groups = models.ManyToManyField(Group, related_name='customuser_groups')
-    #user_permissions = models.ManyToManyField(Permission, related_name='customuser_permissions')
+    groups = models.ManyToManyField(Group, related_name='customuser_groups')
+    user_permissions = models.ManyToManyField(Permission, related_name='customuser_permissions')
 
     objects = CustomUserManager()
 

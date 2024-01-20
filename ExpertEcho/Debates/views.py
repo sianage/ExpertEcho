@@ -1,8 +1,8 @@
 from django.shortcuts import render, get_object_or_404
 from django.views.generic import ListView
 
-from ExpertEcho.Debates.forms import CommentForm
-from ExpertEcho.Debates.models import Debate
+from Debates.forms import CommentForm
+from Debates.models import Debate
 #import self as self
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy, reverse
@@ -10,8 +10,8 @@ from django.contrib.auth.decorators import login_required
 from django.views import generic
 from django.views.generic import ListView, DetailView
 from django.shortcuts import render, redirect
-from ExpertEcho.Blogs.forms import PostForm
-from ExpertEcho.Debates.forms import DebateForm
+from Blogs.forms import PostForm
+from Debates.forms import DebateForm
 from django.db.models import Q
 from django.shortcuts import render, get_object_or_404
 from django.template import loader
@@ -23,13 +23,13 @@ from django.contrib.auth.views import PasswordChangeView
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, CreateView
 from .models import Debate, Comment
-from ExpertEcho.Blogs.models import Post, Category
-from ExpertEcho.Members.models import CustomUser
-from ExpertEcho.Homepage.models import Note
+from Blogs.models import Post, Category
+from Members.models import CustomUser
+from Homepage.models import Note
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.decorators.http import require_POST
-from ExpertEcho.Homepage.forms import NoteForm
-from ExpertEcho.Debates.forms import CommentForm
+from Homepage.forms import NoteForm
+from Debates.forms import CommentForm
 
 @require_POST
 def debate_post(request, debate_id):

@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django import forms
 from django.forms import formset_factory
 from .models import Poll, Choice
-from ExpertEcho.Blogs.models import Category
+from Blogs.models import Category
 
 class PollForm(forms.ModelForm):
     class Meta:
