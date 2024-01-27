@@ -86,7 +86,7 @@
                     <a href="#">Profile</a>
                     <a href="#">edit profile</a>
                    {% else %}
-                    <a href="#">Create Profile</a>
+                    <a href="{% url 'create_profile_page' %}">Create Profile</a>
                    {% endif %}
                 <a href="{% url 'logout' %}">Logout</a>
                 <a href="#">Write Blog</a>

@@ -1,5 +1,6 @@
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
-from django.contrib.auth.models import User
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.shortcuts import render, get_object_or_404, redirect
 from django.template.context_processors import request
@@ -15,14 +16,16 @@ from django.contrib.auth import update_session_auth_hash
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
+from django.views.decorators.http import require_http_methods
 from django.views.generic import DetailView, ListView, CreateView
 from storages.backends.s3boto3 import S3Boto3Storage
 
 from Blogs.models import Post
 from Homepage.forms import NoteForm
 from Homepage.models import Note
-from Members.forms import SignUpForm, EditSettingsForm, EditPasswordForm
-from Members.models import Profile
+from Members.forms import SignUpForm, EditSettingsForm, EditPasswordForm, EditProfileForm, CreateProfileForm, \
+    CustomUserCreationForm
+from Members.models import Profile, CustomUser, CustomUserManager
 
 '''
 from MainApp.forms import NoteForm
@@ -32,11 +35,21 @@ from MainApp.models import Profile
 from .forms import SignUpForm, ProfilePageForm, EditPasswordForm, EditSettingsForm
 '''
 
-class EditProfilePageView(generic.UpdateView):
-    model = Profile
-    template_name = 'members/edit_profile_page.html'
-    fields = ['bio', 'github_url', 'linkedin_url', 'academic_field', 'profile_picture']
-    success_url = reverse_lazy('MainApp:home')
+@login_required
+@require_http_methods(["GET", "POST"])
+def edit_profile_page(request, pk):
+    profile = get_object_or_404(Profile, pk=pk)
+
+    if request.method == 'POST':
+        form = EditProfileForm(request.POST, request.FILES, instance=profile)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Profile updated successfully.')
+            return HttpResponseRedirect(reverse_lazy('home'))
+    else:
+        form = EditProfileForm(instance=profile)
+
+    return render(request, 'members/edit_profile_page.html', {'form': form})
 
 
 def profile_list(request):
@@ -55,16 +68,20 @@ def medicine_profile_list(request):
     profiles = Profile.objects.all()
     return render(request, 'medicine_profile_list.html', {"profiles": profiles})
 
-class CreateProfileView(CreateView):
-    model = Profile
-    fields = ['bio', 'github_url', 'linkedin_url', 'academic_field', 'profile_picture']
-    template_name = "members/create_profile.html"
+@login_required
+def create_profile_view(request):
+    if request.method == 'POST':
+        form = CreateProfileForm(request.POST, request.FILES)
+        if form.is_valid():
+            profile = form.save(commit=False)
+            profile.user = request.user
+            profile.save()
+            messages.success(request, 'Profile created successfully.')
+            return redirect('home')
+    else:
+        form = CreateProfileForm()
 
-    # fields = '__all__'
-
-    def form_valid(self, form):
-        form.instance.user = self.request.user
-        return super().form_valid(form)
+    return render(request, 'members/create_profile.html', {'form': form})
 
 
 '''class UserRegisterView(generic.CreateView):
@@ -91,11 +108,11 @@ def UserLoginView(request):
     return render(request, 'members/login.html')'''
 def custom_user_registration_view(request):
     template_name = 'registration/register.html'
-    form = UserCreationForm(request.POST or None)
-    if request.method == 'POST' and form.is_valid():
+    form = CustomUserCreationForm(request.POST or None)
+    if request.method == 'POST' and form.is_valid(): #line with error
         user = form.save()
         login(request, user)
-        return redirect('home')  # Change 'home' to the name of your home view
+        return redirect('create_profile_page')  # Change 'home' to the name of your home view
     return render(request, template_name, {'form': form})
 
 def custom_user_login_view(request):
@@ -109,36 +126,39 @@ def custom_user_login_view(request):
         form = AuthenticationForm(request)
     return render(request, template_name, {'form': form})
 
-class UserEditView(generic.UpdateView):
-    template_name = 'edit_profile.html'
-    form_class = EditSettingsForm  # Use the custom form for user information
-    success_url = reverse_lazy('MainApp:home')
+@login_required
+def user_edit_view(request):
+    if request.method == 'POST':
+        form = EditSettingsForm(request.POST, instance=request.user)
+        password_form = EditPasswordForm(request.POST)
 
-    def get_object(self):
-        return self.request.user
+        if form.is_valid():
+            user = form.save(commit=False)
+            password_change = request.POST.get('password_form', '')  # Default to empty string if not present
+            new_password1 = request.POST.get('new_password1', '')
+            new_password2 = request.POST.get('new_password2', '')
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['password_form'] = EditPasswordForm()  # Use the custom password change form
-        return context
+            if password_change == 'password_change' and new_password1 and new_password2:
+                if new_password1 == new_password2:
+                    user.set_password(new_password1)
+                    user.save()
+                    update_session_auth_hash(request, user)  # Keep the user logged in
+                    messages.success(request, 'Password changed successfully.')
+                else:
+                    messages.error(request, 'New passwords do not match.')
 
-    def form_valid(self, form):
-        user = form.save()
-        password_form = self.request.POST.get('password_form', '')  # Default to empty string if not present
-        new_password1 = self.request.POST.get('new_password1', '')
-        new_password2 = self.request.POST.get('new_password2', '')
+            form.save()
+            messages.success(request, 'Profile updated successfully.')
+            return redirect('home')
+    else:
+        form = EditSettingsForm(instance=request.user)
+        password_form = EditPasswordForm()
 
-        if password_form == 'password_change' and new_password1 and new_password2:
-            if new_password1 == new_password2:
-                user.set_password(new_password1)
-                user.save()
-                update_session_auth_hash(self.request, user)  # Keep the user logged in
-                messages.success(self.request, 'Password changed successfully.')
-            else:
-                messages.error(self.request, 'New passwords do not match.')
-
-        messages.success(self.request, 'Profile updated successfully.')
-        return super().form_valid(form)
+    context = {
+        'form': form,
+        'password_form': password_form,
+    }
+    return render(request, 'edit_profile.html', context)
 
 
 '''class ProfileView(DetailView):
@@ -217,7 +237,7 @@ def ProfileView(request, pk):
 
         return render(request, 'members/user_profile.html', {'profile': profile, 'note': note, 'form': form, 'posts': posts})
     else:
-        return redirect('MainApp:home')
+        return redirect('home')
 
 
     '''requested_url = request.path

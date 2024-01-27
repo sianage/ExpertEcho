@@ -6,6 +6,7 @@ from django.utils import timezone
 from django.urls import reverse
 from ckeditor.fields import RichTextField
 from django.db.models.signals import post_save
+from django.contrib.auth import get_user_model
 
 class DraftManager(models.Manager):
     def get_queryset(self):
@@ -37,7 +38,7 @@ class Post(models.Model):
     title = models.CharField(max_length=255)
     header_image = models.ImageField(null=True, blank=True, upload_to="images/profile/")
     #related_name allows us to access related objects from a user object, like user.blog_posts
-    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='blog_posts')
+    author = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='blog_posts')
     slug = models.SlugField(max_length=255, unique_for_date='publish')
     body = RichTextField(blank=True, null=True)
     publish = models.DateTimeField(default=timezone.now)

@@ -10,12 +10,6 @@ from fields import FIELD_CHOICES
 from django.contrib.auth.hashers import make_password, check_password
 from django.core.validators import MinValueValidator
 
-class AcademicField(models.Model):
-    name = models.CharField(max_length=30, choices=FIELD_CHOICES, unique=True)
-
-    def __str__(self):
-        return self.name
-
 class CustomUserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
         if not email:
@@ -26,11 +20,24 @@ class CustomUserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
+    def create_superuser(self, email, password=None, **extra_fields):
+        extra_fields.setdefault('is_staff', True)
+        extra_fields.setdefault('is_superuser', True)
+
+        if extra_fields.get('is_staff') is not True:
+            raise ValueError('Superuser must have is_staff=True.')
+        if extra_fields.get('is_superuser') is not True:
+            raise ValueError('Superuser must have is_superuser=True.')
+
+        return self.create_user(email, password, **extra_fields)
+
     def check_password(self, user, password):
         return check_password(password, user.password)
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True)
+    is_staff = models.BooleanField(default=False)
+    is_superuser = models.BooleanField(default=False)
     is_expert = models.BooleanField(default=False)  # Identifies if the user is an expert
     date_joined = models.DateTimeField(default=timezone.now)
     groups = models.ManyToManyField(Group, related_name='customuser_groups')
@@ -54,7 +61,7 @@ class Profile(models.Model):
 
     # Expert-specific fields
     years_of_experience = models.IntegerField(
-        validators=[MinValueValidator(5)],
+        validators=[MinValueValidator(5)], default=5,
         help_text="Enter your years of experience (minimum: 5)"
     )
     has_masters = models.BooleanField(default=False)

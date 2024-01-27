@@ -1,6 +1,6 @@
 from django.forms import TextInput, CharField
 
-from .models import Post, Category, User
+from .models import Post, Category
 from django import forms
 # hard-coded version of selection list of categories (not used)
 #choices = [('economics', 'economics'), ('philosophy', 'philosophy'), ('medicine', 'medicine'), ('politics', 'politics')]

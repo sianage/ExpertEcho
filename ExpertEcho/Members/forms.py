@@ -1,7 +1,7 @@
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.contrib.auth.models import User
 from django import forms
-from Members.models import Profile, Message
+from Members.models import Profile, Message, CustomUser
 from Blogs.models import Category
 from storages.backends.s3boto3 import S3Boto3Storage
 
@@ -19,7 +19,7 @@ class SignUpForm(UserCreationForm):
         model = User
         fields = ('username', 'first_name', 'last_name', 'email', 'password1', 'password2')
 
-class ProfilePageForm(forms.ModelForm):
+class CreateProfileForm(forms.ModelForm):
     profile_picture = forms.ImageField(widget=forms.ClearableFileInput(attrs={'class': 'form-control'}))
     github_url = forms.CharField(max_length=255)
     linkedin_url = forms.CharField(max_length=255)
@@ -40,9 +40,10 @@ class CustomUserCreationForm(UserCreationForm):
     email = forms.EmailField()
     first_name = forms.CharField(max_length=100)
     last_name = forms.CharField(max_length=100)
+
     class Meta:
-        model = User
-        fields = ('username', 'first_name', 'last_name', 'email', 'password1', 'password2')
+        model = CustomUser
+        fields = ('first_name', 'last_name', 'email', 'password1', 'password2')
 
 class EditProfileForm(UserChangeForm):
     profile_picture = forms.ImageField(widget=forms.ClearableFileInput(attrs={'class': 'form-control'}))
