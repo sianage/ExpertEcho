@@ -18,7 +18,7 @@ from django.contrib.auth.views import PasswordChangeView
 from .models import Post
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, CreateView
-from .models import Post, Category, User
+from .models import Post, Category, CustomUser
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.decorators.http import require_POST
 

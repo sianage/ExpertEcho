@@ -24,11 +24,11 @@
 
 <div class="user-content-buttons">
     <div class="profile-button">
-        <a href="{% url 'MainApp:user_blogs' %}?author={{ profile.user.id }}" class="profile_button">Blogs</a>
+        <a href="{% url 'user_blogs' %}?author={{ profile.user.id }}" class="profile_button">Blogs</a>
     </div>
     <br>
     <div class="profile-button">
-        <a href="{% url 'MainApp:user_debates' %}?author={{ profile.user.id }}" class="profile_button">Debates</a>
+        <a href="{% url 'user_debates' %}?author={{ profile.user.id }}" class="profile_button">Debates</a>
     </div>
     <br>
 </div>
@@ -59,7 +59,7 @@
         <a href="{% url 'profile_page' following.user.profile.id %}">@{{ following }}</a><br>
     {% endfor %}
     <br>
-    <a href="{% url 'MainApp:conversation_detail' receiver_id=profile.user.id %}" class="message_button">Message {{profile.user.username}}</a>
+    <a href="{% url 'conversation_detail' receiver_id=profile.user.id %}" class="message_button">Message {{profile.user.username}}</a>
     <br>
     <br>
 

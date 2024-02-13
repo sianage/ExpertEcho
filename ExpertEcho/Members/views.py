@@ -1,4 +1,5 @@
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
@@ -8,7 +9,7 @@ from django.views import generic
 #from .forms import EditSettingsForm, EditPasswordForm  # Import your custom forms
 
 from django.contrib.auth import authenticate, login, update_session_auth_hash
-from django.contrib.auth.forms import UserCreationForm, UserChangeForm, AuthenticationForm
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm, AuthenticationForm, PasswordChangeForm
 from django.urls import reverse_lazy
 from django import forms
 from django.contrib.auth.forms import UserChangeForm
@@ -23,21 +24,14 @@ from storages.backends.s3boto3 import S3Boto3Storage
 from Blogs.models import Post
 from Homepage.forms import NoteForm
 from Homepage.models import Note
-from Members.forms import SignUpForm, EditSettingsForm, EditPasswordForm, EditProfileForm, CreateProfileForm, \
-    CustomUserCreationForm
-from Members.models import Profile, CustomUser, CustomUserManager
+from Members.forms import SignUpForm, EditSettingsForm, EditProfileForm, CreateProfileForm, \
+    CustomUserCreationForm, MessageForm, EditPasswordForm
+from Members.models import Profile, CustomUser, CustomUserManager, Message
 
-'''
-from MainApp.forms import NoteForm
-from MainApp.models import Profile, Note, Post
-from django import forms
-from MainApp.models import Profile
-from .forms import SignUpForm, ProfilePageForm, EditPasswordForm, EditSettingsForm
-'''
 
 @login_required
 @require_http_methods(["GET", "POST"])
-def edit_profile_page(request, pk):
+def edit_profile_view(request, pk):
     profile = get_object_or_404(Profile, pk=pk)
 
     if request.method == 'POST':
@@ -49,7 +43,7 @@ def edit_profile_page(request, pk):
     else:
         form = EditProfileForm(instance=profile)
 
-    return render(request, 'members/edit_profile_page.html', {'form': form})
+    return render(request, 'members/edit_profile.html', {'form': form})
 
 
 def profile_list(request):
@@ -84,28 +78,6 @@ def create_profile_view(request):
     return render(request, 'members/create_profile.html', {'form': form})
 
 
-'''class UserRegisterView(generic.CreateView):
-    form_class = SignUpForm
-    template_name = 'registration/register.html'
-    success_url = reverse_lazy('login')'''
-
-
-'''def UserRegisterView(request):
-    form = SignUpForm()
-    if request.method == "POST":
-        form = SignUpForm(request.POST)
-        if form.is_valid():
-            form.save()
-            username = form.cleaned_data['username']
-            password = form.cleaned_data['password1']
-            # login user
-            user = authenticate(username=username, password=password)
-            login(request, user)
-            return redirect('home')
-    return render(request, 'members/register.html', {'form': form})
-
-def UserLoginView(request):
-    return render(request, 'members/login.html')'''
 def custom_user_registration_view(request):
     template_name = 'registration/register.html'
     form = CustomUserCreationForm(request.POST or None)
@@ -127,14 +99,14 @@ def custom_user_login_view(request):
     return render(request, template_name, {'form': form})
 
 @login_required
-def user_edit_view(request):
+def edit_settings_view(request):
     if request.method == 'POST':
         form = EditSettingsForm(request.POST, instance=request.user)
         password_form = EditPasswordForm(request.POST)
 
         if form.is_valid():
             user = form.save(commit=False)
-            password_change = request.POST.get('password_form', '')  # Default to empty string if not present
+            password_change = request.POST.get('password_change', '')  # Correct the field name
             new_password1 = request.POST.get('new_password1', '')
             new_password2 = request.POST.get('new_password2', '')
 
@@ -144,12 +116,14 @@ def user_edit_view(request):
                     user.save()
                     update_session_auth_hash(request, user)  # Keep the user logged in
                     messages.success(request, 'Password changed successfully.')
+                    return redirect('home')
                 else:
                     messages.error(request, 'New passwords do not match.')
-
-            form.save()
-            messages.success(request, 'Profile updated successfully.')
-            return redirect('home')
+            else:
+                # Remove the unnecessary save here
+                form.save()
+                messages.success(request, 'Profile updated successfully.')
+                return redirect('home')
     else:
         form = EditSettingsForm(instance=request.user)
         password_form = EditPasswordForm()
@@ -158,61 +132,11 @@ def user_edit_view(request):
         'form': form,
         'password_form': password_form,
     }
-    return render(request, 'edit_profile.html', context)
+    return render(request, 'members/edit_settings.html', context)
 
 
-'''class ProfileView(DetailView):
-    model = Profile
-    template_name = 'registration/user_profile.html'
 
-    def post(self, request, pk):
-        print("pk =",pk)
-        if request.user.is_authenticated:
-            profile = Profile.objects.get(user_id=pk)
-
-            if request.method == "post":
-                current_user_profile = request.user.profile
-                action = request.POST['follow']
-
-                if action == 'unfollow':
-                    current_user_profile.follows.remove(profile)
-                else:
-                    current_user_profile.follows.add(profile)
-                current_user_profile.save()
-
-            return render(request, 'registration/user_profile.html', {'profile': profile})
-        else:
-            return redirect('MainApp:home')
-    login_url = 'MainApp:home' 
-
-    def get(self, request, pk):
-        profile = Profile.objects.get(user_id=pk)
-        return render(request, 'registration/user_profile.html', {'profile': profile})
-
-    def post(self, request, pk):
-        if request.method == "POST":
-            current_user_profile = request.user.profile
-            action = request.POST.get('follow')
-
-            if action == 'unfollow':
-                current_user_profile.follows.remove(profile)
-            else:
-                current_user_profile.follows.add(profile)
-            current_user_profile.save()
-
-        return redirect('ProfileView', pk=pk)
-
-    def get_context_data(self, *args, **kwargs):
-        cat_menu = Profile.objects.all()
-        context = super(ProfileView, self).get_context_data(*args, **kwargs)
-
-        page_user = get_object_or_404(Profile, id=self.kwargs['pk'])
-
-        context["page_user"] = page_user
-        return context'''
-
-
-def ProfileView(request, pk):
+def profile_view(request, pk):
     if request.user.is_authenticated:
         form = NoteForm(request.POST or None)
         profile = Profile.objects.get(id=pk)
@@ -235,45 +159,29 @@ def ProfileView(request, pk):
                 current_user_profile.follows.add(profile)
             current_user_profile.save()
 
-        return render(request, 'members/user_profile.html', {'profile': profile, 'note': note, 'form': form, 'posts': posts})
+        return render(request, 'members/profile.html', {'profile': profile, 'note': note, 'form': form, 'posts': posts})
     else:
         return redirect('home')
 
+@login_required
+def private_message_view(request, receiver_id):
+    receiver = get_object_or_404(CustomUser, id=receiver_id)
+    sender = request.user
 
-    '''requested_url = request.path
-    if request.user.is_authenticated:
-        form = NoteForm(request.POST or None)
-        if request.method == "POST":
-            if form.is_valid():
-                note = form.save(commit=False)
-                note.profile = request.user.profile
-                note.user = request.user
-                note.save()
-                return redirect('MainApp:home')
+    messages = Message.objects.filter(
+        (Q(sender=sender) & Q(receiver=receiver)) |
+        (Q(sender=receiver) & Q(receiver=sender))
+    ).order_by('timestamp')
 
-        followed_profiles = request.user.profile.follows.all()
-        print("FOLLOWING: ", followed_profiles)
-        current_user = request.user
-        print("URL is......", requested_url)
-        home = Post.published.all()
-        notes = Note.objects.filter(profile__in=followed_profiles)
-        # notes = Note.objects.all().order_by("-created_at")
-        paginator = Paginator(home, 2)
-        page_number = request.GET.get('page', 1)
-        # notes = Note.objects.all()
-        try:
-            posts = paginator.page(page_number)
-        except PageNotAnInteger:
-            # if page_number not an int, display first page
-            posts = paginator.page(1)
-        except EmptyPage:
-            # If page_number out of range, display last page of results
-            posts = paginator.page(paginator.num_pages)
-        if requested_url == "/MainApp/philosophy/":
-            return render(request, 'MainApp/post/philosophy_blog.html', {'posts': posts})
-        elif requested_url == "/MainApp/economics/":
-            return render(request, 'MainApp/post/economics.html', {'posts': posts})
-        else:
-            return render(request, 'MainApp/post/list.html', {'notes': notes, "form": form})
+    if request.method == 'POST':
+        form = MessageForm(request.POST)
+        if form.is_valid():
+            message = form.save(commit=False)
+            message.sender = sender
+            message.receiver = receiver
+            message.save()
+            return redirect('MainApp:conversation_detail', receiver_id=receiver_id)
     else:
-        return render(request, 'MainApp/post/list.html')'''
+        form = MessageForm()
+
+    return render(request, 'MainApp/conversations/conversation_detail.html', {'receiver': receiver, 'messages': messages, 'form': form})

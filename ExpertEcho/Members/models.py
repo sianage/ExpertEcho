@@ -1,7 +1,7 @@
 import sys
 #print(sys.path)
 
-sys.path.append('C:/Users/siana/OneDrive/Desktop/ExpertEcho/ExpertEcho')  # Replace with the actual path to ExpertEcho
+sys.path.append('C:/Users/siana/OneDrive/Desktop/ExpertEcho/ExpertEcho')
 
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin, Group, Permission
 from django.db import models
@@ -54,7 +54,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
 class Profile(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name='profile')
-    follows = models.ManyToManyField(CustomUser, related_name='followed_by', blank=True)
+    follows = models.ManyToManyField('self', related_name='followed_by', blank=True)
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
     email = models.EmailField()

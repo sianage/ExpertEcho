@@ -1,12 +1,13 @@
 from django.db import models
-from django.conf import settings
-from django.contrib.auth.models import User
 from django.dispatch import receiver
 from django.utils import timezone
 from django.urls import reverse
 from ckeditor.fields import RichTextField
 from django.db.models.signals import post_save
 from django.contrib.auth import get_user_model
+from Members.models import CustomUser
+from fields import FIELD_CHOICES
+
 
 class DraftManager(models.Manager):
     def get_queryset(self):
@@ -16,7 +17,7 @@ class PublishedManager(models.Manager):
         return super().get_queryset().filter(status=Post.Status.PUBLISHED)
 
 class Category(models.Model):
-    category = models.CharField(max_length=255)
+    category = models.CharField(max_length=255, choices=FIELD_CHOICES)
 
     class Meta:
         verbose_name_plural = "Categories"

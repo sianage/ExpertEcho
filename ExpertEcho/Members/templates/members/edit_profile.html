@@ -1,34 +1,17 @@
 {% extends "base.html" %}
-{% block title %}Edit Settings{% endblock %}
+{% block title %}add post{% endblock %}
 
 {% block content %}
-<h1>Edit Settings</h1>
-<form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-
-    <!-- User Information Fields -->
-    <div id="edit_settings_fields">
+<h1>Edit Profile</h1>
+<div id="edit_settings">
+    <form method="POST" enctype="multipart/form-data" style="border: none;">
+        {% csrf_token %}
         {{ form.media }}
-        {{ form.as_p }}
-    </div>
-
-    <!-- Password Change Fields -->
-    <h2>Change Password</h2>
-    {{ password_form.non_field_errors }}
-    <div id="password_change_fields">
-        {{ password_form.old_password.label_tag }} {{ password_form.old_password }}
-        {{ password_form.old_password.errors }}
-        {{ password_form.new_password1.label_tag }} {{ password_form.new_password1 }}
-        {{ password_form.new_password1.errors }}
-        {{ password_form.new_password2.label_tag }} {{ password_form.new_password2 }}
-        {{ password_form.new_password2.errors }}
-    </div>
-
-    <!-- Hidden input field to detect password change form submission -->
-    <input type="hidden" name="password_form" value="password_change">
-
-    <br>
-    <button style="height: 30px; width: 100px; margin: auto; float: center; color: white; background-color: black;">Update</button>
-</form>
-
+        <div id="edit_settings_fields">
+            {{ form.as_p }}
+        </div>
+        <br>
+        <button style="height: 30px; width: 100px; margin:auto;float:center; color:white;background-color:black;">update</button>
+    </form>
+</div>
 {% endblock %}

@@ -1,6 +1,6 @@
 from django.forms import TextInput, CharField
 
-from Blogs.models import Post, Category, User
+from Blogs.models import Post, Category, CustomUser
 from Debates.models import Comment
 from Homepage.models import Note
 from .models import Debate
