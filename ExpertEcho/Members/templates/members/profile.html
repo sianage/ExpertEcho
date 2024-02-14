@@ -13,8 +13,9 @@
 
     <h1>{{ profile.user.first_name }} {{profile.user.last_name }}</h1>
     <div id="academic_field">
-        <strong>Academic Field: {{ profile.academic_field }}</strong>
+        <strong>Academic Field: {{ profile.get_academic_field_display }}</strong>
     </div>
+
 
     </br></br>
     {{ profile.bio|ljust:10|striptags|safe|linebreaksbr }}

@@ -18,8 +18,9 @@ from django.contrib.auth.views import PasswordChangeView
 from .models import Post
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, CreateView
-from .models import Post, Category, CustomUser
+from .models import Post, CustomUser
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from fields import FIELD_CHOICES
 from django.views.decorators.http import require_POST
 
 # Helper function to get posts by category and paginate them
@@ -126,12 +127,11 @@ class AddBlogView(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         # Set the author of the post to the currently logged-in user
-        form.instance.author = self.request.user
+        form.instance.author_profile = self.request.user.profile
 
         # Capitalize the first letter of the academic_field and set it as the category name
         academic_field = self.request.user.profile.academic_field.capitalize()
-        category, _ = Category.objects.get_or_create(category=academic_field)
-        form.instance.category = category
+        form.instance.category = academic_field
 
         return super().form_valid(form)
 
