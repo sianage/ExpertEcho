@@ -8,7 +8,7 @@ class PostForm(forms.ModelForm):
 
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-control'}),
-            'author_profile': forms.HiddenInput(),  # Assuming you want it hidden
+            'author_profile': forms.HiddenInput(),
             'body': forms.Textarea(attrs={'class': 'form-control'}),
             'status': forms.Select(attrs={'class': 'form-control'}),
         }

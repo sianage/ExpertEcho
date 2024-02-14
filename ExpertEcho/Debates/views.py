@@ -23,8 +23,8 @@ from django.contrib.auth.views import PasswordChangeView
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, CreateView
 from .models import Debate, Comment
-from Blogs.models import Post, Category
-from Members.models import CustomUser
+from Blogs.models import Post
+from Members.models import CustomUser, Profile
 from Homepage.models import Note
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.decorators.http import require_POST
@@ -120,11 +120,25 @@ class debate_detail(DetailView):
     model = Debate
     template_name = 'MainApp/debate/debate_detail.html'
 
-class AddDebateView(LoginRequiredMixin, CreateView):
+'''class AddDebateView(LoginRequiredMixin, CreateView):
     model = Debate
     form_class = DebateForm
     template_name = 'MainApp/debate/add_debate.html'
-    success_url = reverse_lazy('MainApp:debate_list')
+    success_url = reverse_lazy('MainApp:debate_list')'''
+def create_debate(request):
+    if request.method == 'POST':
+        form = DebateForm(request.POST)
+        if form.is_valid():
+            # Process the form data, save the Debate instance, etc.
+            form.save()
+    else:
+        # Fetch opponents and pass them to the form
+        opponents = Profile.objects.exclude(user=request.user)
+        opponent_list = [(profile.user.username, f'{profile.first_name} {profile.last_name}') for profile in opponents]
+
+        form = DebateForm(opponent_choices=opponent_list)
+
+    return render(request, 'create_debate.html', {'form': form})
 
 
 def AddCommentView(request, pk):

@@ -6,7 +6,7 @@ from django.contrib import admin
 from Blogs.views import (UpdateBlogView, DeleteBlogView, user_blogs, philosophy_view, medicine_view,
                                     polisci_view, economics_view, AddBlogView, post_detail)
 from .views import user_debate_list, debate_list, economics_debate_list, polisci_debate_list, medicine_debate_list, \
-    debate_detail, AddDebateView
+    debate_detail
 
 urlpatterns = [
     path('debates/user_debate_list/', user_debate_list.as_view(), name='user_debates'),
@@ -16,5 +16,5 @@ urlpatterns = [
     path('debates/medicine_debate_list/', medicine_debate_list.as_view(), name='medicine_debate_list'),
     path('debates/debate/<int:pk>/', debate_detail.as_view(), name='debate-details'),
     path('debates/debate/<int:pk>/comment/', views.AddCommentView, name="comment"),
-    path('debates/start_debate/', AddDebateView.as_view(), name="start_debate"),
+    path('debates/start_debate/', views.create_debate, name="start_debate"),
 ]
