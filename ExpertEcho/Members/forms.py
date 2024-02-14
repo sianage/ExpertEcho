@@ -2,7 +2,6 @@ from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.contrib.auth.models import User
 from django import forms
 from Members.models import Profile, Message, CustomUser
-from Blogs.models import Category
 from fields import FIELD_CHOICES
 from storages.backends.s3boto3 import S3Boto3Storage
 
