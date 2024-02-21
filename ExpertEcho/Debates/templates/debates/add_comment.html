@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}debate comment{% endblock %}
+
+{% block content %}
+<h1>Add Comment</h1>
+<form method="post" enctype="multipart/form-data">
+    <div id="post_form">
+        {% csrf_token %}
+        {{ form.media }}
+        {{ form.as_p }}
+        <button>add comment</button>
+    </div>
+</form>
+{% endblock %}

@@ -7,7 +7,7 @@ from .views import UpdateBlogView, DeleteBlogView, user_blogs, philosophy_view, 
 
 urlpatterns = [
     path('blogs/philosophy/', views.philosophy_view, name='philosophy_blog_list'),
-    path('blogs/user_blogs/', user_blogs.as_view(), name='user_blogs'),
+    path('user_blogs/', user_blogs.as_view(), name='user_blogs'),
     path('blogs/economics/', views.economics_view, name='economics_blog_list'),
     path('blogs/polisci/', views.polisci_view, name='polisci_blog_list'),
     path('blogs/medicine/', views.medicine_view, name='medicine_blog_list'),

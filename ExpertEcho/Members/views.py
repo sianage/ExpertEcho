@@ -147,7 +147,7 @@ def profile_view(request, pk):
         academic_field = profile.academic_field
 
         # Filter the posts based on academic field and author
-        posts = Post.objects.filter(author=profile.user, category__category=academic_field)
+        #posts = Post.objects.filter(author_profile=profile, category=academic_field)
 
         if request.method == "POST":
             current_user_profile = request.user.profile
@@ -159,7 +159,7 @@ def profile_view(request, pk):
                 current_user_profile.follows.add(profile)
             current_user_profile.save()
 
-        return render(request, 'members/profile.html', {'profile': profile, 'note': note, 'form': form, 'posts': posts})
+        return render(request, 'members/profile.html', {'profile': profile, 'note': note, 'form': form})
     else:
         return redirect('home')
 

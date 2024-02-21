@@ -6,6 +6,8 @@ from django.contrib.auth.decorators import login_required
 from django.views import generic
 from django.views.generic import ListView, DetailView
 from django.shortcuts import render, redirect
+
+from Members.models import Profile
 from .forms import PostForm
 from django.db.models import Q
 from django.shortcuts import render, get_object_or_404
@@ -48,17 +50,21 @@ class DraftListView(LoginRequiredMixin, ListView):
 
 
 class user_blogs(ListView):
-    print("blog list")
     model = Post
     template_name = 'blogs/user_blogs.html'
 
     def get_queryset(self):
         author_id = self.request.GET.get('author')
         print("author_id =", author_id)
-        if author_id:
-            return Post.objects.filter(author_id=author_id)
-        else:
-            return Post.objects.all()
+        try:
+            if author_id:
+                # Retrieve the author's profile using the provided author_id
+                author_profile = get_object_or_404(Profile, id=author_id)
+                return Post.objects.filter(author_profile=author_profile)
+            else:
+                return Post.objects.all()
+        except Http404:
+            return Post.objects.none()
 
 def philosophy_view(request):
     # Logic for the philosophy section
@@ -92,38 +98,21 @@ class UpdateBlogView(UpdateView):
 
         # Capitalize the first letter of the academic_field and set it as the category name
         academic_field = self.request.user.profile.academic_field.capitalize()
-        category, _ = Category.objects.get_or_create(category=academic_field)
-        form.instance.category = category
+        form.instance.category = academic_field
 
         return super().form_valid(form)
 
 class DeleteBlogView(DeleteView):
     model = Post
     template_name = 'blogs/delete_blog.html'
-    success_url = reverse_lazy('philosophy_blog_list')
+    success_url = reverse_lazy('home')
 
-    class AddBlogView(LoginRequiredMixin, CreateView):
-        model = Post
-        form_class = PostForm
-        template_name = 'blogs/add_post.html'
-        success_url = reverse_lazy('home')
-
-        def form_valid(self, form):
-            # Set the author of the post to the currently logged-in user
-            form.instance.author = self.request.user
-
-            # Capitalize the first letter of the academic_field and set it as the category name
-            academic_field = self.request.user.profile.academic_field.capitalize()
-            category, _ = Category.objects.get_or_create(category=academic_field)
-            form.instance.category = category
-
-            return super().form_valid(form)
 
 class AddBlogView(LoginRequiredMixin, CreateView):
     model = Post
     form_class = PostForm
-    template_name = 'MainApp/post/add_post.html'
-    success_url = reverse_lazy('MainApp:home')
+    template_name = 'blogs/add_blog.html'
+    success_url = reverse_lazy('home')
 
     def form_valid(self, form):
         # Set the author of the post to the currently logged-in user
@@ -132,10 +121,11 @@ class AddBlogView(LoginRequiredMixin, CreateView):
         # Capitalize the first letter of the academic_field and set it as the category name
         academic_field = self.request.user.profile.academic_field.capitalize()
         form.instance.category = academic_field
+        print("Author Profile User ID:", form.instance.author_profile.user.id)
 
         return super().form_valid(form)
 
 class post_detail(DetailView, ):
     model = Post
-    template_name = 'MainApp/post/detail.html'
+    template_name = 'blogs/blog_detail.html'
     success_url = reverse_lazy('post_detail')

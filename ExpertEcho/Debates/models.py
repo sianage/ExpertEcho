@@ -20,13 +20,17 @@ class Debate(models.Model):
 
     def save(self, *args, **kwargs):
         # Set category based on the academic_field of the author if not provided
-        if not hasattr(self, 'category'):
-            self.category = self.author_profile.academic_field.capitalize()
-
+        self.category = self.author_profile.academic_field.capitalize()
         super().save(*args, **kwargs)  # Call the superclass save method
 
     def __str__(self):
-        return f'Debate: {self.title} by {self.author_profile.user.first_name}'
+        author_name = "Unknown Author"
+
+        if self.author_profile and hasattr(self.author_profile, 'user') and hasattr(self.author_profile.user,
+                                                                                    'first_name'):
+            author_name = self.author_profile.user.first_name
+
+        return f'Debate: {self.title} by {author_name}'
 
     def get_absolute_url(self):
         # Define the URL to redirect to after successfully creating a debate
@@ -38,7 +42,7 @@ class Comment(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     #user
-    commenter_name = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='blog_posts')
+    commenter_name = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='author_comment')
     #form.media in view (tut 21)
     body = RichTextField(blank=True, null=True)
 

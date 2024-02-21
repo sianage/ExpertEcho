@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Tech Polls</h1>
+<br>
+<div>
+    {% for poll in polls %}
+    {{ request.user.profile.academic_field }} - {{ poll.category }}
+        <h1>poll</h1>
+        {% if poll.category == "field5" %}
+            <div id="poll_list_item">
+                {% if request.user.profile.academic_field == "field5" %}
+                    <strong><h2><a href="{% url 'poll_details' poll.pk %}">{{ poll.title }}</a></h2></strong>
+                    <h3>Created: {{ poll.published }}</h3>
+                {% else %}
+                    <strong><h2><a href="{% url 'results' poll.id %}">{{ poll.title }}</a></h2></strong>
+                    <h3>Created: {{ poll.published }}</h3>
+                {% endif %}
+            </div>
+        {% endif %}
+    {% endfor %}
+</div>
+{% endblock %}

@@ -1,4 +1,4 @@
-{% extends "MainApp/base.html" %}
+{% extends "base.html" %}
 {% block content %}
 <h1>{{ poll.title }}</h1>
 <form action="{% url 'vote' poll.id %}" method="post">

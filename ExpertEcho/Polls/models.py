@@ -2,6 +2,8 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.db.models import Sum
 from django.contrib.auth import get_user_model
+
+from Members.models import Profile
 from fields import FIELD_CHOICES
 import Blogs.models
 
@@ -11,14 +13,17 @@ class Poll(models.Model):
     title = models.CharField(max_length=255)
     published = models.DateTimeField(auto_now_add=True)
     category = models.CharField(max_length=20, choices=FIELD_CHOICES)
+    author_profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='polls')
 
     def save(self, *args, **kwargs):
         # Set category based on the academic_field of the author
-        self.category = self.author_profile.academic_field.capitalize()
+        self.category = self.author_profile.academic_field
+        super().save(*args, **kwargs)  # Call the superclass's save method
 
     @property
     def total_votes(self):
         return self.choice_set.aggregate(Sum('votes'))['votes__sum'] or 0
+
 
 
 class Choice(models.Model):

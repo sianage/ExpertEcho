@@ -2,33 +2,40 @@
 {% load static %}
 {% block title %}blog entry{% endblock %}
 {% block content %}
-<div id="blog_box">
-    <div id="blog_body">
-        <br/>
-        {% if user.is_authenticated %}
-            {% if user.id == blog.author.id %}
-                <div id="edit_delete">
-                    <a href="{% url 'update_blog' blog.pk %}">
-                        <strong><h2>Edit</h2></strong>
-                    </a>
-                    <a href="{% url 'delete_blog' blog.pk %}">
-                        <strong><h2>Delete</h2></strong>
-                    </a>
-                </div>
-            {% else %}
-                <h1>You are not authorized to edit/delete this blog!</h1>
+    <div id="blog_box">
+        <div id="blog_body">
+            <br/>
+            {% if user.is_authenticated %}
+                {% if user.id == post.author_profile.user.id %}
+                    <div id="edit_delete">
+                        <a href="{% url 'update_post' post.pk %}">
+                            <strong><h2>Edit</h2></strong>
+                        </a>
+                        <a href="{% url 'delete_post' post.pk %}">
+                            <strong><h2>Delete</h2></strong>
+                        </a>
+                    </div>
+                {% else %}
+                    <h1>You are not authorized to edit/delete this blog! (user.id: {{ user.id }}, post.author_profile.user.id: {{ post.author_profile.user.id }})</h1>
+                {% endif %}
             {% endif %}
-        {% endif %}
-        <br/>
+            <br/>
 
-        <h1>{{ blog.title }}</h1>
-        <p class="date">
-            Published {{ blog.publish }} by <a href="{% url 'profile_page' blog.author.profile.id %}">
-            {{ blog.author.first_name }} {{ blog.author.last_name }}</a>
-        </p>
-        <br/>
+            <h1>{{ post.title }}</h1>
+            <p class="date">
+                Published {{ post.publish }} by
+                {% if post.author_profile %}
+                    <a href="{% url 'profile_page' post.author_profile.id %}">
+                        {{ post.author_profile.user.get_full_name }}
+                    </a>
+                {% else %}
+                    Author information not available
+                {% endif %}
+            </p>
 
-        {{ blog.body|ljust:10|striptags|safe|linebreaksbr }}
+            <br/>
+
+            {{ post.body|ljust:10|striptags|safe|linebreaksbr }}
+        </div>
     </div>
-</div>
 {% endblock %}

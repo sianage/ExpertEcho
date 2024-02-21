@@ -1,13 +1,13 @@
-{% extends "MainApp/base.html" %}
+{% extends "base.html" %}
 {% block content %}
-<h1>Political Science Polls</h1>
+<h1>Finance Polls</h1>
 <br>
 <div>
-    {% for poll in object_poll_list %}
-        {% if poll.category|lower == "political science" %}
+    {% for poll in object_list %}
+        {% if poll.category|lower == "finance" %}
             <div id="poll_list_item">
                     {% if request.user.profile.academic_field|lower == poll.category|lower %}
-                        <strong><h2><a href="{% url 'poll_details' poll.pk %}">{{ poll.title }}</a></h2></strong>
+                        <strong><h2><a href="{% url 'poll_details' poll.pk %}">{{ poll.title }}</a></h2></strong><br>
                         <h3>Created: {{ poll.published }}</h3>
                     {% else %}
                         <strong><h2><a href="{% url 'results' poll.id %}">{{ poll.title }}</a></h2></strong>

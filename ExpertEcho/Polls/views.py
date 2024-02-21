@@ -7,29 +7,25 @@ from .models import Poll, Choice, Vote
 from django.urls import reverse_lazy, reverse
 from django.contrib.auth.decorators import login_required
 
+def economics_polls(request):
+    polls = Poll.objects.all()
+    return render(request, 'polls/economics_polls.html', {'polls': polls})
 
-class philosophy_poll_list(ListView):
-    model = Poll
-    template_name = 'poll/philosophy_poll_list.html'
-    # return render(request, 'poll/philosophy_poll_list.html')
+def finance_polls(request):
+    polls = Poll.objects.all()
+    return render(request, 'polls/finance_polls.html', {'polls': polls})
 
+def law_polls(request):
+    polls = Poll.objects.all()
+    return render(request, 'polls/law_polls', {'polls': polls})
 
-class economics_poll_list(ListView):
-    model = Poll
-    template_name = 'poll/economics_poll_list.html'
-    # return render(request, 'poll/philosophy_poll_list.html')
+def medicine_polls(request):
+    polls = Poll.objects.all()
+    return render(request, 'polls/medicine_polls.html', {'polls': polls})
 
-
-class polisci_poll_list(ListView):
-    model = Poll
-    template_name = 'poll/polisci_poll_list.html'
-    # return render(request, 'poll/philosophy_poll_list.html')
-
-
-class medicine_poll_list(ListView):
-    model = Poll
-    template_name = 'poll/medicine_poll_list.html'
-    # return render(request, 'poll/philosophy_poll_list.html')
+def tech_polls(request):
+    polls = Poll.objects.all()
+    return render(request, 'polls/tech_polls.html', {'polls': polls})
 
 
 def poll_detail(request, poll_id):
@@ -38,7 +34,7 @@ def poll_detail(request, poll_id):
     if Vote.objects.filter(user=user, choice__poll=poll).exists():
         return HttpResponseRedirect(reverse('results', args=(poll.id,)))
     else:
-        return render(request, 'poll/poll_detail.html', {'poll': poll})
+        return render(request, 'polls/poll_detail.html', {'poll': poll})
 
 
 def results(request, poll_id):
@@ -53,8 +49,10 @@ def results(request, poll_id):
         else:
             choice.percentage = 0
 
-    return render(request, 'poll/results.html', {'poll': poll, 'choices': choices, 'total_votes': total_votes})
+    return render(request, 'polls/results.html', {'poll': poll, 'choices': choices, 'total_votes': total_votes})
 
+
+@login_required
 def CreatePollView(request):
     ChoiceFormSet = formset_factory(ChoiceForm, extra=1)
 
@@ -63,35 +61,39 @@ def CreatePollView(request):
         choice_formset = ChoiceFormSet(request.POST, prefix='choices')
 
         if poll_form.is_valid() and choice_formset.is_valid():
+            # Save the poll first
             poll = poll_form.save(commit=False)
+            poll.author_profile = request.user.profile
+            poll.category = poll.author_profile.academic_field.capitalize()
             poll.save()
 
             for choice_form in choice_formset:
                 choice = choice_form.save(commit=False)
-                choice.poll = poll
+                choice.poll = poll  # Set the poll instance for the choice
                 choice.save()
 
-            return redirect('MainApp:home')  # Redirect to the desired page after successful submission
+            return redirect('vote', poll_id=poll.id)
+
+
     else:
         poll_form = PollForm()
         choice_formset = ChoiceFormSet(prefix='choices')
 
-    return render(request, 'poll/create_poll.html', {
+    return render(request, 'polls/create_poll.html', {
         'poll_form': poll_form,
         'choice_formset': choice_formset,
     })
-
 
 @login_required
 def vote(request, poll_id):
     poll = get_object_or_404(Poll, pk=poll_id)
     user = request.user
 
-    if poll.category.category.lower() != user.profile.academic_field.lower():
+    if poll.category.lower() != user.profile.academic_field.lower():
         return HttpResponseRedirect(reverse('results', args=(poll.id,)))
 
     if Vote.objects.filter(user=user, choice__poll=poll).exists():
-        return render(request, 'poll/poll_detail.html', {'poll': poll, 'error_message': "You have already voted."})
+        return render(request, 'polls/poll_detail.html', {'poll': poll, 'error_message': "You have already voted."})
 
     try:
         selected_choice_id = request.POST.get('choice')
@@ -99,7 +101,7 @@ def vote(request, poll_id):
             raise KeyError
         selected_choice = poll.choice_set.get(pk=selected_choice_id)
     except (KeyError, Choice.DoesNotExist):
-        return render(request, 'poll/poll_detail.html', {'poll': poll, 'error_message': "Invalid choice"})
+        return render(request, 'polls/poll_detail.html', {'poll': poll, 'error_message': "Invalid choice"})
     else:
         selected_choice.votes += 1
         selected_choice.save()

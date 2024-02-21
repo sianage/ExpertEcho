@@ -28,7 +28,7 @@
                <a class="nav-link" href="#">About Site</a>
              </div>
           </li>
-          <li>
+           <li>
              <div class="dropdown">
                <button class="dropbtn">Economics <i class="fa fa-caret-down"></i></button>
                <div class="dropdown-content">
@@ -41,7 +41,18 @@
           </li>
           <li>
              <div class="dropdown">
-               <button class="dropbtn">Political Science <i class="fa fa-caret-down"></i></button>
+               <button class="dropbtn">Finance <i class="fa fa-caret-down"></i></button>
+               <div class="dropdown-content">
+                <a href="#">Blogs</a>
+                <a href="#">Debates</a>
+                <a href="#">Polls</a>
+                <a href="#">Experts</a>
+               </div>
+             </div>
+          </li>
+          <li>
+             <div class="dropdown">
+               <button class="dropbtn">Law<i class="fa fa-caret-down"></i></button>
                <div class="dropdown-content">
                 <a href="#">Blogs</a>
                 <a href="#">Debates</a>
@@ -63,11 +74,11 @@
           </li>
           <li>
              <div class="dropdown">
-               <button class="dropbtn">Philosophy <i class="fa fa-caret-down"></i></button>
+               <button class="dropbtn">Technology <i class="fa fa-caret-down"></i></button>
                <div class="dropdown-content">
                 <a href="#">Blogs</a>
                 <a href="#">Debates</a>
-                <a href="#">Polls</a>
+                <a href="{% url 'tech_poll_list' %}">Polls</a>
                 <a href="#">Experts</a>
                </div>
              </div>
@@ -89,9 +100,9 @@
                     <a href="{% url 'create_profile_page' %}">Create Profile</a>
                    {% endif %}
                 <a href="{% url 'logout' %}">Logout</a>
-                <a href="">Write Blog</a>
-                <a href="#">Create Debate</a>
-                <a href="#">Create Poll</a>
+                <a href="{% url 'create_post' %}">Write Blog</a>
+                <a href="{% url 'start_debate' %}">Create Debate</a>
+                <a href="{% url 'create_poll' %}">Create Poll</a>
                 <a href="#">View Conversations</a>
                 <a href="#">blog drafts</a>
 

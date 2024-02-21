@@ -10,7 +10,7 @@ from Members.models import Profile, Message
 class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
-        fields = ('body')
+        fields = ('body',)
 
         widgets = {
             'body': forms.Textarea(attrs={'class': 'form-control'}),
@@ -21,15 +21,19 @@ class DebateForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
 
         if opponent_choices:
-            self.fields['opponent'].widget.choices = opponent_choices
+            self.fields['opponent'].choices = opponent_choices
+
 
     class Meta:
         model = Debate
-        fields = ('author', 'opponent', 'description', 'title')
+        fields = ('opponent', 'description', 'title')
 
         widgets = {
-            'author': forms.Select(attrs={'class': 'form-control'}),
             'opponent': forms.Select(attrs={'class': 'form-control'}),
             'title': forms.TextInput(attrs={'class': 'form-control'}),
             'description': forms.Textarea(attrs={'class': 'form-control'}),
         }
+
+    def set_opponent_choices(self, opponent_choices):
+        self.fields['opponent'].choices = opponent_choices
+

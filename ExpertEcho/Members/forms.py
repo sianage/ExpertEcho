@@ -21,6 +21,8 @@ class SignUpForm(UserCreationForm):
 
 class CreateProfileForm(forms.ModelForm):
     profile_picture = forms.ImageField(widget=forms.ClearableFileInput(attrs={'class': 'form-control'}))
+    first_name = forms.CharField(max_length=255)
+    last_name = forms.CharField(max_length=255)
     github_url = forms.CharField(max_length=255)
     linkedin_url = forms.CharField(max_length=255)
     academic_field = forms.ChoiceField(choices=FIELD_CHOICES)
@@ -29,6 +31,8 @@ class CreateProfileForm(forms.ModelForm):
         model = Profile
         fields = ('bio', 'github_url', 'linkedin_url', 'academic_field', 'profile_picture')
         widgets = {
+            'first_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'last_name': forms.TextInput(attrs={'class': 'form-control'}),
             'bio': forms.Textarea(attrs={'class': 'form-control'}),
             'github_url': forms.TextInput(attrs={'class': 'form-control'}),
             'linkedin_url': forms.TextInput(attrs={'class': 'form-control'}),
@@ -47,15 +51,19 @@ class CustomUserCreationForm(UserCreationForm):
 
 class EditProfileForm(UserChangeForm):
     profile_picture = forms.ImageField(widget=forms.ClearableFileInput(attrs={'class': 'form-control'}))
+    first_name = forms.CharField(max_length=255)
+    last_name = forms.CharField(max_length=255)
     github_url = forms.CharField(max_length=255)
     linkedin_url = forms.CharField(max_length=255)
     academic_field = forms.ChoiceField(choices=FIELD_CHOICES)
 
     class Meta:
         model = Profile
-        fields = ('bio', 'github_url', 'linkedin_url', 'academic_field', 'profile_picture')
+        fields = ('bio', 'github_url', 'linkedin_url', 'academic_field', 'profile_picture', 'first_name', 'last_name')
         widgets = {
             'bio': forms.Textarea(attrs={'class': 'form-control'}),
+            'first_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'last_name': forms.TextInput(attrs={'class': 'form-control'}),
             'github_url': forms.TextInput(attrs={'class': 'form-control'}),
             'linkedin_url': forms.TextInput(attrs={'class': 'form-control'}),
             'academic_field': forms.Select(choices=FIELD_CHOICES, attrs={'class': 'form-control'}),

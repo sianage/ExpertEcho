@@ -61,6 +61,7 @@ class Post(models.Model):
         if not self.slug:
             self.slug = slugify(self.title)
         super().save(*args, **kwargs)
+        print("Author Profile User ID:", self.author_profile.user.id)
 
     #displays blog posts from newest to oldest
     class Meta:
