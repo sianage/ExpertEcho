@@ -29,7 +29,7 @@ class CreateProfileForm(forms.ModelForm):
 
     class Meta:
         model = Profile
-        fields = ('bio', 'github_url', 'linkedin_url', 'academic_field', 'profile_picture')
+        fields = ('bio', 'github_url', 'linkedin_url', 'academic_field', 'profile_picture', 'first_name', 'last_name')
         widgets = {
             'first_name': forms.TextInput(attrs={'class': 'form-control'}),
             'last_name': forms.TextInput(attrs={'class': 'form-control'}),

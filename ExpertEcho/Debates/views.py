@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.views.generic import ListView
+from django.contrib import messages  # Import this if not already done
 
 from Debates.forms import CommentForm
 from Debates.models import Debate
@@ -67,7 +68,7 @@ class user_debate_list(ListView):
 class debate_list(ListView):
     print("DEBATE LIST")
     model = Debate
-    template_name = 'debate/debate_list.html'
+    template_name = 'debates/debate_list.html'
 
     def get_queryset(self):
         author_id = self.request.GET.get('author')
@@ -166,34 +167,42 @@ def create_debate(request):
     return render(request, 'debates/start_debate.html', {'form': form})
 
 
+from django.shortcuts import get_object_or_404
+
 def AddCommentView(request, pk):
     debate = get_object_or_404(Debate, id=pk)
     user = request.user
+    user_profile = user.profile  # Assuming 'user' has a 'profile' attribute
     opponent = debate.opponent
-    comments = debate.comments.all()
 
     # Check if the user is the author or opponent
-    if user != debate.author_profile.user and user != opponent:
+    if user_profile != debate.author_profile and user_profile != opponent:
+        messages.error(request, "You are not a participant in this debate.")
         return redirect('comment')
 
-    # Determine the current commenter
+    comments = debate.comments.all()
     last_comment = comments.last()
-    last_commenter_profile = last_comment.commenter_name if last_comment else None
 
-    if last_commenter_profile == user.profile:
-        current_commenter = opponent
+    # Determine the current commenter and check if it's their turn
+    if last_comment:
+        last_commenter_profile = last_comment.commenter_name
+        if last_commenter_profile == user_profile:
+            messages.error(request, "You cannot comment twice in a row.")
+            return redirect('home')  # Or some other appropriate redirect
     else:
-        current_commenter = debate.author_profile.user
+        # If there are no comments, ensure the first commenter is the debate creator
+        if user_profile != debate.author_profile:
+            messages.error(request, "The debate creator must comment first.")
+            return redirect('home')
 
     # Initialize form
     form = CommentForm(request.POST or None)
-
     if request.method == 'POST' and form.is_valid():
         comment = form.save(commit=False)
-        comment.debate_id = pk
-        comment.commenter_name = current_commenter.profile
+        comment.debate = debate
+        comment.commenter_name = user_profile  # user_profile is already a Profile instance
         comment.save()
-
+        messages.success(request, "Your comment has been posted.")
         return redirect('home')
 
     return render(request, 'debates/add_comment.html', {'form': form, 'debate': debate})

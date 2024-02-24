@@ -60,7 +60,7 @@
         <a href="{% url 'profile_page' following.user.profile.id %}">@{{ following }}</a><br>
     {% endfor %}
     <br>
-    <a href="{% url 'conversation_detail' receiver_id=profile.user.id %}" class="message_button">Message {{profile.user.username}}</a>
+    <a href="{% url 'message' receiver_id=profile.user.id %}" class="message_button">Message {{profile.user.username}}</a>
     <br>
     <br>
 

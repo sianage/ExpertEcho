@@ -13,5 +13,8 @@ urlpatterns = [
     path('econ_profile_list/', views.econ_profile_list, name='econ_profile_list'),
     path('polisci_profile_list/', views.polisci_profile_list, name='polisci_profile_list'),
     path('medicine_profile_list/', views.medicine_profile_list, name='medicine_profile_list'),
-    path('conversations/<int:receiver_id>/', views.private_message_view, name='conversation_detail'),
+    path('message/<int:receiver_id>/', views.private_message_view, name='message'),
+    path('message/<int:receiver_id>/send/', views.send_message, name='send_message'),
+    path('conversations/', views.conversation_list, name='conversation_list'),
+    path('experts/', views.expert_list, name='experts'),
 ]

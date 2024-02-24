@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>Conversation with {{ receiver.username }}</h1>
+
+  <div class="messages">
+    {% for message in messages %}
+      <div class="message">
+        <p><strong>{{ message.sender.username}}:</strong> {{ message.content }}</p>
+        <p class="timestamp">{{ message.timestamp }}</p>
+      </div>
+    <hr id="message_separator">
+    {% endfor %}
+  </div>
+
+  <form method="post" action="{% url 'send_message' receiver_id=receiver.id %}">
+    {% csrf_token %}
+    <textarea name="content" placeholder="Type your message here"></textarea>
+    <button type="submit">Send</button>
+  </form>
+{% endblock %}

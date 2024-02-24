@@ -20,7 +20,7 @@
        <ul>
           <li>
               <button id="btn">
-                  <a href="#"><i class="fa fa-home"></i> Home</a>
+                  <a href="{% url 'home' %}"><i class="fa fa-home"></i> Home</a>
               </button>
           </li>
            <li>
@@ -77,9 +77,9 @@
                <button class="dropbtn">Technology <i class="fa fa-caret-down"></i></button>
                <div class="dropdown-content">
                 <a href="#">Blogs</a>
-                <a href="#">Debates</a>
+                <a href="{% url 'debate_list' %}">Debates</a>
                 <a href="{% url 'tech_poll_list' %}">Polls</a>
-                <a href="#">Experts</a>
+                <a href="{% url 'experts' %}">Experts</a>
                </div>
              </div>
           </li>
@@ -103,7 +103,7 @@
                 <a href="{% url 'create_post' %}">Write Blog</a>
                 <a href="{% url 'start_debate' %}">Create Debate</a>
                 <a href="{% url 'create_poll' %}">Create Poll</a>
-                <a href="#">View Conversations</a>
+                <a href="{% url 'conversation_list'%}">View Conversations</a>
                 <a href="#">blog drafts</a>
 
 

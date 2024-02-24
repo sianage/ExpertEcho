@@ -6,7 +6,7 @@
 
 <h3>{{ debate.description }}</h3>
 <br>
-<h3>{{ debate.author.first_name }} {{ debate.author.last_name }} vs. {{ debate.opponent.first_name }} {{ debate.opponent.last_name }}</h3>
+<h3>{{ debate.author_profile.first_name }} {{ debate.author_profile.last_name }} vs. {{ debate.opponent.first_name }} {{ debate.opponent.last_name }}</h3>
 {% for comment in debate.comments.all %}
 
 <div style="background-color:{% cycle '#dcebd8' '#ebd9d8'%}" id="comments">

@@ -180,8 +180,46 @@ def private_message_view(request, receiver_id):
             message.sender = sender
             message.receiver = receiver
             message.save()
-            return redirect('MainApp:conversation_detail', receiver_id=receiver_id)
+            return redirect('message', receiver_id=receiver_id)
     else:
         form = MessageForm()
 
-    return render(request, 'MainApp/conversations/conversation_detail.html', {'receiver': receiver, 'messages': messages, 'form': form})
+    return render(request, 'members/message.html', {'receiver': receiver, 'messages': messages, 'form': form})
+
+@login_required
+def send_message(request, receiver_id):
+    receiver = get_object_or_404(CustomUser, id=receiver_id)
+
+    if request.method == 'POST':
+        form = MessageForm(request.POST)
+        if form.is_valid():
+            message = form.save(commit=False)
+            message.sender = request.user
+            message.receiver = receiver
+            message.save()
+
+            # Redirect to the conversation_detail view with the correct receiver_id
+            return redirect('message', receiver_id=receiver_id)
+    else:
+        form = MessageForm()
+
+    return render(request, 'members/message.html', {'receiver': receiver, 'form': form})
+
+def expert_list(request):
+    profiles = Profile.objects.all()
+    return render(request, 'members/expert_list.html', {"profiles": profiles})
+
+@login_required
+def conversation_list(request):
+    user = request.user
+    conversations = CustomUser.objects.exclude(id=user.id)
+
+    conversations_with_messages = []
+    for conversation in conversations:
+        has_sent_messages = Message.objects.filter(sender=user, receiver=conversation).exists()
+        has_received_messages = Message.objects.filter(sender=conversation, receiver=user).exists()
+
+        if has_sent_messages or has_received_messages:
+            conversations_with_messages.append(conversation)
+
+    return render(request, 'members/conversations.html', {'conversations': conversations_with_messages})

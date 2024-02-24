@@ -5,42 +5,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e2e04c6f-2c2c-45cc-a9cc-d5ff9fe92ef9" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/ExpertEcho/Polls/templates/polls/tech_polls.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ExpertEcho/Members/templates/members/conversations.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ExpertEcho/Members/templates/members/expert_list.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ExpertEcho/Members/templates/members/message.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ExpertEcho/Blogs/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/ExpertEcho/Blogs/forms.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ExpertEcho/Blogs/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/ExpertEcho/Blogs/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ExpertEcho/Blogs/templates/blogs/blog_detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/ExpertEcho/Blogs/templates/blogs/blog_detail.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ExpertEcho/Blogs/templates/blogs/delete_blog.html" beforeDir="false" afterPath="$PROJECT_DIR$/ExpertEcho/Blogs/templates/blogs/delete_blog.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ExpertEcho/Blogs/templates/blogs/update_blog.html" beforeDir="false" afterPath="$PROJECT_DIR$/ExpertEcho/Blogs/templates/blogs/update_blog.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ExpertEcho/Blogs/templates/blogs/user_blogs.html" beforeDir="false" afterPath="$PROJECT_DIR$/ExpertEcho/Blogs/templates/blogs/user_blogs.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ExpertEcho/Blogs/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/ExpertEcho/Blogs/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ExpertEcho/Blogs/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/ExpertEcho/Blogs/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ExpertEcho/Debates/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/ExpertEcho/Debates/forms.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ExpertEcho/Debates/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/ExpertEcho/Debates/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ExpertEcho/Debates/templates/debates/add_comment.html" beforeDir="false" afterPath="$PROJECT_DIR$/ExpertEcho/Debates/templates/debates/add_comment.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ExpertEcho/Debates/templates/debates/add_debate.html" beforeDir="false" afterPath="$PROJECT_DIR$/ExpertEcho/Debates/templates/debates/start_debate.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ExpertEcho/Debates/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/ExpertEcho/Debates/admin.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ExpertEcho/Debates/templates/debates/debate_detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/ExpertEcho/Debates/templates/debates/debate_detail.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ExpertEcho/Debates/templates/debates/user_debates.html" beforeDir="false" afterPath="$PROJECT_DIR$/ExpertEcho/Debates/templates/debates/user_debates.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ExpertEcho/Debates/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/ExpertEcho/Debates/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ExpertEcho/Debates/templates/debates/debate_list.html" beforeDir="false" afterPath="$PROJECT_DIR$/ExpertEcho/Debates/templates/debates/debate_list.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ExpertEcho/Debates/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/ExpertEcho/Debates/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ExpertEcho/Members/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/ExpertEcho/Members/forms.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ExpertEcho/Members/migrations/0001_initial.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ExpertEcho/Members/migrations/0002_alter_profile_follows.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/ExpertEcho/Members/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/ExpertEcho/Members/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ExpertEcho/Members/templates/members/profile.html" beforeDir="false" afterPath="$PROJECT_DIR$/ExpertEcho/Members/templates/members/profile.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ExpertEcho/Members/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/ExpertEcho/Members/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ExpertEcho/Members/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/ExpertEcho/Members/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ExpertEcho/Polls/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/ExpertEcho/Polls/admin.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ExpertEcho/Polls/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/ExpertEcho/Polls/forms.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ExpertEcho/Polls/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/ExpertEcho/Polls/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ExpertEcho/Polls/templates/polls/create_poll.html" beforeDir="false" afterPath="$PROJECT_DIR$/ExpertEcho/Polls/templates/polls/create_poll.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ExpertEcho/Polls/templates/polls/economics_polls.html" beforeDir="false" afterPath="$PROJECT_DIR$/ExpertEcho/Polls/templates/polls/economics_polls.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ExpertEcho/Polls/templates/polls/medicine_polls.html" beforeDir="false" afterPath="$PROJECT_DIR$/ExpertEcho/Polls/templates/polls/medicine_polls.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ExpertEcho/Polls/templates/polls/philosophy_polls.html" beforeDir="false" afterPath="$PROJECT_DIR$/ExpertEcho/Polls/templates/polls/finance_polls.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ExpertEcho/Polls/templates/polls/political_science_polls.html" beforeDir="false" afterPath="$PROJECT_DIR$/ExpertEcho/Polls/templates/polls/law_polls.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ExpertEcho/Polls/templates/polls/poll_detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/ExpertEcho/Polls/templates/polls/poll_detail.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ExpertEcho/Polls/templates/polls/results.html" beforeDir="false" afterPath="$PROJECT_DIR$/ExpertEcho/Polls/templates/polls/results.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ExpertEcho/Polls/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/ExpertEcho/Polls/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ExpertEcho/Polls/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/ExpertEcho/Polls/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ExpertEcho/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/ExpertEcho/templates/base.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
