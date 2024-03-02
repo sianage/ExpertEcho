@@ -1,3 +1,4 @@
+from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render
 
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -55,21 +56,60 @@ class user_blogs(ListView):
 
     def get_queryset(self):
         author_id = self.request.GET.get('author')
-        print("author_id =", author_id)
-        try:
-            if author_id:
-                # Retrieve the author's profile using the provided author_id
-                author_profile = get_object_or_404(Profile, id=author_id)
-                return Post.objects.filter(author_profile=author_profile)
-            else:
-                return Post.objects.all()
-        except Http404:
-            return Post.objects.none()
+        if author_id:
+            # Retrieve the author's profile using the provided author_id
+            author_profile = get_object_or_404(Profile, id=author_id)
+            # Use the related_name 'blog_posts' to filter posts by this profile
+            return Post.objects.filter(author_profile=author_profile)
+        else:
+            return Post.objects.all()
 
-def philosophy_view(request):
-    # Logic for the philosophy section
-    posts = get_category_posts("Philosophy", request)
-    return render(request, 'blogs/philosophy_blogs.html', {'posts': posts})
+
+'''class blog_list(ListView):
+    model = Post
+    template_name = 'blogs/tech_blogs.html'
+
+    def get_queryset(self):
+        # Filter posts by the "technology" category
+        return Post.objects.filter(category="Field5")'''
+from django.db.models import Prefetch
+
+class blog_list(ListView):
+    model = Post
+    template_name = 'blogs/blog_list.html'
+
+    def get_category_name(self, field_identifier):
+        # Convert field identifier to human-readable name
+        return dict(FIELD_CHOICES).get(field_identifier, "Unknown Category")
+
+    def get_queryset(self):
+        category = self.kwargs['category']
+        queryset = Post.objects.filter(category=category).select_related('author_profile')
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        category_identifier = self.kwargs['category']
+        # Use the new method to get the category name and pass it to the template
+        context['category_name'] = self.get_category_name(category_identifier)
+        return context
+
+    '''def get_queryset(self):
+        queryset = Post.objects.filter(category="Field5").select_related('author_profile')
+
+        for post in queryset:
+            author = post.author_profile.user
+            # Since the Profile is directly linked to CustomUser and we've already fetched it with select_related
+            profile = author.profile
+            if profile.profile_picture:
+                print(f"Profile Picture URL: {profile.profile_picture.url}")
+            else:
+                print("No profile picture.")
+
+            print("-" * 40)  # Print a separator for readability
+
+        return queryset'''
+
 
 def economics_view(request):
     # Logic for the economics section

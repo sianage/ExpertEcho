@@ -41,6 +41,7 @@ class Post(models.Model):
     title = models.CharField(max_length=255)
     #author = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='blog_posts')
     author_profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='blog_posts')
+    category = models.CharField(max_length=20, choices=FIELD_CHOICES)
     slug = models.SlugField(max_length=255, unique_for_date='publish')
     body = RichTextField(blank=True, null=True)
     publish = models.DateTimeField(default=timezone.now)

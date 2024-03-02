@@ -1,6 +1,7 @@
 # admin.py
 from django.contrib import admin
-from .models import CustomUser, Profile, Message
+from .models import CustomUser, Profile, Message, Note
+
 
 class ProfileInline(admin.StackedInline):
     model = Profile
@@ -17,3 +18,4 @@ class CustomUserAdmin(admin.ModelAdmin):
 admin.site.register(CustomUser, CustomUserAdmin)
 admin.site.register(Profile)
 admin.site.register(Message)
+admin.site.register(Note)

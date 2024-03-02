@@ -1,4 +1,103 @@
 {% extends "base.html" %}
 {% block content %}
-<h1>homepage</h1>
+
+{% if user.is_authenticated %}
+<div id="home_note">
+{% if form %}
+    <p>
+    <form method="POST" style="border: none;">
+        {% csrf_token %}
+
+        <div id="home_submit">
+            {{ form.as_p }}
+        </div>
+    <div id="home_submit_btn_div">
+        <button type="submit" id="home_submit_btn">Post Note</button>
+    </div>
+    </form>
+    </p>
+
+</div>
+
+
+<div id="note_wrapper">
+<div id="note_list">
+
+{% for note in notes %}
+
+
+
+    <div id="note_div">
+
+        <div id="note_pic">
+            {% if note.user.profile.profile_picture %}
+                <img src="{{ note.user.profile.profile_picture.url }}">
+            {% endif %}
+        </div>
+
+        <div id="note_text">
+            <strong>{{ note.user.first_name|capfirst }} {{ note.user.last_name|capfirst }}: {{note.body|ljust:10|striptags|safe|urlize}}</strong>
+            <br>
+            (posted {{note.created_at}})
+            <br>
+            <br>
+            {% if request.user.username == note.user.username %}
+                <a href="{% url 'delete_note' note.id %}" id="delete_note_button">Delete</a>
+                <a href="{% url 'edit_note' note.id %}" id="edit_note_button">Edit</a>
+            {% endif %}
+        </div>
+    </div>
+
+
+{% endfor %}
+
+{% endif %}
+</div>
+</div>
+{% else %}
+<div id="welcome_div"><h2>Welcome to Expert Echo!</h2></div>
+<div id="welcome_p_div">
+Why trust the experts?<br><br>
+
+For any given position, there are going to be people who claim to be experts on both sides, so how do we determine who the actual
+    experts are?<br><br>
+
+The philosopher Alvin Goldman, in the article Which Experts Should You Trust? proffered the following criteria:
+Experts often give arguments and evidence for their views, and I can then determine who is the most convincing. The problem is that
+    laypeople are often not qualified to determine this. You would essentially have to become an expert yourself.
+Indirect indicators - if person P1 makes arguments and person P2 cannot respond to them, but the same is not true in reverse, we may
+    conclude that P1 is the expert and P2 is not. But this could be a problem because maybe both sides are just good at arguing/debating
+    or one side just may not want to debate for one reason or another. So indirect indicators may be overly simplistic.
+Agreement from other experts - this option just presupposes that some people are experts, but how do we identify them? This was the
+    original problem in the first place.
+Meta-experts - this is an independent assessment of experts’ expertise. Credentials are a standard method, such as degrees from reputable
+    universities. A meta-expert can be an institution, it doesn’t have to be a person. This seems like the best criteria, provided the
+    institution has a good track record of accomplishments. The consensus of experts in a particular field is even more robust
+    than the beliefs of one particular expert.<br><br>
+
+There is a potential problem regarding the idea of meta-experts; the regress problem. This deals with how we should identify who/what
+    the meta-experts are.<br><br>
+
+There are supposed to be various institutional features of science that detect & remove bias & deceit. Scientist’s work is subject to peer
+    review, which means papers are only published when they’ve been extensively critiqued by others in the field. There are also extremely
+    high costs associated with fraud in science, such as fabricating data. Any scientist who is found to have engaged in such misconduct
+    risks losing their entire career. The cost of lies here is higher than in other fields. For example, when a politician lies there is
+    often very little or no consequence at all. Making up data can also lead to criminal prosecution in some cases, such as in medical
+    research. Furthermore, a way to gain credibility and fame in science is to falsify accepted hypotheses, so scientists are constantly
+    looking for flaws (such as bias) in research. Thus, once a hypothesis has been accepted by a majority of scientists we can be fairly
+    confident that it is genuinely well-supported by evidence and has been generally rid of bias.<br><br>
+
+Track records can also be used to establish expert legitimacy. If two people say different things and on has a good track record of research
+    and producing correct predictions, etc. and the other does not, this can be a good indication of the former's legitimacy and the
+    questionable legitimacy of the latter.<br><br>
+
+In a world that is increasingly complex and interconnected, informed decision-making is paramount. Expert consensus, derived from the
+    collective knowledge and expertise of qualified professionals in various fields, provides a valuable foundation upon which individuals,
+    policymakers, and societies can base their choices. The tendency even for laypeople to converge upon the correct position when their consensus
+    is taken provides an even stronger argument that the consensus of experts in a particular field is highly reliable. That is the
+    goal of this site; to aggregate the opinions of experts within their fields and allow the general public quick and easy access to it
+    in various forms (polls, blogs, and debates).<br><br>
+
+</div>
+{% endif %}
 {% endblock %}

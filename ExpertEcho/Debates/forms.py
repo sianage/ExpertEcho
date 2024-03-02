@@ -16,18 +16,17 @@ class CommentForm(forms.ModelForm):
             'body': forms.Textarea(attrs={'class': 'form-control'}),
         }
 
+
 class DebateForm(forms.ModelForm):
     def __init__(self, *args, opponent_choices=None, **kwargs):
         super().__init__(*args, **kwargs)
 
-        if opponent_choices:
+        if opponent_choices is not None:
             self.fields['opponent'].choices = opponent_choices
-
 
     class Meta:
         model = Debate
         fields = ('opponent', 'description', 'title')
-
         widgets = {
             'opponent': forms.Select(attrs={'class': 'form-control'}),
             'title': forms.TextInput(attrs={'class': 'form-control'}),
@@ -35,5 +34,6 @@ class DebateForm(forms.ModelForm):
         }
 
     def set_opponent_choices(self, opponent_choices):
-        self.fields['opponent'].choices = opponent_choices
+        print("Opponent Choices: ",opponent_choices)
 
+        self.fields['opponent'].choices = opponent_choices

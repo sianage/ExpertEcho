@@ -9,6 +9,7 @@ from fields import FIELD_CHOICES
 class Debate(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField()
+    category = models.CharField(max_length=20, choices=FIELD_CHOICES)
     created = models.DateTimeField(auto_now_add=True)
     author_profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='authored_debates')
     opponent = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True, blank=True,
@@ -20,7 +21,7 @@ class Debate(models.Model):
 
     def save(self, *args, **kwargs):
         # Set category based on the academic_field of the author if not provided
-        self.category = self.author_profile.academic_field.capitalize()
+        self.category = self.author_profile.academic_field
         super().save(*args, **kwargs)  # Call the superclass save method
 
     def __str__(self):

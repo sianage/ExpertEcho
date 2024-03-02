@@ -54,7 +54,9 @@ class user_debate_list(ListView):
 
     def get_queryset(self):
         author_id = self.request.GET.get('author')
+        opponent_id = self.request.GET.get('opponent') # to be used to access debates opponent is involved in
         print("debate author_id =", author_id)
+        print("debate opponent_id =", opponent_id)
         try:
             if author_id:
                 author_profile = get_object_or_404(Profile, id=author_id)
@@ -144,28 +146,24 @@ def create_debate(request):
     # Fetch opponents with the same academic field as the author_profile
     opponents = Profile.objects.filter(academic_field=request.user.profile.academic_field).exclude(user=request.user)
 
-    if opponents.exists():
-        opponent_list = [(profile.user.id, f'{profile.first_name} {profile.last_name}') for profile in opponents]
-        print("opponent list 1:", opponent_list)
-    else:
-        opponent_list = []
-        print("opponent list 2:", opponent_list)
-
-    form = DebateForm(opponent_choices=opponent_list)
+    # Prepare opponent choices for the form
+    opponent_list = [(profile.id, f'{profile.first_name} {profile.last_name}') for profile in opponents]
 
     if request.method == 'POST':
-        form = DebateForm(request.POST)
-        form.set_opponent_choices(opponent_list)
-        print("opponent list 3",opponent_list)
+        # Instantiate the form with POST data and opponent choices
+        form = DebateForm(request.POST, opponent_choices=opponent_list)
         if form.is_valid():
             # Set the author_profile to the currently signed-in user's profile
-            form.instance.author_profile = request.user.profile
-            print("opponent list 4:", opponent_list)
-            # Process the form data, save the Debate instance, etc.
-            form.save()
+            debate = form.save(commit=False)
+            debate.author_profile = request.user.profile
+            debate.save()
+            # Redirect or further processing after saving the Debate instance
+            return redirect('home')  # Replace 'some_view_name' with the name of the view to redirect to
+    else:
+        # Instantiate the form for a GET request with the opponent choices
+        form = DebateForm(opponent_choices=opponent_list)
 
     return render(request, 'debates/start_debate.html', {'form': form})
-
 
 from django.shortcuts import get_object_or_404
 

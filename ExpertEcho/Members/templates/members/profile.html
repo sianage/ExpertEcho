@@ -25,11 +25,11 @@
 
 <div class="user-content-buttons">
     <div class="profile-button">
-        <a href="{% url 'user_blogs' %}?author={{ profile.user.id }}" class="profile_button">Blogs</a>
+        <a href="{% url 'user_blogs' %}?author={{ profile.id }}" class="profile_button">Blogs</a>
     </div>
     <br>
     <div class="profile-button">
-        <a href="{% url 'user_debates' %}?author={{ profile.user.id }}" class="profile_button">Debates</a>
+        <a href="{% url 'user_debates' %}?author={{ profile.id }}" class="profile_button">Debates</a>
     </div>
     <br>
 </div>

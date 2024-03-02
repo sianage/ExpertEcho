@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>tech blogs</h1>
+
+    {% for post in post_list %}
+<h1>Category: {{ post.category }}</h1>
+        {% if post.category == "Field5" %}
+<h1>TWO</h1>
+        <div id="debate_list">
+            <div id="debate">
+                <strong><h2><a href="{% url 'post_detail' post.pk %}">{{ post.title }}</a></h2></strong>
+                <h3>
+                    Author: {{ post.author_profile.first_name }} {{ post.author_profile.last_name }}<br>
+                </h3>
+                    <!--<h3>Category: {{ debate.category.category }}</h3>-->
+                </br>
+            </div>
+        </div>
+        <br>
+{% endif %}
+{% endfor %}
+{% endblock %}

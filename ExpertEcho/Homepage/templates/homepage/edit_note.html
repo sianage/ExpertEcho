@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>edit note</h1>
+<div id="home_note">
+{% if form %}
+    <p>
+    <form method="POST" style="border: none;">
+        {% csrf_token %}
+
+        <div id="home_submit">
+            {{ form.as_p }}
+        </div>
+    <div id="home_submit_btn_div">
+        <button type="submit" id="home_submit_btn">Post Note</button>
+    </div>
+    </form>
+    </p>
+
+</div>
+{% endif %}
+{% endblock %}

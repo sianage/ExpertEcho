@@ -1,6 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponseForbidden
 from django.shortcuts import render
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.shortcuts import render, get_object_or_404, redirect
@@ -30,18 +30,22 @@ from Members.models import Profile, CustomUser, CustomUserManager, Message
 
 
 @login_required
-@require_http_methods(["GET", "POST"])
 def edit_profile_view(request, pk):
     profile = get_object_or_404(Profile, pk=pk)
 
+    # Ensure the user editing the profile is the profile owner
+    if profile.user != request.user:
+        messages.error(request, "You do not have permission to edit this profile.")
+        return redirect('some_error_handling_view')
+
     if request.method == 'POST':
-        form = EditProfileForm(request.POST, request.FILES, instance=profile)
+        form = EditProfileForm(request.POST, request.FILES, instance=profile, user=request.user)
         if form.is_valid():
             form.save()
             messages.success(request, 'Profile updated successfully.')
-            return HttpResponseRedirect(reverse_lazy('home'))
+            return redirect('home')  # Ensure you're using the correct path or name for your home view
     else:
-        form = EditProfileForm(instance=profile)
+        form = EditProfileForm(instance=profile, user=request.user)
 
     return render(request, 'members/edit_profile.html', {'form': form})
 
@@ -78,14 +82,23 @@ def create_profile_view(request):
     return render(request, 'members/create_profile.html', {'form': form})
 
 
+import logging
+
+logger = logging.getLogger(__name__)
+
 def custom_user_registration_view(request):
     template_name = 'registration/register.html'
     form = CustomUserCreationForm(request.POST or None)
-    if request.method == 'POST' and form.is_valid(): #line with error
-        user = form.save()
-        login(request, user)
-        return redirect('create_profile_page')  # Change 'home' to the name of your home view
+    if request.method == 'POST':
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            logger.info('Redirecting to homepage after registration.')
+            return redirect('home')
+        else:
+            logger.error('Form is not valid. Errors: %s', form.errors)
     return render(request, template_name, {'form': form})
+
 
 def custom_user_login_view(request):
     template_name = 'registration/login.html'
@@ -137,6 +150,9 @@ def edit_settings_view(request):
 
 
 def profile_view(request, pk):
+    profile = Profile.objects.get(id=pk)
+    print(f"Debug: Profile ID = {profile.id}, User ID = {profile.user.id}")  # Debug print
+    # Rest of your code...
     if request.user.is_authenticated:
         form = NoteForm(request.POST or None)
         profile = Profile.objects.get(id=pk)
@@ -167,6 +183,14 @@ def profile_view(request, pk):
 def private_message_view(request, receiver_id):
     receiver = get_object_or_404(CustomUser, id=receiver_id)
     sender = request.user
+
+    # Check if the current user is part of the conversation
+    if sender != receiver and not Message.objects.filter(
+        (Q(sender=sender) & Q(receiver=receiver)) |
+        (Q(sender=receiver) & Q(receiver=sender))
+    ).exists():
+        # If the check fails, return a Forbidden response
+        return HttpResponseForbidden("You are not allowed to view this conversation.")
 
     messages = Message.objects.filter(
         (Q(sender=sender) & Q(receiver=receiver)) |
