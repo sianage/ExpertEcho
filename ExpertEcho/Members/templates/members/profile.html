@@ -1,81 +1,68 @@
 {% extends "base.html" %}
 {% load static %}
-{% block title %}profile{% endblock %}
+{% block title %}Profile{% endblock %}
 
 {% block content %}
-</div>
 <div id="user_profile">
     <div id="profile_pic">
         {% if profile.profile_picture %}
-            <img src="{{ profile.profile_picture.url }}">
+            <img src="{{ profile.profile_picture.url }}" alt="Profile Picture">
         {% endif %}
     </div>
 
-    <h1>Name: {{ profile.first_name }} {{profile.last_name }}</h1>
+    <h1>{{ profile.first_name }} {{ profile.last_name }}</h1>
+
+    {% if profile.user.is_expert %}
     <div id="academic_field">
         <strong>Academic Field: {{ profile.get_academic_field_display }}</strong>
     </div>
 
-
-    </br></br>
-    {{ profile.bio|ljust:10|striptags|safe|linebreaksbr }}
-    </br>
-    <h1><strong>Links</strong></h1>
-    </br>
-
-<div class="user-content-buttons">
-    <div class="profile-button">
-        <a href="{% url 'user_blogs' %}?author={{ profile.id }}" class="profile_button">Blogs</a>
+    <div class="user-content-buttons">
+        <div class="profile-button">
+            <a href="{% url 'user_blogs' %}?author={{ profile.id }}" class="profile_button">Blogs</a>
+        </div>
+        <div class="profile-button">
+            <a href="{% url 'user_debates' %}?author={{ profile.id }}" class="profile_button">Debates</a>
+        </div>
     </div>
-    <br>
-    <div class="profile-button">
-        <a href="{% url 'user_debates' %}?author={{ profile.id }}" class="profile_button">Debates</a>
-    </div>
-    <br>
-</div>
 
-    <br><br><br>
-    {% if profile.github_url %}
-        Github: <a href="{{ profile.github_url }}">{{ profile.github_url }}</a>
-        <br>
-    {% endif %}
-    {% if profile.linkedin_url %}
-        LinkedIn: <a href="{{ profile.linkedin_url }}">{{ profile.linkedin_url }}</a>
-        <br>
-{% endif %}
-
-    <br>
-
-
-
-
-
-    <h3>Follows</h3>
-    {% for following in profile.follows.all %}
-        <a href="{% url 'profile_page' following.user.profile.id %}">@{{ following }}</a><br>
-    {% endfor %}
-    <br>
-    <h3>Followed by</h3>
+    <h3>Followers</h3>
     {% for following in profile.followed_by.all %}
         <a href="{% url 'profile_page' following.user.profile.id %}">@{{ following }}</a><br>
     {% endfor %}
-    <br>
-    <a href="{% url 'message' receiver_id=profile.user.id %}" class="message_button">Message {{profile.user.username}}</a>
-    <br>
-    <br>
 
     <form method="post" class="follow-form">
         {% csrf_token %}
         {% if profile in user.profile.follows.all %}
-        <button class="follow_unfollow_btn" name="follow" value="unfollow"
-                type="submit">Unfollow {{ profile.user.username }}</button>
+            <button class="follow_unfollow_btn" name="follow" value="unfollow" type="submit">Unfollow {{ profile.user.username }}</button>
         {% else %}
-                <button class="follow_unfollow_btn" name="follow" value="follow"
-                type="submit">Follow {{ profile.user.username }}</button>
+            <button class="follow_unfollow_btn" name="follow" value="follow" type="submit">Follow {{ profile.user.username }}</button>
         {% endif %}
     </form>
-    <br>
 
+    {% endif %}
 
+    <div class="profile-bio">
+        {{ profile.bio|linebreaksbr }}
+    </div>
+
+    {% if profile.github_url or profile.linkedin_url %}
+    <div class="profile-links">
+        <h3><strong>Links</strong></h3>
+        {% if profile.github_url %}
+            Github: <a href="{{ profile.github_url }}">{{ profile.github_url }}</a><br>
+        {% endif %}
+        {% if profile.linkedin_url %}
+            LinkedIn: <a href="{{ profile.linkedin_url }}">{{ profile.linkedin_url }}</a><br>
+        {% endif %}
+    </div>
+    {% endif %}
+
+    <h3>Follows</h3>
+    {% for follow in profile.follows.all %}
+        <a href="{% url 'profile_page' follow.user.profile.id %}">@{{ follow }}</a><br>
+    {% endfor %}
+
+    <a href="{% url 'message' receiver_id=profile.user.id %}" class="message_button">Message {{ profile.user.username }}</a>
 </div>
 {% endblock %}

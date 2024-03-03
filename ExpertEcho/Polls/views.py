@@ -2,6 +2,8 @@ from django.forms import formset_factory
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import ListView, DetailView
+
+from fields import FIELD_CHOICES
 from .forms import ChoiceFormSet, PollForm, ChoiceForm
 from .models import Poll, Choice, Vote
 from django.urls import reverse_lazy, reverse
@@ -23,9 +25,14 @@ def medicine_polls(request):
     polls = Poll.objects.all()
     return render(request, 'polls/medicine_polls.html', {'polls': polls})
 
-def tech_polls(request):
-    polls = Poll.objects.all()
-    return render(request, 'polls/tech_polls.html', {'polls': polls})
+def polls_by_category(request, category):
+    # Convert field identifier to human-readable name
+    category_name = dict(FIELD_CHOICES).get(category, "Unknown Category")
+
+    # Filter polls based on the category
+    polls = Poll.objects.filter(category=category)
+
+    return render(request, 'polls/poll_list.html', {'polls': polls, 'category_name': category_name})
 
 
 def poll_detail(request, poll_id):

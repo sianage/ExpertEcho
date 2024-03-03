@@ -23,6 +23,8 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.views import PasswordChangeView
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, CreateView
+
+from fields import FIELD_CHOICES
 from .models import Debate, Comment
 from Blogs.models import Post
 from Members.models import CustomUser, Profile
@@ -68,17 +70,23 @@ class user_debate_list(ListView):
 
 
 class debate_list(ListView):
-    print("DEBATE LIST")
     model = Debate
     template_name = 'debates/debate_list.html'
 
+    def get_category_name(self, field_identifier):
+        # Convert field identifier to human-readable name
+        return dict(FIELD_CHOICES).get(field_identifier, "Unknown Category")
+
     def get_queryset(self):
-        author_id = self.request.GET.get('author')
-        print("author_id =", author_id)
-        if author_id:
-            return Debate.objects.filter(author_id=author_id)
-        else:
-            return Debate.objects.all()
+        category = self.kwargs['category']
+        queryset = Debate.objects.filter(category=category).select_related('author_profile', 'opponent')
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        category_identifier = self.kwargs['category']
+        context['category_name'] = self.get_category_name(category_identifier)
+        return context
 
 
 class economics_debate_list(ListView):

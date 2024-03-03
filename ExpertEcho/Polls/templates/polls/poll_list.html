@@ -1,0 +1,14 @@
+<!-- poll_list.html -->
+{% extends "base.html" %}
+{% block content %}
+<h1>{{ category_name }} Polls</h1>
+<br>
+<div>
+    {% for poll in polls %}
+        <div id="poll_list_item">
+            <strong><h2><a href="{% url 'poll_details' poll.pk %}">{{ poll.title }}</a></h2></strong>
+            <h3>Created: {{ poll.published }}</h3>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

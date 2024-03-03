@@ -32,10 +32,10 @@
              <div class="dropdown">
                <button class="dropbtn">Economics <i class="fa fa-caret-down"></i></button>
                <div class="dropdown-content">
-                <a href="#">Blogs</a>
-                <a href="#">Debates</a>
-                <a href="#">Polls</a>
-                <a href="#">Experts</a>
+                <a href="{% url 'blog_list_by_category' 'field1' %}">Blogs</a>
+                <a href="{% url 'debate_list_by_category' 'field1' %}">Debates</a>
+                <a href="{% url 'poll_list_by_category' 'field1' %}">Polls</a>
+                <a href="{% url 'expert_list_by_field' 'field1' %}">Experts</a>
                </div>
              </div>
           </li>
@@ -43,10 +43,10 @@
              <div class="dropdown">
                <button class="dropbtn">Finance <i class="fa fa-caret-down"></i></button>
                <div class="dropdown-content">
-                <a href="#">Blogs</a>
-                <a href="#">Debates</a>
-                <a href="#">Polls</a>
-                <a href="#">Experts</a>
+                <a href="{% url 'blog_list_by_category' 'field2' %}">Blogs</a>
+                <a href="{% url 'debate_list_by_category' 'field2' %}">Debates</a>
+                <a href="{% url 'poll_list_by_category' 'field2' %}">Polls</a>
+                <a href="{% url 'expert_list_by_field' 'field2' %}">Experts</a>
                </div>
              </div>
           </li>
@@ -54,10 +54,10 @@
              <div class="dropdown">
                <button class="dropbtn">Law<i class="fa fa-caret-down"></i></button>
                <div class="dropdown-content">
-                <a href="#">Blogs</a>
-                <a href="#">Debates</a>
-                <a href="#">Polls</a>
-                <a href="#">Experts</a>
+                <a href="{% url 'blog_list_by_category' 'field3' %}">Blogs</a>
+                <a href="{% url 'debate_list_by_category' 'field3' %}">Debates</a>
+                <a href="{% url 'poll_list_by_category' 'field3' %}">Polls</a>
+                <a href="{% url 'expert_list_by_field' 'field3' %}">Experts</a>
                </div>
              </div>
           </li>
@@ -65,10 +65,10 @@
              <div class="dropdown">
                <button class="dropbtn">Medicine <i class="fa fa-caret-down"></i></button>
                <div class="dropdown-content">
-                <a href="#">Blogs</a>
-                <a href="#">Debates</a>
-                <a href="#">Polls</a>
-                <a href="#">Experts</a>
+                <a href="{% url 'blog_list_by_category' 'field4' %}">Blogs</a>
+                <a href="{% url 'debate_list_by_category' 'field4' %}">Debates</a>
+                <a href="{% url 'poll_list_by_category' 'field4' %}">Polls</a>
+                <a href="{% url 'expert_list_by_field' 'field4' %}">Experts</a>
                </div>
              </div>
           </li>
@@ -77,9 +77,9 @@
                <button class="dropbtn">Technology <i class="fa fa-caret-down"></i></button>
                <div class="dropdown-content">
                 <a href="{% url 'blog_list_by_category' 'field5' %}">Tech Blogs</a>
-                <a href="{% url 'debate_list' %}">Debates</a>
-                <a href="{% url 'tech_poll_list' %}">Polls</a>
-                <a href="{% url 'experts' %}">Experts</a>
+                <a href="{% url 'debate_list_by_category' 'field5' %}">Tech Debates</a>
+                <a href="{% url 'poll_list_by_category' 'field5' %}">Tech Polls</a>
+                <a href="{% url 'expert_list_by_field' 'field5' %}">Tech Experts</a>
                </div>
              </div>
           </li>
@@ -92,17 +92,17 @@
              <div class="dropdown">
                <button class="dropbtn">Account <i class="fa fa-caret-down"></i></button>
                <div class="dropdown-content">
-                {% if user.is_expert %}
                     {% if user.profile.id %}
-                        <a href="{% url 'create_post' %}">Write Blog</a>
-                        <a href="#">blog drafts</a>
-                        <a href="{% url 'start_debate' %}">Create Debate</a>
-                        <a href="{% url 'create_poll' %}">Create Poll</a>
+                            <a href="{% url 'profile_page' user.profile.id %}">Profile</a>
+                            <a href="{% url 'edit_profile_page' user.profile.id %}">Edit Profile</a>
+                        {% if user.is_expert %}
+                            <a href="{% url 'create_post' %}">Write Blog</a>
+                            <a href="#">blog drafts</a>
+                            <a href="{% url 'start_debate' %}">Create Debate</a>
+                            <a href="{% url 'create_poll' %}">Create Poll</a>
                     {% endif %}
                 {% endif %}
                 <a href="{% url 'edit_settings' %}">Edit Settings</a>
-                <a href="{% url 'profile_page' user.profile.id %}">Profile</a>
-                <a href="{% url 'edit_profile_page' user.profile.id %}">Edit Profile</a>
                 <a href="{% url 'logout' %}">Logout</a>
                 <a href="{% url 'conversation_list'%}">View Conversations</a>
 

@@ -1,18 +1,19 @@
+<!-- expert_list.html -->
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1>tech Experts</h1>
+<h1>{{ field_name }} Experts</h1>
 
-    <div class="center-content">
-        {% if profiles %}
-            {% for profile in profiles %}
-                {% if profile.academic_field == "field5" %}
-                    <div class="expert-list-item">
-                        <p>{{ profile.user.first_name }} {{ profile.user.last_name }}</p>
-                        <p>Link: <a href="{% url 'profile_page' profile.id %}">@{{ profile.user.username }}</a></p>
-                    </div>
-                {% endif %}
-            {% endfor %}
-        {% endif %}
-    </div>
+<div class="center-content">
+    {% if profiles %}
+        {% for profile in profiles %}
+            <div class="expert-list-item">
+                <p>{{ profile.user.first_name }} {{ profile.user.last_name }}</p>
+                <p>Link: <a href="{% url 'profile_page' profile.id %}">@{{ profile.user.username }}</a></p>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No experts found in this field.</p>
+    {% endif %}
+</div>
 {% endblock %}

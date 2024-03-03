@@ -27,6 +27,7 @@ from Homepage.models import Note
 from Members.forms import SignUpForm, EditSettingsForm, EditProfileForm, CreateProfileForm, \
     CustomUserCreationForm, MessageForm, EditPasswordForm
 from Members.models import Profile, CustomUser, CustomUserManager, Message
+from fields import FIELD_CHOICES
 
 
 @login_required
@@ -229,9 +230,14 @@ def send_message(request, receiver_id):
 
     return render(request, 'members/message.html', {'receiver': receiver, 'form': form})
 
-def expert_list(request):
-    profiles = Profile.objects.all()
-    return render(request, 'members/expert_list.html', {"profiles": profiles})
+def expert_list(request, field):
+    # Convert field identifier to human-readable name
+    field_name = dict(FIELD_CHOICES).get(field, "Unknown Field")
+
+    # Filter profiles based on the academic field
+    profiles = Profile.objects.filter(academic_field=field)
+
+    return render(request, 'members/expert_list.html', {'profiles': profiles, 'field_name': field_name})
 
 @login_required
 def conversation_list(request):

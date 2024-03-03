@@ -10,7 +10,7 @@ from .views import user_debate_list, debate_list, economics_debate_list, polisci
 
 urlpatterns = [
     path('user_debate_list/', user_debate_list.as_view(), name='user_debates'),
-    path('debates/debate_list/', debate_list.as_view(), name='debate_list'),
+    path('debates/<category>/', debate_list.as_view(), name='debate_list_by_category'),
     path('debates/economics_debate_list/', economics_debate_list.as_view(), name='economics_debate_list'),
     path('debates/polisci_debate_list/', polisci_debate_list.as_view(), name='polisci_debate_list'),
     path('debates/medicine_debate_list/', medicine_debate_list.as_view(), name='medicine_debate_list'),

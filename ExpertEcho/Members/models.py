@@ -43,8 +43,8 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     is_superuser = models.BooleanField(default=False)
     is_expert = models.BooleanField(default=False)  # Identifies if the user is an expert
     date_joined = models.DateTimeField(default=timezone.now)
-    groups = models.ManyToManyField(Group, related_name='customuser_groups')
-    user_permissions = models.ManyToManyField(Permission, related_name='customuser_permissions')
+    groups = models.ManyToManyField(Group, related_name='customuser_groups', blank=True)
+    user_permissions = models.ManyToManyField(Permission, related_name='customuser_permissions', blank=True)
 
     objects = CustomUserManager()
 
