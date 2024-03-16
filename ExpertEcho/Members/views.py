@@ -234,8 +234,26 @@ def expert_list(request, field):
     # Convert field identifier to human-readable name
     field_name = dict(FIELD_CHOICES).get(field, "Unknown Field")
 
-    # Filter profiles based on the academic field
-    profiles = Profile.objects.filter(academic_field=field)
+    # Retrieve search term from GET request
+    search_query = request.GET.get('search', '')
+
+    profiles = Profile.objects.filter(academic_field=field)  # Base query
+
+    if search_query:
+        name_parts = search_query.split()
+
+        # If the search query includes both first and last names
+        if len(name_parts) > 1:
+            profiles = profiles.filter(
+                Q(first_name__icontains=name_parts[0]),
+                Q(last_name__icontains=name_parts[-1])
+            )
+        else:
+            # Apply the search query to both first and last names if only one part is provided
+            profiles = profiles.filter(
+                Q(first_name__icontains=search_query) |
+                Q(last_name__icontains=search_query)
+            )
 
     return render(request, 'members/expert_list.html', {'profiles': profiles, 'field_name': field_name})
 

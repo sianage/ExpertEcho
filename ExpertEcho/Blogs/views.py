@@ -168,4 +168,3 @@ class AddBlogView(LoginRequiredMixin, CreateView):
 class post_detail(DetailView, ):
     model = Post
     template_name = 'blogs/blog_detail.html'
-    success_url = reverse_lazy('post_detail')

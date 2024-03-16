@@ -5,11 +5,10 @@
 
   <ul class="conversation-list">
     {% for conversation in conversations %}
-    <h1>CONVO</h1>
       <li>
         <div class="convo-list-element">
           <a class="button-link" href="{% url 'message' receiver_id=conversation.id %}">
-            convo: {{ conversation.username }}
+            conversation {{ conversation.message.receiver.email }}
           </a>
         </div>
       </li>

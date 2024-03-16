@@ -4,7 +4,97 @@ body {
   background: linear-gradient(to bottom, #3055ab, #f5f7fc); /* Faint blue gradient from top to bottom */
   font-family: Arial, sans-serif;
 }
+.center-content {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+}
 
+.expert-list-item {
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    width: calc(33.333% - 20px);
+    text-align: center;
+    padding: 20px;
+    transition: box-shadow 0.3s ease;
+}
+
+.expert-list-item:hover {
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.expert-list-item img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+}
+
+.expert-list-item a {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.expert-list-item a:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+    .expert-list-item {
+        width: calc(50% - 20px);
+    }
+}
+
+@media (max-width: 480px) {
+    .expert-list-item {
+        width: calc(100% - 20px);
+    }
+
+    form {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    form input[type="text"] {
+        margin-bottom: 10px;
+        width: 90%;
+    }
+
+    form button {
+        width: 50%;
+    }
+}
+form {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+form input[type="text"] {
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin-right: 10px;
+    border-radius: 5px;
+    width: 250px;
+}
+
+form button {
+    padding: 10px 15px; /* Adjust padding to make the button smaller */
+    border: none;
+    background-color: #007bff;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9rem; /* Optionally adjust font size for better fit */
+}
+
+form button:hover {
+    background-color: #0056b3;
+}
 .form-control{
     text-align:left;
 }
@@ -108,19 +198,80 @@ cursor: pointer;
     margin-top: 10px;
     border: ridge 10px #acb02e;
 }
-#edit_note_button{
-    color: white;
-    background-color: black;
+.item-div {
+    border: 1px solid #e1e8ed;
+    background-color: white;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
 }
-#delete_note_button{
-    color: white;
-    background-color: black;
+
+.item-pic img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 10px;
+    flex-shrink: 0;
 }
-#edit_note_button:hover{
-    color: red;
+
+.item-text {
+    flex-grow: 1;
 }
-#delete_note_button:hover{
-    color: red;
+
+.edit-delete-button {
+    text-decoration: none;
+    color: #1DA1F2;
+    margin-right: 10px;
+}
+
+.edit-delete-button:hover {
+    text-decoration: underline;
+}
+
+.item-div:hover {
+    background-color: #f5f8fa;
+}
+
+#note_div {
+    border: 1px solid #e1e8ed;
+    background-color: white;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    display: flex; /* Use Flexbox */
+    align-items: center; /* Align items vertically in the center */
+}
+
+#note_div:hover {
+    background-color: #f5f8fa; /* Light gray color on hover */
+}
+
+#note_pic img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 10px;
+    flex-shrink: 0; /* Prevent the image from shrinking */
+}
+
+#note_text {
+    /* No need for overflow: hidden; here as Flexbox handles layout better */
+}
+
+#note_text strong {
+    display: block;
+}
+
+#delete_note_button, #edit_note_button {
+    text-decoration: none;
+    color: #1DA1F2;
+    margin-right: 10px;
+}
+
+#delete_note_button:hover, #edit_note_button:hover {
+    text-decoration: underline;
 }
 #profile_pic img{
     height: 100%;
@@ -128,7 +279,7 @@ cursor: pointer;
     object-fit: cover;
 }
 #note_wrapper{
-    height: 550px;
+    height: 445px;
     width:50%;
     overflow:auto;
     margin-left:50px;
@@ -161,15 +312,8 @@ cursor: pointer;
     padding: 5px;
     overflow:hidden;
 }
-#note_pic img{
-    height: 100%;
-    width: 100%;
-    object-fit: cover;
-}
-#note_text{
-    margin-left: 10px;
-}
-#note_div {
+
+#blog_div {
     border-style: 1px solid;
     border-color: black;
     padding: 12px 25px;
@@ -178,11 +322,10 @@ cursor: pointer;
     transition: border-style 0.3s ease-in-out;
 }
 
-#note_div:hover {
+#blog_div:hover {
     border-style: outset;
     border-color: #656d9e;
 }
-
 #home_note {
     display: block;
     height: 300px;
@@ -198,6 +341,7 @@ cursor: pointer;
     box-shadow: 0 2px 20px rgba(0, 0, 0, 0.4); /* Darker shadow */
     transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 }
+
 
 #home_note:hover {
     transform: scale(1.05);
@@ -256,6 +400,23 @@ cursor: pointer;
 
 .result-info {
     text-align: left;
+}
+blog{
+    border: solid black;
+}
+#blog_list{
+    color:black;
+    text-align:center;
+    border: solid 2px;
+    background-color: white;
+    border-style: outset;
+    block-size: auto;
+    padding: 10px;
+    margin-left: 20px;
+    margin-right: 20px;
+    /*box-shadow: 10px 10px 100px blue inset;*/
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+
 }
 debate{
     border: solid black;
@@ -357,8 +518,30 @@ debate{
     margin-right: 20px;
     transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 }
+#blog_box {
+    max-width: 800px; /* Adjust based on your preference */
+    margin: auto; /* Center the blog box */
+    padding: 20px;
+    background-color: #fff; /* White background */
+    box-shadow: 0 0 10px rgba(0,0,0,0.1); /* Soft shadow for depth */
+}
+
+#blog_body {
+    font-family: 'Arial', sans-serif; /* Professional font */
+    line-height: 1.6; /* Improve readability */
+    color: #333; /* Dark gray for text for better readability */
+}
 #edit_delete{
     text-align: center;
+}
+#edit_delete a {
+    color: #007bff; /* Bootstrap primary color for links */
+    text-decoration: none; /* No underline */
+}
+
+#edit_delete a h2 {
+    font-size: 18px; /* Smaller font size for actions */
+    margin: 0; /* Remove margin */
 }
 #edit-delete{
     text-align: center;
@@ -579,7 +762,10 @@ img {
   height: 200px;
   object-fit: cover;
 }
-
+.container img {
+    opacity: 0.5; /* Adjust this value to control the fade level */
+    width: 100%; /* Adjust based on your layout */
+}
 .container{
   min-height: 10vh;
   position:relative;

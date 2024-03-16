@@ -16,5 +16,5 @@ urlpatterns = [
     path('debates/medicine_debate_list/', medicine_debate_list.as_view(), name='medicine_debate_list'),
     path('debates/debate/<int:pk>/', debate_detail.as_view(), name='debate_detail'),
     path('debates/debate/<int:pk>/comment/', views.AddCommentView, name="comment"),
-    path('debates/start_debate/', views.create_debate, name="start_debate"),
+    path('start_debate/', views.create_debate, name="start_debate"),
 ]

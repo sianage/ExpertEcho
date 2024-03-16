@@ -74,4 +74,4 @@ class Post(models.Model):
         return f'{self.title} by {self.author_profile.first_name} {self.author_profile.last_name}'
 
     def get_absolute_url(self):
-        return reverse('post_detail', args=(str(self.id)))
+        return reverse('post_detail', kwargs={'pk': self.pk})

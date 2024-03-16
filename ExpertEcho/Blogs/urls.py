@@ -8,8 +8,8 @@ from .views import UpdateBlogView, DeleteBlogView, user_blogs, blog_list, medici
 urlpatterns = [
     path('blogs/<category>/', blog_list.as_view(), name='blog_list_by_category'),
     path('user_blogs/', user_blogs.as_view(), name='user_blogs'),
-    path('blogs/blog_post/<int:pk>/', post_detail.as_view(), name='post_detail'),
-    path('blogs/create_blog/', AddBlogView.as_view(), name="create_post"),
+    path('blog_post/<int:pk>/', post_detail.as_view(), name='post_detail'),
+    path('create_blog/', AddBlogView.as_view(), name="create_post"),
     path('blogs/blog_post/edit/<int:pk>', UpdateBlogView.as_view(), name='update_post'),
     path('blogs/blog_post/delete/<int:pk>', DeleteBlogView.as_view(), name='delete_post'),
     path('blogs/draft_list/', views.DraftListView.as_view(), name='draft_list'),

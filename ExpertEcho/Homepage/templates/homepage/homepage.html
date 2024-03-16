@@ -19,38 +19,53 @@
 
 </div>
 
-
 <div id="note_wrapper">
 <div id="note_list">
+{% for item in items %}
+    {% if item.type == 'blog' %}
+        <!-- Render blog post summary -->
+        <div class="item-div">
+            <div class="item-pic">
+                {% if item.author_profile.profile_picture %}
+                    <img src="{{ item.author_profile.profile_picture.url }}" alt="Profile Picture">
+                {% endif %}
+            </div>
+            <h2><a href="{{ item.get_absolute_url }}">New Blog: {{ item.title }}</a><h4>&nbsp;&nbsp;(posted {{item.created}})</h4></h2>
 
-{% for note in notes %}
-
-
-
-    <div id="note_div">
-
-        <div id="note_pic">
-            {% if note.user.profile.profile_picture %}
-                <img src="{{ note.user.profile.profile_picture.url }}">
-            {% endif %}
         </div>
+    {% elif item.type == 'debate' %}
+        <div class="item-div">
+            <div class="item-pic">
+                {% if item.author_profile.profile_picture %}
+                    <img src="{{ item.author_profile.profile_picture.url }}" alt="Profile Picture">
+                {% endif %}
+            </div>
+            <h2><a href="{{ item.get_absolute_url }}">New Debate: {{ item.title }}</a><h4>&nbsp;&nbsp;(posted {{item.created}})</h4></h2>
 
-        <div id="note_text">
-            <strong>{{ note.user.first_name|capfirst }} {{ note.user.last_name|capfirst }}: {{note.body|ljust:10|striptags|safe|urlize}}</strong>
-            <br>
-            (posted {{note.created_at}})
-            <br>
-            <br>
-            {% if request.user.username == note.user.username %}
-                <a href="{% url 'delete_note' note.id %}" id="delete_note_button">Delete</a>
-                <a href="{% url 'edit_note' note.id %}" id="edit_note_button">Edit</a>
-            {% endif %}
         </div>
-    </div>
-
-
+    {% else %}
+        <div class="item-div">
+            <div class="item-pic">
+                {% if item.user.profile.profile_picture %}
+                    <img src="{{ item.user.profile.profile_picture.url }}" alt="Profile Picture">
+                {% endif %}
+            </div>
+            <div class="item-text">
+                <strong>{{ item.user.profile.first_name|capfirst }} {{ item.user.profile.last_name|capfirst }}: "{{item.body|ljust:10|striptags|safe|urlize}}"</strong>
+                <br>
+                (posted {{item.created_at}})
+                <br>
+                {% if request.user.username == item.user.username %}
+                    <a href="{% url 'delete_note' item.id %}" class="edit-delete-button">Delete</a>
+                    <a href="{% url 'edit_note' item.id %}" class="edit-delete-button">Edit</a>
+                {% endif %}
+            </div>
+        </div>
+    {% endif %}
 {% endfor %}
 
+</div>
+</div>
 {% endif %}
 </div>
 </div>
