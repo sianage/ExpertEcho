@@ -4,10 +4,12 @@
 <h1>{{ field_name }} Experts</h1>
 
 <!-- Search Form -->
-<form action="" method="get">
-    <input type="text" name="search" placeholder="Search experts by name...">
-    <button type="submit">Search</button>
-</form>
+<div class="form-container">
+    <form action="" method="get" class="search-form">
+        <input type="text" name="search" placeholder="Search experts by name...">
+        <button type="submit">Search</button>
+    </form>
+</div>
 
 <div class="center-content">
     {% if profiles %}

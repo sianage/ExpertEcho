@@ -15,6 +15,7 @@ from operator import attrgetter
 def about(request):
     return render(request, 'homepage/about.html')
 
+
 def home(request):
     if not request.user.is_authenticated:
         return render(request, 'homepage/homepage.html')
@@ -37,8 +38,8 @@ def home(request):
         # Fetch published blog posts from followed profiles
         blogs = Post.published.filter(author_profile__in=followed_profiles).order_by("-publish")
         debates = Debate.objects.filter(author_profile__in=followed_profiles).order_by("-created")
-        # Assuming notes have a created_at and blogs have a publish datetime,
-        # we add a unified datetime attribute for sorting
+
+        # Add a unified datetime attribute for sorting
         for note in notes:
             note.sort_datetime = note.created_at
             note.type = 'note'
@@ -52,14 +53,11 @@ def home(request):
         # Combine and sort
         combined_list = sorted(chain(notes, blogs, debates), key=attrgetter('sort_datetime'), reverse=True)
 
-        for item in combined_list:
-            print(item.id)
-
-        return render(request, 'homepage/homepage.html', {'note':note, 'items': combined_list, "form": form})
+        return render(request, 'homepage/homepage.html', {'items': combined_list, "form": form})
     except Profile.DoesNotExist:
         return redirect("create_profile_page")
 
-    return render(request, 'homepage/homepage.html', {'items': combined_list, "form": form})
+
 def delete_note(request, pk):
     if request.user.is_authenticated:
         note = get_object_or_404(Note, id=pk)

@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
 <h1>Register</h1>
-
+<div id="edit_settings">
 <div class="form-group">
     <form method="post">
         {% csrf_token %}
@@ -9,5 +9,5 @@
         <button class="btn btn-secondary">Register</button>
     </form>
 </div>
-
+</div>
 {% endblock %}

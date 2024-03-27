@@ -8,7 +8,7 @@
       <li>
         <div class="convo-list-element">
           <a class="button-link" href="{% url 'message' receiver_id=conversation.id %}">
-            conversation {{ conversation.message.receiver.email }}
+            conversation with {{ conversation.profile.first_name }}
           </a>
         </div>
       </li>

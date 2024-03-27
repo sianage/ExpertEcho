@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 <h1>Create Poll</h1>
+<div id="edit_settings">
 <form action="{% url 'create_poll' %}" method="post">
     {% csrf_token %}
     {{ poll_form.as_p }}
@@ -17,7 +18,7 @@
     <button type="button" class="add-form-row">Add Choice</button>
     <input type="submit" value="Create Poll">
 </form>
-
+</div>
 <script>
     // JavaScript code to handle adding new choice form rows dynamically
     document.addEventListener('DOMContentLoaded', function() {

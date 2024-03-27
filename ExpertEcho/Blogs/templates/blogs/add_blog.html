@@ -3,6 +3,7 @@
 
 {% block content %}
 <h1>Add Blog Post</h1>
+<div id="edit_settings">
 <form method="post" enctype="multipart/form-data">
     <div id="post_form" class="transparent-background">
         {% csrf_token %}
@@ -10,7 +11,6 @@
         {{ form.as_p }}
         <button>Post</button>
     </div>
-
-
+</div>
 </form>
 {% endblock %}

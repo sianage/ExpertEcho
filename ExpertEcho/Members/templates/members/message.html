@@ -1,13 +1,19 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <h1>
-    {{ receiver.username }}</h1>
+<div id="edit_settings">
 
   <div class="messages">
     {% for message in messages %}
       <div class="message">
-        <p><strong>{{ message.sender.username}}:</strong> {{ message.content }}</p>
+        <!-- Display sender's profile picture and name -->
+        <p>
+          <a href="{% url 'profile_page' message.sender.profile.id %}">
+            <img src="{{ message.sender.profile.profile_picture.url }}" style="height: 30px; width: 30px; border-radius: 50%;">
+            <strong>{{ message.sender.profile.first_name }} {{ message.sender.profile.last_name }}:</strong>
+          </a>
+          {{ message.content }}
+        </p>
         <p class="timestamp">{{ message.timestamp }}</p>
       </div>
     <hr id="message_separator">
@@ -19,4 +25,5 @@
     <textarea name="content" placeholder="Type your message here"></textarea>
     <button type="submit">Send</button>
   </form>
+</div>
 {% endblock %}
