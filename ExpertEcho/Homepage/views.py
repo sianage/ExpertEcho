@@ -7,6 +7,7 @@ from Debates.models import Debate
 from Homepage.forms import NoteForm
 from Homepage.models import Note
 from Members.models import Profile
+from django.core.paginator import Paginator
 
 from django.utils import timezone
 from itertools import chain
@@ -53,7 +54,12 @@ def home(request):
         # Combine and sort
         combined_list = sorted(chain(notes, blogs, debates), key=attrgetter('sort_datetime'), reverse=True)
 
-        return render(request, 'homepage/homepage.html', {'items': combined_list, "form": form})
+        # Paginate combined_list
+        paginator = Paginator(combined_list, 10)  # Show 10 items per page
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+
+        return render(request, 'homepage/homepage.html', {'page_obj': page_obj, "form": form})
     except Profile.DoesNotExist:
         return redirect("create_profile_page")
 

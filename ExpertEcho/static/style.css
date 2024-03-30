@@ -134,7 +134,6 @@ form button:hover {
     margin-left: 10px;
     margin-right: 10px;
     position: relative;
-    background-color: #96a1e0;
     top: 10;
     left: 60;
 }
@@ -336,43 +335,90 @@ cursor: pointer;
     border-style: outset;
     border-color: #656d9e;
 }
-#home_note {
-    display: block;
-    height: 300px;
-    width: 500px;
-    float: right;
-    margin-right: 50px;
-    overflow-y: auto;
-    margin-bottom: 10px;
-    margin-top: 20px;
-    background-color: #96a1e0;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.4); /* Darker shadow */
-    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-}
 
-
-#home_note:hover {
-    transform: scale(1.05);
-    box-shadow: 0 5px 30px rgba(0, 0, 0, 0.6); /* Darker shadow */
-}
-#home_submit_btn_div{
-    text-align:center;
-    margin:auto;
-    background-color: blue;
-    bottom: 120;
-}
-#home_submit_btn{
-    color:white;
-    background-color: black;
-    align: center;
-    width: 100px;
-    height: 50px;
-}
 #post_form{
     color: grey;
 }
+/* Overlay */
+#overlay {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
+    z-index: 50; /* Below the form container to gray out the background */
+    display: none; /* Hidden by default */
+}
+
+/* Button Container */
+.button-container {
+    text-align: center;
+    margin-top: 20px;
+}
+
+#open_note_form {
+    padding: 8px 16px; /* Slightly smaller padding */
+    background-color: #0056b3;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px; /* Smaller font size */
+    transition: background-color 0.3s ease;
+}
+
+#open_note_form:hover {
+    background-color: #004494;
+}
+
+/* Note Form Container - Adjusted for a smaller form */
+#note_form_container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: auto;
+    max-width: 400px; /* Reduced max-width for a smaller form */
+    background-color: #f9f9f9;
+    padding: 15px; /* Reduced padding */
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 100;
+    display: none;
+}
+
+/* Inner Note Form Styling */
+#home_note {
+    background-color: transparent;
+    overflow-y: auto;
+    padding: 0;
+}
+
+/* Form and Button Styling */
+#home_submit, #home_submit_btn_div {
+    text-align: center;
+}
+
+#home_submit_btn {
+    padding: 8px 16px; /* Adjusted for consistency with the open form button */
+    background-color: #0056b3;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px; /* Adjusted for a smaller button */
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: background-color 0.3s ease;
+    margin-top: 15px; /* Adjusted spacing */
+}
+
+#home_submit_btn:hover {
+    background-color: #004494;
+}
+
 
 #comments{
     text-align: left;
@@ -948,42 +994,12 @@ ol{
     color: rgba(255,255,255,1);
     margin-top: 100px;
 }
-#overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0,0,0,0.5); /* Dim the background */
-    z-index: 99; /* Ensure it's below the form but above other content */
-}
 
-#note_form_container {
-    position: fixed; /* Or absolute */
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: #fff;
-    padding: 20px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    z-index: 100; /* Ensure it's above the overlay */
-}
-.button-container {
-    margin-left: 20px;
-    margin-bottom: 10px;
-    text-align: center;
-}
 
-#open_note_form {
-    /* Additional button styling here */
-    cursor: pointer; /* Changes the mouse cursor to indicate the element is clickable */
-    padding: 10px 20px; /* Adjust padding to your preference */
-    font-size: 16px; /* Adjust font size to your preference */
-    border: none; /* Removes the default border */
-    background-color: #007bff; /* Example background color */
-    color: white; /* Text color */
-    border-radius: 5px; /* Rounded corners */
-}
+
+
+
+
 .form-container {
     max-width: 600px; /* Adjust based on preference */
     margin: auto;
@@ -1020,4 +1036,10 @@ ol{
     background-color: rgba(0, 0, 0, 0.5); /* Optional: adds a semi-transparent overlay for better readability */
     padding: 2px 5px;
     border-radius: 3px;
+}
+#homepage-pages {
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically if needed */
+    width: 100%; /* Ensure it spans the full width of its container */
 }
