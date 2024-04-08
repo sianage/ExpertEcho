@@ -5,6 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e2e04c6f-2c2c-45cc-a9cc-d5ff9fe92ef9" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ExpertEcho/Homepage/templates/homepage/homepage.html" beforeDir="false" afterPath="$PROJECT_DIR$/ExpertEcho/Homepage/templates/homepage/homepage.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
