@@ -3,68 +3,59 @@
 {% block title %}Profile{% endblock %}
 
 {% block content %}
-<div id="user_profile">
-    <div id="profile_pic">
-        {% if profile.profile_picture %}
-            <img src="{{ profile.profile_picture.url }}" alt="Profile Picture">
-        {% endif %}
-    </div>
-
-    <h1>{{ profile.first_name }} {{ profile.last_name }}</h1>
-
-    {% if profile.user.is_expert %}
-    <div id="academic_field">
-        <strong>Academic Field: {{ profile.get_academic_field_display }}</strong>
-    </div>
-
-
-
-    <div class="user-content-buttons">
-        <div class="profile-button">
-            <a href="{% url 'user_blogs' %}?author={{ profile.id }}" class="profile_button">Blogs</a>
+<div class="profile-container">
+    <div class="profile-header">
+        <div class="profile-picture">
+            {% if profile.profile_picture %}
+                <img src="{{ profile.profile_picture.url }}" alt="Profile Picture" class="profile-img">
+            {% endif %}
         </div>
-        <div class="profile-button">
-            <a href="{% url 'user_debates' %}?author={{ profile.id }}" class="profile_button">Debates</a>
+        <div class="profile-info">
+            <h1 class="profile-name">{{ profile.first_name }} {{ profile.last_name }}</h1>
+            {% if profile.user.is_expert %}
+                <p class="profile-academic-field">Academic Field: {{ profile.get_academic_field_display }}</p>
+            {% endif %}
         </div>
     </div>
 
-    <h3>Followers</h3>
-    {% for following in profile.followed_by.all %}
-        <a href="{% url 'profile_page' following.user.profile.id %}">@{{ following }}</a><br>
-    {% endfor %}
-
-    <form method="post" class="follow-form">
-        {% csrf_token %}
-        {% if profile in user.profile.follows.all %}
-            <button class="follow_unfollow_btn" name="follow" value="unfollow" type="submit">Unfollow {{ profile.user.username }}</button>
-        {% else %}
-            <button class="follow_unfollow_btn" name="follow" value="follow" type="submit">Follow {{ profile.user.username }}</button>
-        {% endif %}
-    </form>
-
-    {% endif %}
-
-    <div class="profile-bio">
-        {{ profile.bio|linebreaksbr }}
+    <div class="profile-content">
+        <div class="profile-bio">{{ profile.bio|linebreaksbr }}</div>
+        <div class="profile-social-links">
+            {% if profile.github_url or profile.linkedin_url %}
+                <h3>Links</h3>
+                {% if profile.github_url %}
+                    <a href="{{ profile.github_url }}" class="social-link">Github</a>
+                {% endif %}
+                {% if profile.linkedin_url %}
+                    <a href="{{ profile.linkedin_url }}" class="social-link">LinkedIn</a>
+                {% endif %}
+            {% endif %}
+        </div>
+        <div class="profile-actions">
+            <a href="{% url 'user_blogs' %}?author={{ profile.id }}" class="action-button">Blogs</a>
+            <a href="{% url 'user_debates' %}?author={{ profile.id }}" class="action-button">Debates</a>
+            <form method="post" class="follow-form">
+                {% csrf_token %}
+                {% if profile in user.profile.follows.all %}
+                    <button class="follow-button" name="follow" value="unfollow" type="submit">Unfollow</button>
+                {% else %}
+                    <button class="follow-button" name="follow" value="follow" type="submit">Follow</button>
+                {% endif %}
+            </form>
+            <a href="{% url 'message' receiver_id=profile.user.id %}" class="message-button">Message</a>
+        </div>
+        <div class="profile-network">
+            <h3>Followers</h3>
+            {% for follower in profile.followed_by.all %}
+                <a href="{% url 'profile_page' follower.user.profile.id %}" class="network-link">
+                    {{ follower.first_name }} {{ follower.last_name }}
+                </a><br>
+            {% endfor %}
+            <h3>Follows</h3>
+            {% for follow in profile.follows.all %}
+                <a href="{% url 'profile_page' follow.user.profile.id %}" class="network-link">{{ follow.first_name }} {{ follow.last_name }}</a>
+            {% endfor %}
+        </div>
     </div>
-
-    {% if profile.github_url or profile.linkedin_url %}
-    <div class="profile-links">
-        <h3><strong>Links</strong></h3>
-        {% if profile.github_url %}
-            Github: <a href="{{ profile.github_url }}">{{ profile.github_url }}</a><br>
-        {% endif %}
-        {% if profile.linkedin_url %}
-            LinkedIn: <a href="{{ profile.linkedin_url }}">{{ profile.linkedin_url }}</a><br>
-        {% endif %}
-    </div>
-    {% endif %}
-
-    <h3>Follows</h3>
-    {% for follow in profile.follows.all %}
-        <a href="{% url 'profile_page' follow.user.profile.id %}">@{{ follow }}</a><br>
-    {% endfor %}
-
-    <a href="{% url 'message' receiver_id=profile.user.id %}" class="message_button">Message {{ profile.user.username }}</a>
 </div>
 {% endblock %}

@@ -1043,3 +1043,74 @@ ol{
     align-items: center; /* Center vertically if needed */
     width: 100%; /* Ensure it spans the full width of its container */
 }
+.profile-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 800px;
+    margin: auto;
+    padding: 20px;
+    background-color: white;
+}
+.profile-header {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.profile-picture .profile-img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin-right: 20px;
+}
+
+.profile-info .profile-name {
+    margin: 0;
+    font-size: 24px;
+}
+
+.profile-info .profile-academic-field {
+    font-size: 16px;
+    color: #666;
+}
+
+.profile-content {
+    width: 100%;
+}
+
+.profile-bio {
+    margin-top: 20px;
+    line-height: 1.6;
+}
+
+.profile-social-links h3, .profile-network h3 {
+    margin: 20px 0 10px;
+}
+
+.social-link, .action-button, .message-button, .network-link, .follow-button {
+    display: inline-block;
+    margin: 5px;
+    padding: 10px 15px;
+    text-decoration: none;
+    color: #fff;
+    background-color: #007bff;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.social-link:hover, .action-button:hover, .message-button:hover, .network-link:hover, .follow-button:hover {
+    background-color: #0056b3;
+}
+
+.follow-form {
+    display: inline-block;
+}
+
+.profile-actions {
+    margin: 20px 0;
+}
+
+.profile-network .network-link {
+    display: block; /* Makes followers and follows appear on new lines */
+}

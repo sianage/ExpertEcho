@@ -45,10 +45,18 @@ def edit_profile_view(request, pk):
             form.save()
             messages.success(request, 'Profile updated successfully.')
             return redirect('home')  # Ensure you're using the correct path or name for your home view
+        else:
+            # Form is not valid, handle form errors
+            for field, errors in form.errors.items():
+                for error in errors:
+                    messages.error(request, f"Error in {field}: {error}")
+            # Re-render the form with errors
+            return render(request, 'members/edit_profile.html', {'form': form})
     else:
         form = EditProfileForm(instance=profile, user=request.user)
 
     return render(request, 'members/edit_profile.html', {'form': form})
+
 
 
 def profile_list(request):
@@ -151,7 +159,9 @@ def edit_settings_view(request):
 
 
 def profile_view(request, pk):
+
     profile = Profile.objects.get(id=pk)
+
     print(f"Debug: Profile ID = {profile.id}, User ID = {profile.user.id}")  # Debug print
     # Rest of your code...
     if request.user.is_authenticated:

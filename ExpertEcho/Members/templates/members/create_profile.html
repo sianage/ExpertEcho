@@ -4,11 +4,13 @@
 
 {% if user.is_authenticated %}
 <h1>Create Profile</h1>
+<div id="edit_settings">
 <form method="post", enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.media }}
     {{ form.as_p }}
     <button>create profile</button>
 </form>
+</div>
 {% endif %}
 {% endblock %}

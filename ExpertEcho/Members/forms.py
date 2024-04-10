@@ -42,14 +42,15 @@ class CustomUserCreationForm(UserCreationForm):
         fields = ('email', 'password1', 'password2')
 
 class EditProfileForm(forms.ModelForm):
+    profile_picture = forms.ImageField(required=False, widget=forms.FileInput(attrs={'class': 'form-control-file'}))
+
     class Meta:
         model = Profile
-        fields = ['first_name', 'last_name', 'bio']  # Default fields
+        fields = ['first_name', 'last_name', 'bio', 'profile_picture']  # Include 'profile_picture' in the fields
         widgets = {
             'bio': forms.Textarea(attrs={'class': 'form-control'}),
             'first_name': forms.TextInput(attrs={'class': 'form-control'}),
             'last_name': forms.TextInput(attrs={'class': 'form-control'}),
-            'profile_picture': forms.ClearableFileInput(attrs={'class': 'form-control'}),
         }
 
     def __init__(self, *args, **kwargs):
@@ -60,7 +61,6 @@ class EditProfileForm(forms.ModelForm):
         if user and user.is_expert:
             self.fields['github_url'] = forms.CharField(max_length=255, required=False, widget=forms.TextInput(attrs={'class': 'form-control'}))
             self.fields['linkedin_url'] = forms.CharField(max_length=255, required=False, widget=forms.TextInput(attrs={'class': 'form-control'}))
-            self.fields['academic_field'] = forms.ChoiceField(choices=FIELD_CHOICES, widget=forms.Select(attrs={'class': 'form-control'}))
             self.fields['academic_field'] = forms.ChoiceField(choices=FIELD_CHOICES, widget=forms.Select(attrs={'class': 'form-control'}))
             self.fields['years_of_experience'] = forms.IntegerField(required=False, validators=[MinValueValidator(5)], widget=forms.NumberInput(attrs={'class': 'form-control'}))
             self.fields['has_masters'] = forms.BooleanField(required=False, widget=forms.CheckboxInput(attrs={'class': 'form-check-input'}))

@@ -57,7 +57,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
 class Profile(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name='profile')
-    follows = models.ManyToManyField('self', related_name='followed_by', blank=True)
+    follows = models.ManyToManyField('self', symmetrical=False, related_name='followed_by', blank=True)
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
     email = models.EmailField()
