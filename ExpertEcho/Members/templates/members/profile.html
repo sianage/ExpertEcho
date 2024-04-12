@@ -11,9 +11,20 @@
             {% endif %}
         </div>
         <div class="profile-info">
-            <h1 class="profile-name">{{ profile.first_name }} {{ profile.last_name }}</h1>
+            <h1 class="profile-name">
+                {{ profile.first_name|capfirst }} {{ profile.last_name|capfirst }}
+                {% if profile.has_phd and profile.has_masters %}
+                    (MS/PhD)
+                {% elif profile.has_phd %}
+                    (PhD)
+                {% elif profile.has_masters %}
+                    (MS)
+                {% endif %}
+            </h1>
+
             {% if profile.user.is_expert %}
                 <p class="profile-academic-field">Academic Field: {{ profile.get_academic_field_display }}</p>
+                <p class="profile-academic-field">Years of Experience: {{ profile.years_of_experience }}</p>
             {% endif %}
         </div>
     </div>

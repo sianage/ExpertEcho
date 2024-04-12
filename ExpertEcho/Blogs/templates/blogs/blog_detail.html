@@ -15,8 +15,6 @@
                             <strong><h2>Delete</h2></strong>
                         </a>
                     </div>
-                {% else %}
-                    <h1>You are not authorized to edit/delete this blog! (user.id: {{ user.id }}, post.author_profile.user.id: {{ post.author_profile.user.id }})</h1>
                 {% endif %}
             {% endif %}
             <br/>
@@ -24,13 +22,10 @@
             <h1>{{ post.title }}</h1>
             <p class="date">
                 Published {{ post.publish }} by
-                {% if post.author_profile %}
-                    <a href="{% url 'profile_page' post.author_profile.id %}">
-                        {{ post.author_profile.user.get_full_name }}
-                    </a>
-                {% else %}
-                    Author information not available
-                {% endif %}
+                <a href="{% url 'profile_page' post.author_profile.id %}">
+                    {{ post.author_profile.first_name|capfirst }} {{ post.author_profile.last_name|capfirst }}
+                </a>
+
             </p>
 
             <br/>

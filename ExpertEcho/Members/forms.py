@@ -61,14 +61,11 @@ class EditProfileForm(forms.ModelForm):
         if user and user.is_expert:
             self.fields['github_url'] = forms.CharField(max_length=255, required=False, widget=forms.TextInput(attrs={'class': 'form-control'}))
             self.fields['linkedin_url'] = forms.CharField(max_length=255, required=False, widget=forms.TextInput(attrs={'class': 'form-control'}))
-            self.fields['academic_field'] = forms.ChoiceField(choices=FIELD_CHOICES, widget=forms.Select(attrs={'class': 'form-control'}))
-            self.fields['years_of_experience'] = forms.IntegerField(required=False, validators=[MinValueValidator(5)], widget=forms.NumberInput(attrs={'class': 'form-control'}))
-            self.fields['has_masters'] = forms.BooleanField(required=False, widget=forms.CheckboxInput(attrs={'class': 'form-check-input'}))
-            self.fields['has_phd'] = forms.BooleanField(required=False, widget=forms.CheckboxInput(attrs={'class': 'form-check-input'}))
+
             self.fields['university'] = forms.CharField(max_length=100, required=False, widget=forms.TextInput(attrs={'class': 'form-control'}))
             self.fields['job_history'] = forms.CharField(required=False, widget=forms.Textarea(attrs={'class': 'form-control'}))
             # Update Meta fields to include all fields for verified users
-            self.Meta.fields += ['github_url', 'linkedin_url', 'academic_field', 'years_of_experience', 'has_masters', 'has_phd', 'university', 'job_history']
+            self.Meta.fields += ['github_url', 'linkedin_url', 'academic_field', 'university', 'job_history']
             # Include any additional fields for verified users
 class EditSettingsForm(UserChangeForm):
     class Meta:
