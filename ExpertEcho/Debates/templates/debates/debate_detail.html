@@ -1,22 +1,22 @@
 {% extends "base.html" %}
 {% block content %}
 
-
-<h1>{{debate.title}}</h1>
-
+<h1>{{ debate.title }}</h1>
 <h3>{{ debate.description }}</h3>
 <br>
 <h3>{{ debate.author_profile.first_name }} {{ debate.author_profile.last_name }} vs. {{ debate.opponent.first_name }} {{ debate.opponent.last_name }}</h3>
 {% for comment in debate.comments.all %}
-
 <div style="background-color:{% cycle '#dcebd8' '#ebd9d8'%}" id="comments">
     <p><strong>{% cycle 'Agree' 'Disagree' %}</strong></p>
     <br>
-{{ comment.body|ljust:10|striptags|safe|linebreaksbr }}
-</br>
+    {{ comment.body|ljust:10|striptags|safe|linebreaksbr }}
+    </br>
 </div>
 <br>
 {% endfor %}
-<h1>{{ comment.body|ljust:10|striptags|safe|linebreaksbr }}</h1><!--???-->
-<a href="{% url 'comment' debate.pk %}"><h1>Reply</h1></a>
+<!-- Conditional display of the reply link based on turn and involvement -->
+{% if user_involved and user_turn %}
+    <a href="{% url 'comment' debate.pk %}"><h1>Reply</h1></a>
+{% endif %}
+
 {% endblock %}

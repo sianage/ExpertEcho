@@ -38,14 +38,32 @@ def polls_by_category(request, category):
 def poll_detail(request, poll_id):
     poll = get_object_or_404(Poll, pk=poll_id)
     user = request.user
+
+    # Check if user has already voted
     if Vote.objects.filter(user=user, choice__poll=poll).exists():
         return HttpResponseRedirect(reverse('results', args=(poll.id,)))
-    else:
-        return render(request, 'polls/poll_detail.html', {'poll': poll})
+
+    # Retrieve user's profile and check field eligibility
+    profile = getattr(user, 'profile', None)
+    if profile and profile.academic_field != poll.category:
+        # User's field does not match the poll's required field, redirect to results
+        return HttpResponseRedirect(reverse('results', args=(poll.id,)))
+
+    # User is eligible to vote
+    return render(request, 'polls/poll_detail.html', {'poll': poll})
 
 
 def results(request, poll_id):
     poll = get_object_or_404(Poll, pk=poll_id)
+    user = request.user
+    profile = getattr(user, 'profile', None)
+
+    # Check if the user is eligible to vote and hasn't voted yet
+    if (profile and profile.academic_field.lower() == poll.category.lower() and
+            not Vote.objects.filter(user=user, choice__poll=poll).exists()):
+        # Redirect to voting page
+        return HttpResponseRedirect(reverse('poll_details', args=(poll.id,)))
+
     choices = poll.choice_set.all()
     total_votes = sum(choice.votes for choice in choices)
 

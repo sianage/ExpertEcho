@@ -135,6 +135,29 @@ class debate_detail(DetailView):
     model = Debate
     template_name = 'debates/debate_detail.html'
 
+    def get_context_data(self, **kwargs):
+        context = super(debate_detail, self).get_context_data(**kwargs)
+        debate = self.object
+        user = self.request.user
+        profile = user.profile  # Assuming each user has exactly one profile
+
+        # Check if the current user is the author or the opponent in the debate
+        user_involved = profile == debate.author_profile or profile == debate.opponent
+        context['user_involved'] = user_involved
+
+        if user_involved:
+            last_comment = debate.comments.last()
+            if last_comment:
+                # It's user's turn if the last commenter's profile is not this user's profile
+                context['user_turn'] = last_comment.commenter_name != profile
+            else:
+                # If no comments, the author starts the debate
+                context['user_turn'] = profile == debate.author_profile
+        else:
+            context['user_turn'] = False
+
+        return context
+
 '''class AddDebateView(LoginRequiredMixin, CreateView):
     model = Debate
     form_class = DebateForm

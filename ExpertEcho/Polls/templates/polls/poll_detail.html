@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 <h1>{{ poll.title }}</h1>
+<div id="edit_settings">
 <form action="{% url 'vote' poll.id %}" method="post">
     {% csrf_token %}
     <fieldset>
@@ -11,4 +12,5 @@
     </fieldset>
     <input type="submit" value="Vote">
 </form>
+</div>
 {% endblock %}
