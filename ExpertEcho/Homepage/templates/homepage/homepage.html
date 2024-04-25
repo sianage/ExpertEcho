@@ -13,8 +13,8 @@
         <!-- Render blog post summary -->
         <div class="item-div">
             <div class="item-pic">
-                {% if item.author_profile.profile_picture %}
-                    <img src="{{ item.author_profile.profile_picture.url }}" alt="Profile Picture">
+                {% if item.profile_picture %}
+                    <img src="{{ item.profile_picture }}" alt="Profile Picture">
                 {% endif %}
             </div>
             <h2><a href="{{ item.get_absolute_url }}">New Blog: {{ item.title }}</a><h4>&nbsp;&nbsp;(posted {{item.created}})</h4></h2>
@@ -23,8 +23,8 @@
     {% elif item.type == 'debate' %}
         <div class="item-div">
             <div class="item-pic">
-                {% if item.author_profile.profile_picture %}
-                    <img src="{{ item.author_profile.profile_picture.url }}" alt="Profile Picture">
+                {% if item.profile_picture %}
+                    <img src="{{ item.profile_picture }}" alt="Profile Picture">
                 {% endif %}
             </div>
             <h2><a href="{{ item.get_absolute_url }}">New Debate: {{ item.title }}</a><h4>&nbsp;&nbsp;(posted {{item.created}})</h4></h2>
@@ -33,16 +33,16 @@
     {% elif item.type == 'note' %}
         <div class="item-div">
             <div class="item-pic">
-                {% if item.user.profile.profile_picture %}
-                    <img src="{{ item.user.profile.profile_picture.url }}" alt="Profile Picture">
+                {% if item.profile_picture %}
+                    <img src="{{ item.profile_picture }}" alt="Profile Picture">
                 {% endif %}
             </div>
             <div class="item-text">
-                <strong>{{ item.user.profile.first_name|capfirst }} {{ item.user.profile.last_name|capfirst }}: "{{item.body|ljust:10|striptags|safe|urlize}}"</strong>
+                <strong>{{ item.first_name|capfirst }} {{ item.last_name|capfirst }}: "{{item.body|ljust:10|striptags|safe|urlize}}"</strong>
                 <br>
-                (posted {{item.created_at}})
+                (posted {{item.created}})
                 <br>
-                {% if request.user.username == item.user.username %}
+                {% if request.user.username == item.username %}
                     <a href="{% url 'delete_note' item.id %}" class="edit-delete-button">Delete</a>
                     <a href="{% url 'edit_note' item.id %}" class="edit-delete-button">Edit</a>
                 {% endif %}
@@ -85,22 +85,22 @@
         <span style="position: absolute; bottom: 10px; left: 0; width: 100%; text-align: center; color: white; font-weight: bold; background-color: rgba(0, 0, 0, 0.5);">Economics Experts</span>
     </a>
     <br>
-    <a href="{% url 'expert_list_by_field' 'field1' %}" class="expert-link" style="position: relative; display: inline-block;">
+    <a href="{% url 'expert_list_by_field' 'field2' %}" class="expert-link" style="position: relative; display: inline-block;">
         <img src="{% static 'econ-img.jpg' %}" alt="Finance Experts" style="width: 100%; display: block;">
         <span style="position: absolute; bottom: 10px; left: 0; width: 100%; text-align: center; color: white; font-weight: bold; background-color: rgba(0, 0, 0, 0.5);">Finance Experts</span>
     </a>
     <br>
-    <a href="{% url 'expert_list_by_field' 'field1' %}" class="expert-link" style="position: relative; display: inline-block;">
+    <a href="{% url 'expert_list_by_field' 'field3' %}" class="expert-link" style="position: relative; display: inline-block;">
         <img src="{% static 'econ-img.jpg' %}" alt="Legal Experts" style="width: 100%; display: block;">
         <span style="position: absolute; bottom: 10px; left: 0; width: 100%; text-align: center; color: white; font-weight: bold; background-color: rgba(0, 0, 0, 0.5);">Legal Experts</span>
     </a>
     <br>
-    <a href="{% url 'expert_list_by_field' 'field1' %}" class="expert-link" style="position: relative; display: inline-block;">
+    <a href="{% url 'expert_list_by_field' 'field4' %}" class="expert-link" style="position: relative; display: inline-block;">
         <img src="{% static 'econ-img.jpg' %}" alt="Medical Experts" style="width: 100%; display: block;">
         <span style="position: absolute; bottom: 10px; left: 0; width: 100%; text-align: center; color: white; font-weight: bold; background-color: rgba(0, 0, 0, 0.5);">Medical Experts</span>
     </a>
     <br>
-    <a href="{% url 'expert_list_by_field' 'field1' %}" class="expert-link" style="position: relative; display: inline-block;">
+    <a href="{% url 'expert_list_by_field' 'field5' %}" class="expert-link" style="position: relative; display: inline-block;">
         <img src="{% static 'econ-img.jpg' %}" alt="Technology Experts" style="width: 100%; display: block;">
         <span style="position: absolute; bottom: 10px; left: 0; width: 100%; text-align: center; color: white; font-weight: bold; background-color: rgba(0, 0, 0, 0.5);">Tech Experts</span>
     </a>
@@ -112,55 +112,95 @@
 {% else %}
 <div id="welcome_div"><h2>Welcome to Expert Echo!</h2></div>
 <div id="welcome_p_div">
-    This project began the way many do. I thought to myself “Wouldn’t it be nice if there was a website that was a one-stop
-    shop for expert consensus on any and every topic?” Upon finding that no such site existed, coupled with the fact that I
-    have a bachelor’s degree in computer science, I decided to create it myself. It’s currently a work in progress
-    (I’m currently going back through my code and realizing I should have done many things different and more efficiently)
-    but I hope that, one day, it may take on an important cultural role for curious laypeople, experts wishing to become more
-    knowledgeable about related fields, or, my true end goal, creating a more well-informed general public and thus a more
-    responsive political establishment that is better aligned with the desires and wellbeing of its citizens.<br><br>
 
-    The site is based on the IGM Forum, which is a site that aggregates consensus from experts in the field of economics,
-    but my site has loftier goals. I want to draw on expert knowledge not just in economics, but in law, medicine, political
-    science, philosophy, and many other fields.<br><br>
 
-    I enjoy reading books on philosophy, science, and politics in my spare time, and I have listed myself as an expert in
-    philosophy, which is far from true. As I’ve said, this site is a work in progress and those currently on it are just
-    showing off what the site would look like when it’s complete and has become more well-known. It’s merely a prototype
-    at the moment, not an official source of information.<br><br>
-
-    Features.
-
-    This site will eventually allow any user to sign up for it, but only verified experts will be able to create content on it.
-    Currently, anyone who signs up is able to follow a given expert, at which point they will be able to see notes
-    (similar to Twitter posts) from these experts on their home page. These notes may contain anything from announcements about
-    a new blog, debate, or poll the expert created or took part in, or they may contain links to other sites or merely a few
-    thoughts the expert has on a given subject.<br><br>
-
-    The content each user can create are blogs, debates, and polls. Blogs are fairly straightforward; they are simply essays of any
-    length that a user may post. Debates are authored by a given user, with the category of the debate being set to the user’s
-    academic field. The user then creates the topic of the debate, provides a basic description of it, and challenges another user
-    on the site to the debate. If the other user accepts, each will be able to post a response to the other in turn
-    (you may only post one response at a time, with turns alternating between the two people engaged in the debate). A user may also
-    author a poll, and only users within that field may vote in the poll, and they may only vote once.<br><br>
-
-    Each user who signs up may create a profile with a profile picture, a biography, and links to other sites of theirs. A user’s profile
-    shows which other users they’re following and who follows them. The user may choose to follow or unfollow another user from their
-    profile. You may also send a user a direct private message from their profile.<br><br>
-
-    Where is the site going from here?<br><br>
-
-    Over the next several months I will be continuously working on this website and adding a number of features to it. The first priority
-    is restructuring the code so it is more efficient and cleaner. After this I plan on adding a notification system, a section which
-    addresses current political candidates, tracks their policies, and subjects them to expert analysis, and perhaps even a section
-    which allows public peer-review of various politically important and/or controversial opinions in an attempt to address the constant
-    promotion of misinformation on the internet.<br><br>
-
-    This website is written in Python using the Django framework.
 
 </div>
 {% endif %}
+<script>
+let currentPage = 1;
+let isLoading = false;  // Define isLoading
+
+// Create a single, reusable event handler
+const handleScroll = () => {
+    console.log('Scrolling...');
+    if (window.innerHeight + window.pageYOffset >= document.body.offsetHeight - 100 && !isLoading) {
+        console.log('Near bottom, should load more notes.');
+        loadMoreNotes();
+    }
+};
+
+// Register the scroll event listener
+window.addEventListener('scroll', handleScroll);
+
+function loadMoreNotes() {
+    isLoading = true;  // Set loading to true to block further requests
+    console.log(`Attempting to load page ${currentPage + 1}`);
+
+    fetch(`/?page=${currentPage + 1}`, {
+        headers: { 'X-Requested-With': 'XMLHttpRequest' }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('Data received:', data);
+        if (data.items && data.items.length > 0) {
+            appendNotes(data.items);
+            currentPage++; // Only increment page if new data was loaded
+        }
+        if (!data.has_next) {
+            console.log('No more pages to load.');
+            window.removeEventListener('scroll', handleScroll);
+            document.getElementById('homepage-pages').style.display = 'none'; // Hide pagination
+        }
+        isLoading = false;  // Reset loading state
+    })
+    .catch(error => {
+        console.error('Error loading more notes:', error);
+        isLoading = false;  // Reset loading state
+    });
+}
+
+function appendNotes(items) {
+    const container = document.getElementById('note_list');
+    items.forEach(item => {
+        const noteElement = document.createElement('div');
+        noteElement.className = 'item-div';
+
+        let picHTML = '';
+        if (item.profile_picture) {
+            picHTML = `<div class="item-pic">
+                           <img src="${item.profile_picture}" alt="Profile Picture">
+                       </div>`;
+        }
+
+        let contentHTML = '';
+        if (item.type === 'note') {
+            contentHTML = `
+                ${picHTML}
+                <div class="item-text">
+                    <strong>${item.first_name} ${item.last_name}: "${item.body}"</strong>
+                    <br>
+                    (posted ${item.created})
+                </div>
+            `;
+        } else if (item.type === 'blog' || item.type === 'debate') {
+            contentHTML = `
+                ${picHTML}
+                <h2><a href="${item.url}">New ${item.type.charAt(0).toUpperCase() + item.type.slice(1)}: ${item.title}</a><h4>&nbsp;&nbsp;(posted ${item.created})</h4></h2>
+            `;
+        }
+
+        noteElement.innerHTML = contentHTML;
+        container.appendChild(noteElement);
+    });
+}
 
 
+</script>
 
 {% endblock %}

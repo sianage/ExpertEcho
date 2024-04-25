@@ -1,4 +1,4 @@
-from Homepage.models import Note
+from .models import Note
 from django import forms
 
 
@@ -12,4 +12,4 @@ class NoteForm(forms.ModelForm):
 
     class Meta:
         model = Note
-        exclude = ("profile","user")
+        exclude = ("author_profile","user")
