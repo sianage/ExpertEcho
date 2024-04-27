@@ -168,7 +168,7 @@ def profile_view(request, pk):
         form = NoteForm(request.POST or None)
         profile = Profile.objects.get(id=pk)
         followed_profiles = request.user.profile.follows.all()
-        note = Note.objects.filter(profile__in=followed_profiles)
+        note = Note.objects.filter(author_profile__in=followed_profiles)
 
         # Get the academic field of the profile
         academic_field = profile.academic_field

@@ -74,6 +74,7 @@ def home(request):
         combined_list = [format_item(item, 'note') for item in notes]
         combined_list.extend(format_item(item, 'blog') for item in blogs)
         combined_list.extend(format_item(item, 'debate') for item in debates)
+        print("Combined list length:", len(combined_list))
 
         combined_list = sorted(combined_list, key=lambda x: x['created'], reverse=True)
 
@@ -87,7 +88,7 @@ def home(request):
                 "has_next": page_obj.has_next()
             })
 
-        return render(request, 'homepage/homepage.html', {'page_obj': page_obj, "form": form})
+        return render(request, 'homepage/homepage.html', {'page_obj': page_obj, "form": form, "total_items": len(combined_list)})
     except ObjectDoesNotExist as e:
         print("Error:", e)
         return redirect("create_profile_page")

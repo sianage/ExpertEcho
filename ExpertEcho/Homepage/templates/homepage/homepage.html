@@ -5,6 +5,8 @@
 {% if user.is_authenticated %}
 
 {% if page_obj %}
+<div id="item-count" data-total-items="{{ total_items }}"></div>
+
 <div id="note_wrapper">
 <div id="note_list">
 {% for item in page_obj %}
@@ -118,55 +120,72 @@
 </div>
 {% endif %}
 <script>
-let currentPage = 1;
+var currentPage = 1;
 let isLoading = false;  // Define isLoading
-
 // Create a single, reusable event handler
 const handleScroll = () => {
     console.log('Scrolling...');
-    if (window.innerHeight + window.pageYOffset >= document.body.offsetHeight - 100 && !isLoading) {
+    if (window.innerHeight + window.pageYOffset >= document.body.offsetHeight - 10 && !isLoading) {
         console.log('Near bottom, should load more notes.');
         loadMoreNotes();
     }
 };
 
 // Register the scroll event listener
-window.addEventListener('scroll', handleScroll);
+document.addEventListener("DOMContentLoaded", function() {
+    // Access total items from the data attribute
+    const totalItems = parseInt(document.getElementById('item-count').getAttribute('data-total-items'), 10);
+
+    console.log("Total items:", totalItems);
+
+    if (totalItems <= 10) {
+        console.log('Total items are 10 or less. No need for more loads.');
+        // You might want to hide some UI elements or disable scrolling functionality here
+    } else {
+        // Attach your scroll event listener here if more items are possible
+        window.addEventListener('scroll', handleScroll);
+    }
+});
 
 function loadMoreNotes() {
-    isLoading = true;  // Set loading to true to block further requests
+    if (isLoading) {
+        return; // Already loading, do not proceed
+    }
+    isLoading = true; // Set loading to true
     console.log(`Attempting to load page ${currentPage + 1}`);
 
     fetch(`/?page=${currentPage + 1}`, {
         headers: { 'X-Requested-With': 'XMLHttpRequest' }
     })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
-    })
+    .then(response => response.json())
     .then(data => {
-        console.log('Data received:', data);
-        if (data.items && data.items.length > 0) {
+        console.log('DATA RECEIVED:', data);
+        console.log("DATA.ITEMS BEFORE =", data.items);
+        console.log("DATA.ITEMS.LENGTH BEFORE=", data.items.length);
+        console.log("HAS NEXT?", data.has_next);
+        if (data.items.length > 0) {
             appendNotes(data.items);
-            currentPage++; // Only increment page if new data was loaded
         }
+
         if (!data.has_next) {
-            console.log('No more pages to load.');
-            window.removeEventListener('scroll', handleScroll);
-            document.getElementById('homepage-pages').style.display = 'none'; // Hide pagination
+            console.log('No more pages to load or not enough items on the last page.');
+            window.removeEventListener('scroll', handleScroll); // Stop further loading
+            document.getElementById('homepage-pages').style.display = 'none';
         }
-        isLoading = false;  // Reset loading state
+
+        currentPage++; // Adjust this to increment only when appropriate
+        isLoading = false; // Reset loading flag after processing is complete
     })
     .catch(error => {
         console.error('Error loading more notes:', error);
-        isLoading = false;  // Reset loading state
+        isLoading = false; // Ensure flag is reset even in case of error
     });
 }
 
+
 function appendNotes(items) {
     const container = document.getElementById('note_list');
+    console.log('appendNotes');
     items.forEach(item => {
         const noteElement = document.createElement('div');
         noteElement.className = 'item-div';
@@ -202,5 +221,4 @@ function appendNotes(items) {
 
 
 </script>
-
 {% endblock %}
