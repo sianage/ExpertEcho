@@ -1004,9 +1004,15 @@ ol{
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
     box-sizing: border-box; /* Include padding in the width for consistent sizing */
 }
-#not-following {
+#not-logged-in {
     text-align: center;
     padding: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; /* centering items in the container */
+    gap: 20px; /* adds space between items */
+    margin-left: 300px; /* space for left sidebar */
+    margin-right: 300px; /* space for right sidebar */
 }
 
 .expert-link {
@@ -1014,24 +1020,31 @@ ol{
     position: relative;
     cursor: pointer;
     margin: 10px;
+    width: 200px; /* fixed width to ensure consistency */
+    height: 150px; /* fixed height */
+    overflow: hidden; /* ensures images do not overflow their boundaries */
 }
 
 .expert-link img {
-    width: 100px; /* or your preferred size */
-    height: auto;
+    width: 100%; /* fills the container */
+    height: 100%; /* fills the container */
+    object-fit: cover; /* ensures the image covers the area without distorting */
     border-radius: 5px;
 }
 
 .expert-link span {
     position: absolute;
-    bottom: 10px; /* Adjust based on where you want the text */
-    left: 10px; /* Center or adjust text position */
-    color: white; /* Text color */
+    bottom: 10px;
+    left: 0;
+    width: 100%; /* ensures the caption spans the entire width of the link */
+    text-align: center; /* centers the text */
+    color: white;
     font-weight: bold;
-    background-color: rgba(0, 0, 0, 0.5); /* Optional: adds a semi-transparent overlay for better readability */
+    background-color: rgba(0, 0, 0, 0.5);
     padding: 2px 5px;
     border-radius: 3px;
 }
+
 #homepage-pages {
     display: flex;
     justify-content: center; /* Center horizontally */

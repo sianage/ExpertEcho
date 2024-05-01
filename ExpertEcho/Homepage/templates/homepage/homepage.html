@@ -10,6 +10,7 @@
 <div id="note_wrapper">
 <div id="note_list">
 {% for item in page_obj %}
+    <script>console.log("URL for item {{ item.title }}: '{{ item.get_absolute_url }}'");</script>
 
     {% if item.type == 'blog' %}
         <!-- Render blog post summary -->
@@ -19,7 +20,7 @@
                     <img src="{{ item.profile_picture }}" alt="Profile Picture">
                 {% endif %}
             </div>
-            <h2><a href="{{ item.get_absolute_url }}">New Blog: {{ item.title }}</a><h4>&nbsp;&nbsp;(posted {{item.created}})</h4></h2>
+            <h2><a href="{{ item.url }}">New Blog: {{ item.title }}</a><h4>&nbsp;&nbsp;(posted {{item.created}})</h4></h2>
 
         </div>
     {% elif item.type == 'debate' %}
@@ -29,7 +30,7 @@
                     <img src="{{ item.profile_picture }}" alt="Profile Picture">
                 {% endif %}
             </div>
-            <h2><a href="{{ item.get_absolute_url }}">New Debate: {{ item.title }}</a><h4>&nbsp;&nbsp;(posted {{item.created}})</h4></h2>
+            <h2><a href="{{ item.url }}">New Debate: {{ item.title }}</a><h4>&nbsp;&nbsp;(posted {{item.created}})</h4></h2>
 
         </div>
     {% elif item.type == 'note' %}
@@ -83,27 +84,27 @@
 <div id="not-following">
     <h2>It looks like you aren't following anyone. Search people to follow:</h2><br>
     <a href="{% url 'expert_list_by_field' 'field1' %}" class="expert-link" style="position: relative; display: inline-block;">
-        <img src="{% static 'econ-img.jpg' %}" alt="Economics Experts" style="width: 100%; display: block;">
+        <img src="{% static 'econ-pic.avif' %}" alt="Economics Experts" style="width: 100%; display: block;">
         <span style="position: absolute; bottom: 10px; left: 0; width: 100%; text-align: center; color: white; font-weight: bold; background-color: rgba(0, 0, 0, 0.5);">Economics Experts</span>
     </a>
-    <br>
+
     <a href="{% url 'expert_list_by_field' 'field2' %}" class="expert-link" style="position: relative; display: inline-block;">
         <img src="{% static 'econ-img.jpg' %}" alt="Finance Experts" style="width: 100%; display: block;">
         <span style="position: absolute; bottom: 10px; left: 0; width: 100%; text-align: center; color: white; font-weight: bold; background-color: rgba(0, 0, 0, 0.5);">Finance Experts</span>
     </a>
-    <br>
+
     <a href="{% url 'expert_list_by_field' 'field3' %}" class="expert-link" style="position: relative; display: inline-block;">
-        <img src="{% static 'econ-img.jpg' %}" alt="Legal Experts" style="width: 100%; display: block;">
+        <img src="{% static 'law-pic.jpg' %}" alt="Legal Experts" style="width: 100%; display: block;">
         <span style="position: absolute; bottom: 10px; left: 0; width: 100%; text-align: center; color: white; font-weight: bold; background-color: rgba(0, 0, 0, 0.5);">Legal Experts</span>
     </a>
-    <br>
+
     <a href="{% url 'expert_list_by_field' 'field4' %}" class="expert-link" style="position: relative; display: inline-block;">
-        <img src="{% static 'econ-img.jpg' %}" alt="Medical Experts" style="width: 100%; display: block;">
+        <img src="{% static 'med-pic.jpg' %}" alt="Medical Experts" style="width: 100%; display: block;">
         <span style="position: absolute; bottom: 10px; left: 0; width: 100%; text-align: center; color: white; font-weight: bold; background-color: rgba(0, 0, 0, 0.5);">Medical Experts</span>
     </a>
-    <br>
+
     <a href="{% url 'expert_list_by_field' 'field5' %}" class="expert-link" style="position: relative; display: inline-block;">
-        <img src="{% static 'econ-img.jpg' %}" alt="Technology Experts" style="width: 100%; display: block;">
+        <img src="{% static 'tech-pic.jpg' %}" alt="Technology Experts" style="width: 100%; display: block;">
         <span style="position: absolute; bottom: 10px; left: 0; width: 100%; text-align: center; color: white; font-weight: bold; background-color: rgba(0, 0, 0, 0.5);">Tech Experts</span>
     </a>
 </div>
@@ -113,10 +114,32 @@
 
 {% else %}
 <div id="welcome_div"><h2>Welcome to Expert Echo!</h2></div>
-<div id="welcome_p_div">
-
-
-
+<div id="not-logged-in">
+    <h2>Search Experts:</h2><br>
+    <a href="{% url 'expert_list_by_field' 'field1' %}" class="expert-link" style="position: relative; display: inline-block;">
+        <img src="{% static 'econ-pic.jpg' %}" alt="Economics Experts" style="width: 100%; display: block;">
+        <span style="position: absolute; bottom: 10px; left: 0; width: 100%; text-align: center; color: white; font-weight: bold; background-color: rgba(0, 0, 0, 0.5);">Economics Experts</span>
+    </a>
+    <br>
+    <a href="{% url 'expert_list_by_field' 'field2' %}" class="expert-link" style="position: relative; display: inline-block;">
+        <img src="{% static 'econ-img.jpg' %}" alt="Finance Experts" style="width: 100%; display: block;">
+        <span style="position: absolute; bottom: 10px; left: 0; width: 100%; text-align: center; color: white; font-weight: bold; background-color: rgba(0, 0, 0, 0.5);">Finance Experts</span>
+    </a>
+    <br>
+    <a href="{% url 'expert_list_by_field' 'field3' %}" class="expert-link" style="position: relative; display: inline-block;">
+        <img src="{% static 'law-pic.jpeg' %}" alt="Legal Experts" style="width: 100%; display: block;">
+        <span style="position: absolute; bottom: 10px; left: 0; width: 100%; text-align: center; color: white; font-weight: bold; background-color: rgba(0, 0, 0, 0.5);">Legal Experts</span>
+    </a>
+    <br>
+    <a href="{% url 'expert_list_by_field' 'field4' %}" class="expert-link" style="position: relative; display: inline-block;">
+        <img src="{% static 'med-pic.jpg' %}" alt="Medical Experts" style="width: 100%; display: block;">
+        <span style="position: absolute; bottom: 10px; left: 0; width: 100%; text-align: center; color: white; font-weight: bold; background-color: rgba(0, 0, 0, 0.5);">Medical Experts</span>
+    </a>
+    <br>
+    <a href="{% url 'expert_list_by_field' 'field5' %}" class="expert-link" style="position: relative; display: inline-block;">
+        <img src="{% static 'tech-pic.jpg' %}" alt="Technology Experts" style="width: 100%; display: block;">
+        <span style="position: absolute; bottom: 10px; left: 0; width: 100%; text-align: center; color: white; font-weight: bold; background-color: rgba(0, 0, 0, 0.5);">Tech Experts</span>
+    </a>
 </div>
 {% endif %}
 <script>
@@ -184,8 +207,9 @@ function loadMoreNotes() {
 
 
 function appendNotes(items) {
-    const container = document.getElementById('note_list');
-    console.log('appendNotes');
+    const container = document.getElementById('note_list'); // Make sure this exists in your HTML
+    console.log('Appending notes to container:', container);
+
     items.forEach(item => {
         const noteElement = document.createElement('div');
         noteElement.className = 'item-div';
@@ -210,14 +234,16 @@ function appendNotes(items) {
         } else if (item.type === 'blog' || item.type === 'debate') {
             contentHTML = `
                 ${picHTML}
-                <h2><a href="${item.url}">New ${item.type.charAt(0).toUpperCase() + item.type.slice(1)}: ${item.title}</a><h4>&nbsp;&nbsp;(posted ${item.created})</h4></h2>
+                <h2><a href="${item.url}">${item.type.charAt(0).toUpperCase() + item.type.slice(1)}: ${item.title}</a><h4>&nbsp;&nbsp;(posted ${item.created})</h4></h2>
             `;
         }
 
+        console.log('Adding item:', item.type, item.url); // Log the type and URL
         noteElement.innerHTML = contentHTML;
         container.appendChild(noteElement);
     });
 }
+
 
 
 </script>

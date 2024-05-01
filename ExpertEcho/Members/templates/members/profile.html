@@ -42,9 +42,10 @@
                 {% endif %}
             {% endif %}
         </div>
-        <div class="profile-actions">
-            <a href="{% url 'user_blogs' %}?author={{ profile.id }}" class="action-button">Blogs</a>
-            <a href="{% url 'user_debates' %}?author={{ profile.id }}" class="action-button">Debates</a>
+    <div class="profile-actions">
+        <a href="{% url 'user_blogs' %}?author={{ profile.id }}" class="action-button">Blogs</a>
+        <a href="{% url 'user_debates' %}?author={{ profile.id }}" class="action-button">Debates</a>
+        {% if user.is_authenticated %}
             <form method="post" class="follow-form">
                 {% csrf_token %}
                 {% if profile in user.profile.follows.all %}
@@ -54,7 +55,9 @@
                 {% endif %}
             </form>
             <a href="{% url 'message' receiver_id=profile.user.id %}" class="message-button">Message</a>
-        </div>
+        {% endif %}
+    </div>
+
         <div class="profile-network">
             <h3>Followers</h3>
             {% for follower in profile.followed_by.all %}

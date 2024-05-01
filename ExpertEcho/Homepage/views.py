@@ -26,13 +26,16 @@ from django.core.exceptions import ObjectDoesNotExist
 
 
 def format_item(item, item_type):
-    # Determine the appropriate date field
     if item_type == 'blog':
         date_field = item.publish
     else:
         date_field = item.created
 
-    # Initialize base_info dictionary with common attributes
+    url_method = getattr(item, 'get_absolute_url', None)
+    url = url_method() if url_method else "No URL method"
+
+    print(f"URL for item {getattr(item, 'title', 'No Title')}: {url}")
+
     base_info = {
         "type": item_type,
         "id": item.id,
@@ -41,14 +44,14 @@ def format_item(item, item_type):
         "profile_picture": item.author_profile.profile_picture.url if item.author_profile.profile_picture else None,
         "first_name": item.author_profile.first_name,
         "last_name": item.author_profile.last_name,
-        "url": getattr(item, 'get_absolute_url', lambda: None)()
+        "url": url
     }
 
-    # Include 'body' attribute if item is a Note
     if item_type == 'note':
         base_info['body'] = item.body
 
     return base_info
+
 
 
 def home(request):

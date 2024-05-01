@@ -164,17 +164,17 @@ def profile_view(request, pk):
 
     print(f"Debug: Profile ID = {profile.id}, User ID = {profile.user.id}")  # Debug print
     # Rest of your code...
+    form = NoteForm(request.POST or None)
+    profile = Profile.objects.get(id=pk)
+    followed_profiles = profile.follows.all()
+    note = Note.objects.filter(author_profile__in=followed_profiles)
+
+    # Get the academic field of the profile
+    academic_field = profile.academic_field
+
+    # Filter the posts based on academic field and author
+    #posts = Post.objects.filter(author_profile=profile, category=academic_field)
     if request.user.is_authenticated:
-        form = NoteForm(request.POST or None)
-        profile = Profile.objects.get(id=pk)
-        followed_profiles = request.user.profile.follows.all()
-        note = Note.objects.filter(author_profile__in=followed_profiles)
-
-        # Get the academic field of the profile
-        academic_field = profile.academic_field
-
-        # Filter the posts based on academic field and author
-        #posts = Post.objects.filter(author_profile=profile, category=academic_field)
 
         if request.method == "POST":
             current_user_profile = request.user.profile
@@ -186,9 +186,8 @@ def profile_view(request, pk):
                 current_user_profile.follows.add(profile)
             current_user_profile.save()
 
-        return render(request, 'members/profile.html', {'profile': profile, 'note': note, 'form': form})
-    else:
-        return redirect('home')
+    return render(request, 'members/profile.html', {'profile': profile, 'note': note, 'form': form})
+
 
 @login_required
 def private_message_view(request, receiver_id):
