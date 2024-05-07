@@ -39,6 +39,10 @@ def poll_detail(request, poll_id):
     poll = get_object_or_404(Poll, pk=poll_id)
     user = request.user
 
+    if not user.is_authenticated:
+        # Redirect unauthenticated users to login page
+        return HttpResponseRedirect(reverse('results', args=(poll.id,)))
+
     # Check if user has already voted
     if Vote.objects.filter(user=user, choice__poll=poll).exists():
         return HttpResponseRedirect(reverse('results', args=(poll.id,)))
@@ -51,7 +55,6 @@ def poll_detail(request, poll_id):
 
     # User is eligible to vote
     return render(request, 'polls/poll_detail.html', {'poll': poll})
-
 
 def results(request, poll_id):
     poll = get_object_or_404(Poll, pk=poll_id)

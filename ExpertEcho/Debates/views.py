@@ -139,25 +139,29 @@ class debate_detail(DetailView):
         context = super(debate_detail, self).get_context_data(**kwargs)
         debate = self.object
         user = self.request.user
-        profile = user.profile  # Assuming each user has exactly one profile
+        if user.is_authenticated:
+            profile = user.profile  # Assuming each user has exactly one profile
 
-        # Check if the current user is the author or the opponent in the debate
-        user_involved = profile == debate.author_profile or profile == debate.opponent
-        context['user_involved'] = user_involved
+            # Check if the current user is the author or the opponent in the debate
+            user_involved = profile == debate.author_profile or profile == debate.opponent
+            context['user_involved'] = user_involved
 
-        if user_involved:
-            last_comment = debate.comments.last()
-            if last_comment:
-                # It's user's turn if the last commenter's profile is not this user's profile
-                context['user_turn'] = last_comment.commenter_name != profile
+            if user_involved:
+                last_comment = debate.comments.last()
+                if last_comment:
+                    # It's user's turn if the last commenter's profile is not this user's profile
+                    context['user_turn'] = last_comment.commenter_name != profile
+                else:
+                    # If no comments, the author starts the debate
+                    context['user_turn'] = profile == debate.author_profile
             else:
-                # If no comments, the author starts the debate
-                context['user_turn'] = profile == debate.author_profile
+                context['user_turn'] = False
         else:
+            # Optionally, redirect unauthenticated users to login page or just set default values
+            context['user_involved'] = False
             context['user_turn'] = False
 
         return context
-
 '''class AddDebateView(LoginRequiredMixin, CreateView):
     model = Debate
     form_class = DebateForm
