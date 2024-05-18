@@ -5,10 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e2e04c6f-2c2c-45cc-a9cc-d5ff9fe92ef9" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/ExpertEcho/startup.bat" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ExpertEcho/Debates/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/ExpertEcho/Debates/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ExpertEcho/Polls/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/ExpertEcho/Polls/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ExpertEcho/Debates/templates/debates/debate_detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/ExpertEcho/Debates/templates/debates/debate_detail.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ExpertEcho/Homepage/templates/homepage/homepage.html" beforeDir="false" afterPath="$PROJECT_DIR$/ExpertEcho/Homepage/templates/homepage/homepage.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ExpertEcho/Polls/templates/polls/results.html" beforeDir="false" afterPath="$PROJECT_DIR$/ExpertEcho/Polls/templates/polls/results.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ExpertEcho/static/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/ExpertEcho/static/style.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

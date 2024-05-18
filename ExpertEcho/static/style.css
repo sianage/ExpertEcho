@@ -209,30 +209,37 @@ cursor: pointer;
 }
 .item-div {
     border: 1px solid #e1e8ed;
-    background-color: white;
-    padding: 10px;
-    margin-bottom: 10px;
-    border-radius: 10px;
+    background-color: #fff;
+    padding: 10px 12px;
+    margin-bottom: 0px;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
 }
 
 .item-pic img {
     width: 50px;
     height: 50px;
     border-radius: 50%;
-    margin-right: 10px;
-    flex-shrink: 0;
+    margin-right: 15px;
 }
 
 .item-text {
     flex-grow: 1;
+    font-size: 15px;
+    line-height: 1.3125;
+}
+
+.item-text h2, .item-text h4 {
+    margin: 0;
 }
 
 .edit-delete-button {
-    text-decoration: none;
-    color: #1DA1F2;
-    margin-right: 10px;
+    background-color: transparent;
+    border: none;
+    color: #1da1f2;
+    cursor: pointer;
+    padding: 3px 6px;
+    font-size: 14px;
 }
 
 .edit-delete-button:hover {
@@ -240,7 +247,7 @@ cursor: pointer;
 }
 
 .item-div:hover {
-    background-color: #e1e2eb;
+    background-color: #f5f8fa;
 }
 
 #note_div {
@@ -249,6 +256,8 @@ cursor: pointer;
     padding: 10px;
     margin-bottom: 10px;
     border-radius: 10px;
+    margin-right: 400px;
+    margin-left: 400px;
     display: flex; /* Use Flexbox */
     align-items: center; /* Align items vertically in the center */
 }
@@ -288,10 +297,12 @@ cursor: pointer;
     object-fit: cover;
 }
 #note_wrapper {
-    width: 50%;
+    width: 54%;
     margin: 20px auto;
+    margin-top: 0px;
     box-shadow: 0 2px 20px #6f8dd6; /* Darker shadow */
     transition: transform 0.3s ease-in-out; /* Apply transition to the transform property */
+    box-shadow: 0 0 8px rgba(101, 119, 134, 0.2);
 }
 
 #note_wrapper:hover {
@@ -417,40 +428,63 @@ cursor: pointer;
 
 #comments{
     text-align: left;
-    margin-left: 300px;
-    margin-right: 300px;
     padding:20px;
     box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.6);
 }
+.poll-results {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.poll-title {
+    font-size: 2em;
+    margin-bottom: 20px;
+    color: #333;
+    text-align: center;
+}
 .result-list {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-left: 300px;
-    margin-right: 300px;
+    list-style: none;
+    padding: 0;
 }
 
 .result-item {
-    display: flex;
-    align-items: center;
-    width: 50%;
-    margin: 10px auto;
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .bar-container {
-    flex: 1;
-    background-color: #f9f9f9;
-    border: 1px solid #ccc;
-    margin-right: 5px;
+    background-color: #e0e0e0;
+    border-radius: 10px;
+    overflow: hidden;
+    height: 20px;
+}
+.choice-text {
+    font-size: 1.2em;
+    color: #555;
 }
 
+.vote-info {
+    font-size: 1em;
+    color: #888;
+}
 .bar {
-    height: 20px;
-    background-color: #007BFF;
+    height: 100%;
+    background-color: #76c7c0;
+    transition: width 0.3s ease;
 }
 
 .result-info {
-    text-align: left;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
 }
 blog{
     border: solid black;
@@ -469,8 +503,15 @@ blog{
     transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 
 }
+#debate-detail{
+    margin-left: 360px;
+    margin-right: 360px;
+}
 debate{
     border: solid black;
+}
+#debate-title{
+    margin: 500px;
 }
 #debate_list{
     color:black;
@@ -903,8 +944,8 @@ ol{
     list-style-position: inside;
 }
 .side-bar, .side-bar2 {
-    min-width: 250px;
-    max-width: 250px;
+    min-width: 350px;
+    max-width: 350px;
     height: 100vh;
     position: fixed;
     overflow-y: scroll;

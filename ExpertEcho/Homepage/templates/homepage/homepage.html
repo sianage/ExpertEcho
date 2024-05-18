@@ -20,8 +20,11 @@
                     <img src="{{ item.profile_picture }}" alt="Profile Picture">
                 {% endif %}
             </div>
-            <h2><a href="{{ item.url }}">New Blog: {{ item.title }}</a><h4>&nbsp;&nbsp;(posted {{item.created}})</h4></h2>
-
+            <div>
+                <h2><a href="{{ item.url }}">New Blog: {{ item.title }}</a></h2>
+                </br>
+                (posted {{item.created}})
+            </div>
         </div>
     {% elif item.type == 'debate' %}
         <div class="item-div">
@@ -30,7 +33,11 @@
                     <img src="{{ item.profile_picture }}" alt="Profile Picture">
                 {% endif %}
             </div>
-            <h2><a href="{{ item.url }}">New Debate: {{ item.title }}</a><h4>&nbsp;&nbsp;(posted {{item.created}})</h4></h2>
+            <div>
+                <h2>New Debate: <a href="{{ item.url }}">{{ item.title }}</a></h2>
+                </br>
+                (posted {{item.created}})
+            </div>
 
         </div>
     {% elif item.type == 'note' %}
@@ -41,7 +48,7 @@
                 {% endif %}
             </div>
             <div class="item-text">
-                <strong>{{ item.first_name|capfirst }} {{ item.last_name|capfirst }}: "{{item.body|ljust:10|striptags|safe|urlize}}"</strong>
+                <strong>{{ item.first_name|capfirst }} {{ item.last_name|capfirst }}</strong><br>{{item.body|ljust:10|striptags|safe|urlize}}
                 <br>
                 (posted {{item.created}})
                 <br>
@@ -206,8 +213,8 @@ function loadMoreNotes() {
 }
 
 
-function appendNotes(items) {
-    const container = document.getElementById('note_list'); // Make sure this exists in your HTML
+function appendNotes(items, requestUserUsername) { // Assuming requestUserUsername is passed to this function
+    const container = document.getElementById('note_list');
     console.log('Appending notes to container:', container);
 
     items.forEach(item => {
@@ -216,9 +223,15 @@ function appendNotes(items) {
 
         let picHTML = '';
         if (item.profile_picture) {
-            picHTML = `<div class="item-pic">
-                           <img src="${item.profile_picture}" alt="Profile Picture">
-                       </div>`;
+            picHTML = `<div class="item-pic"><img src="${item.profile_picture}" alt="Profile Picture"></div>`;
+        }
+
+        let editDeleteButtonsHTML = '';
+        if (requestUserUsername === item.username) {
+            editDeleteButtonsHTML = `
+                <a href="/delete/${item.id}" class="edit-delete-button">Delete</a>
+                <a href="/edit/${item.id}" class="edit-delete-button">Edit</a>
+            `;
         }
 
         let contentHTML = '';
@@ -226,19 +239,25 @@ function appendNotes(items) {
             contentHTML = `
                 ${picHTML}
                 <div class="item-text">
-                    <strong>${item.first_name} ${item.last_name}: "${item.body}"</strong>
+                    <strong>${item.first_name} ${item.last_name}</strong>: <br>${item.body}
                     <br>
+                    (posted ${item.created})
+                    <br>
+                    ${editDeleteButtonsHTML}
+                </div>
+            `;
+        }
+        else if (item.type === 'blog' || item.type === 'debate') {
+            contentHTML = `
+                ${picHTML}
+                <div class="item-text">
+                    <h2>${item.type.charAt(0).toUpperCase() + item.type.slice(1)}: <a href="${item.url}">${item.title}</a></h2>
                     (posted ${item.created})
                 </div>
             `;
-        } else if (item.type === 'blog' || item.type === 'debate') {
-            contentHTML = `
-                ${picHTML}
-                <h2><a href="${item.url}">${item.type.charAt(0).toUpperCase() + item.type.slice(1)}: ${item.title}</a><h4>&nbsp;&nbsp;(posted ${item.created})</h4></h2>
-            `;
         }
 
-        console.log('Adding item:', item.type, item.url); // Log the type and URL
+        console.log('Adding item:', item.type, item.url);
         noteElement.innerHTML = contentHTML;
         container.appendChild(noteElement);
     });
