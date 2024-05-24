@@ -39,7 +39,6 @@ def debate_post(request, debate_id):
     print("DEBATE POST")
     post = get_object_or_404(Debate, id=debate_id)
     comment = None
-    # ???????????????????????????????
     form = CommentForm(data=request.POST)
     if form.is_valid():
         comment = form.save(commit=False)
@@ -140,7 +139,7 @@ class debate_detail(DetailView):
         debate = self.object
         user = self.request.user
         if user.is_authenticated:
-            profile = user.profile  # Assuming each user has exactly one profile
+            profile = user.profile
 
             # Check if the current user is the author or the opponent in the debate
             user_involved = profile == debate.author_profile or profile == debate.opponent

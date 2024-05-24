@@ -33,6 +33,15 @@ def format_item(item, item_type):
 
     url_method = getattr(item, 'get_absolute_url', None)
     url = url_method() if url_method else "No URL method"
+    if url_method:
+        url = url_method()
+    else:
+        if item_type == 'note':
+            url = f'/note/{item.id}/'
+        elif item_type == 'blog':
+            url = f'/blog/{item.id}/'
+        elif item_type == 'debate':
+            url = f'/debate/{item.id}/'
 
     print(f"URL for item {getattr(item, 'title', 'No Title')}: {url}")
 
@@ -44,6 +53,7 @@ def format_item(item, item_type):
         "profile_picture": item.author_profile.profile_picture.url if item.author_profile.profile_picture else None,
         "first_name": item.author_profile.first_name,
         "last_name": item.author_profile.last_name,
+        "email": item.author_profile.user.email,
         "url": url
     }
 
@@ -51,6 +61,7 @@ def format_item(item, item_type):
         base_info['body'] = item.body
 
     return base_info
+
 
 
 
@@ -74,24 +85,42 @@ def home(request):
         blogs = Post.published.filter(author_profile__in=followed_profiles).order_by("-publish")
         debates = Debate.objects.filter(author_profile__in=followed_profiles).order_by("-created")
 
-        combined_list = [format_item(item, 'note') for item in notes]
-        combined_list.extend(format_item(item, 'blog') for item in blogs)
-        combined_list.extend(format_item(item, 'debate') for item in debates)
-        print("Combined list length:", len(combined_list))
+        note_list = [format_item(item, 'note') for item in notes]
+        blog_list = [format_item(item, 'blog') for item in blogs]
+        debate_list = [format_item(item, 'debate') for item in debates]
 
-        combined_list = sorted(combined_list, key=lambda x: x['created'], reverse=True)
+        note_paginator = Paginator(note_list, 10)
+        blog_paginator = Paginator(blog_list, 10)
+        debate_paginator = Paginator(debate_list, 10)
 
-        paginator = Paginator(combined_list, 10)  # Show 10 items per page
         page_number = request.GET.get('page')
-        page_obj = paginator.get_page(page_number)
+        tab = request.GET.get('tab', 'notes')
+
+        if tab == 'notes':
+            page_obj = note_paginator.get_page(page_number)
+            total_items = len(note_list)
+        elif tab == 'blogs':
+            page_obj = blog_paginator.get_page(page_number)
+            total_items = len(blog_list)
+        elif tab == 'debates':
+            page_obj = debate_paginator.get_page(page_number)
+            total_items = len(debate_list)
+        else:
+            page_obj = note_paginator.get_page(page_number)
+            total_items = len(note_list)
 
         if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
             return JsonResponse({
-                "items": [dict(item, profile_picture=str(item['profile_picture'])) for item in page_obj.object_list],
+                "items": list(page_obj),
                 "has_next": page_obj.has_next()
             })
 
-        return render(request, 'homepage/homepage.html', {'page_obj': page_obj, "form": form, "total_items": len(combined_list)})
+        return render(request, 'homepage/homepage.html', {
+            'page_obj': page_obj,
+            "form": form,
+            "tab": tab,
+            "total_items": total_items
+        })
     except ObjectDoesNotExist as e:
         print("Error:", e)
         return redirect("create_profile_page")
@@ -105,18 +134,19 @@ def home(request):
 
 
 
+
 def delete_note(request, pk):
     if request.user.is_authenticated:
         note = get_object_or_404(Note, id=pk)
-        #check if user owns note
+        # Check if user owns note
         if request.user.profile == note.author_profile:
             note.delete()
-            #messages
+            # messages
             print("Note Deleted")
             return redirect('home')
         else:
-            #messages
-            print("not your note")
+            # messages
+            print("Not your note")
             return redirect("home")
 
 def edit_note(request, pk):
@@ -132,12 +162,11 @@ def edit_note(request, pk):
                     note.save()
                     print("Note edited")
                     return redirect('home')
-                    print("error1")
-            else:
-                #messages
-                print("error2")
-                print("not your note")
-                return render(request, 'homepage/edit_note.html', {'form':form, 'note':note})
+                else:
+                    print("Error in form")
+            return render(request, 'homepage/edit_note.html', {'form': form, 'note': note})
         else:
-            print("error3")
-            success_url = reverse_lazy('home')
+            print("Not your note")
+            return redirect('home')
+    else:
+        return redirect('home')

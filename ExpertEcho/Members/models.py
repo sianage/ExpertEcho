@@ -17,8 +17,10 @@ class CustomUserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
         if not email:
             raise ValueError('The Email field must be set')
+        #converts to lowercase
         email = self.normalize_email(email)
         user = self.model(email=email, **extra_fields)
+        #hashes password
         user.password = make_password(password)
         user.save(using=self._db)
         return user
@@ -34,6 +36,7 @@ class CustomUserManager(BaseUserManager):
 
         return self.create_user(email, password, **extra_fields)
 
+    #checks if entered password matches stored hashed password
     def check_password(self, user, password):
         return check_password(password, user.password)
 

@@ -13,5 +13,5 @@ class Note(models.Model):
     def __str__(self):
         return(f"{self.user} \n"
                f" {self.body}\n"
-               f"(Note made {self.created_at:%Y-%m-%d %H:%M})")
+               f"(Note made {self.created:%Y-%m-%d %H:%M})")
 

@@ -53,6 +53,7 @@ def edit_profile_view(request, pk):
             # Re-render the form with errors
             return render(request, 'members/edit_profile.html', {'form': form})
     else:
+        #pre-populates the form with the existing profile data
         form = EditProfileForm(instance=profile, user=request.user)
 
     return render(request, 'members/edit_profile.html', {'form': form})
@@ -86,6 +87,7 @@ def create_profile_view(request):
             messages.success(request, 'Profile created successfully.')
             return redirect('home')
     else:
+        #if request = GET (first time accessing), instantiate new empty form
         form = CreateProfileForm()
 
     return render(request, 'members/create_profile.html', {'form': form})
@@ -163,7 +165,6 @@ def profile_view(request, pk):
     profile = Profile.objects.get(id=pk)
 
     print(f"Debug: Profile ID = {profile.id}, User ID = {profile.user.id}")  # Debug print
-    # Rest of your code...
     form = NoteForm(request.POST or None)
     profile = Profile.objects.get(id=pk)
     followed_profiles = profile.follows.all()
@@ -247,18 +248,18 @@ def expert_list(request, field):
     search_query = request.GET.get('search', '')
 
     profiles = Profile.objects.filter(academic_field=field)  # Base query
-
+    # split on spaces for first & last names
     if search_query:
         name_parts = search_query.split()
 
-        # If the search query includes both first and last names
+        # if the search query includes both first and last names
         if len(name_parts) > 1:
             profiles = profiles.filter(
                 Q(first_name__icontains=name_parts[0]),
                 Q(last_name__icontains=name_parts[-1])
             )
         else:
-            # Apply the search query to both first and last names if only one part is provided
+            # apply the search query to both first and last names if only one part is provided
             profiles = profiles.filter(
                 Q(first_name__icontains=search_query) |
                 Q(last_name__icontains=search_query)

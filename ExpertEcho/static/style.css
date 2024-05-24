@@ -98,7 +98,7 @@ form button {
 }
 
 form button:hover {
-    background-color: #0056b3;
+    background-color: #517e94;
 }
 .form-control {
     width: 100%; /* Full width */
@@ -316,6 +316,7 @@ cursor: pointer;
     float:left;
     bottom: 20;
     margin-bottom: 20px;
+    margin-top: 0px;
 }
 #whole_note{
     display:flex;
@@ -365,7 +366,7 @@ cursor: pointer;
 
 #open_note_form {
     padding: 8px 16px; /* Slightly smaller padding */
-    background-color: #0056b3;
+    background-color: #517e94;
     color: white;
     border: none;
     border-radius: 4px;
@@ -408,7 +409,7 @@ cursor: pointer;
 
 #home_submit_btn {
     padding: 8px 16px; /* Adjusted for consistency with the open form button */
-    background-color: #0056b3;
+    background-color: #517e94;
     color: white;
     border: none;
     border-radius: 4px;
@@ -808,7 +809,7 @@ href{
     cursor: pointer;
 }
 .profile_button:hover {
-    background-color: #0056b3;
+    background-color: #517e94;
 }
 /* Dropdown Button */
 .dropbtn {
@@ -1149,7 +1150,7 @@ ol{
 }
 
 .social-link:hover, .action-button:hover, .message-button:hover, .network-link:hover, .follow-button:hover {
-    background-color: #0056b3;
+    background-color: #517e94;
 }
 
 .follow-form {
@@ -1162,4 +1163,57 @@ ol{
 
 .profile-network .network-link {
     display: block; /* Makes followers and follows appear on new lines */
+}
+.tab-content {
+    display: none;
+}
+.tab-content.active {
+    display: block;
+}
+.tabs {
+    display: flex;
+    justify-content: center;
+    margin: 0px auto;
+    max-width: calc(100% - 600px); /* Adjust for the sidebars */
+    color: white;
+}
+.tab-link {
+    margin: 0 10px;
+    padding: 10px 20px;
+    cursor: pointer;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+.tab-link.active {
+    background-color: #ccc;
+}
+#content-wrapper {
+    margin-top: 20px; /* Space between tabs and content */
+}
+#home_blog_list{
+    width:100%;
+    margin:auto;
+    float:left;
+    bottom: 20;
+    margin-bottom: 20px;
+}
+#home_debate_list{
+    width:100%;
+    margin:auto;
+    float:left;
+    bottom: 20;
+    margin-bottom: 20px;
+}
+.tab-button{
+    color: white;
+    background-color: #193f52;
+    height: 70px;
+    width: 258px;
+    margin: 0;
+    font-size: 40px;
+}
+.tab-button:hover{
+    background-color: #517e94;
+    font-size: 42px;
 }

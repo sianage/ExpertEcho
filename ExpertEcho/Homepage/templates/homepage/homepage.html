@@ -5,66 +5,70 @@
 {% if user.is_authenticated %}
 
 {% if page_obj %}
-<div id="item-count" data-total-items="{{ total_items }}"></div>
+    <div class="tabs">
+        <button class="tab-button {% if tab == 'notes' %}active{% endif %}" onclick="showTab('notes')">Notes</button>
+        <button class="tab-button {% if tab == 'blogs' %}active{% endif %}" onclick="showTab('blogs')">Blogs</button>
+        <button class="tab-button {% if tab == 'debates' %}active{% endif %}" onclick="showTab('debates')">Debates</button>
+    </div>
 
-<div id="note_wrapper">
-<div id="note_list">
-{% for item in page_obj %}
-    <script>console.log("URL for item {{ item.title }}: '{{ item.get_absolute_url }}'");</script>
+    <div id="item-count" data-total-items="{{ total_items }}"></div>
 
-    {% if item.type == 'blog' %}
-        <!-- Render blog post summary -->
-        <div class="item-div">
-            <div class="item-pic">
-                {% if item.profile_picture %}
-                    <img src="{{ item.profile_picture }}" alt="Profile Picture">
+    <div id="note_wrapper">
+        <div id="note_list">
+            {% for item in page_obj %}
+                <script>console.log("URL for item {{ item.title }}: '{{ item.get_absolute_url }}'");</script>
+
+                {% if tab == 'blogs' and item.type == 'blog' %}
+                    <!-- Render blog post summary -->
+                    <div class="item-div">
+                        <div class="item-pic">
+                            {% if item.profile_picture %}
+                                <img src="{{ item.profile_picture }}" alt="Profile Picture">
+                            {% endif %}
+                        </div>
+                        <div>
+                            <h2><a href="{{ item.url }}">New Blog: {{ item.title }}</a></h2>
+                            </br>
+                            (posted {{item.created}})
+                        </div>
+                    </div>
+                {% elif tab == 'debates' and item.type == 'debate' %}
+                    <!-- Render debate summary -->
+                    <div class="item-div">
+                        <div class="item-pic">
+                            {% if item.profile_picture %}
+                                <img src="{{ item.profile_picture }}" alt="Profile Picture">
+                            {% endif %}
+                        </div>
+                        <div>
+                            <h2><a href="{{ item.url }}">Debate: {{ item.title }}</a></h2>
+                            </br>
+                            (posted {{item.created}})
+                        </div>
+                    </div>
+                {% elif tab == 'notes' and item.type == 'note' %}
+                    <!-- Render note summary -->
+                    <div class="item-div">
+                        <div class="item-pic">
+                            {% if item.profile_picture %}
+                                <img src="{{ item.profile_picture }}" alt="Profile Picture">
+                            {% endif %}
+                        </div>
+                        <div class="item-text">
+                            <strong>{{ item.first_name|capfirst }} {{ item.last_name|capfirst }}</strong>: <br>{{item.body|ljust:10|striptags|safe|urlize}}
+                            <br>
+                            (posted {{ item.created }})
+                            <br>
+                            {% if request.user.username == item.username %}
+                                <a href="/delete_note/{{ item.id }}" class="edit-delete-button">Delete</a>
+                                <a href="/edit_note/{{ item.id }}" class="edit-delete-button">Edit</a>
+                            {% endif %}
+                        </div>
+                    </div>
                 {% endif %}
-            </div>
-            <div>
-                <h2><a href="{{ item.url }}">New Blog: {{ item.title }}</a></h2>
-                </br>
-                (posted {{item.created}})
-            </div>
+            {% endfor %}
         </div>
-    {% elif item.type == 'debate' %}
-        <div class="item-div">
-            <div class="item-pic">
-                {% if item.profile_picture %}
-                    <img src="{{ item.profile_picture }}" alt="Profile Picture">
-                {% endif %}
-            </div>
-            <div>
-                <h2>New Debate: <a href="{{ item.url }}">{{ item.title }}</a></h2>
-                </br>
-                (posted {{item.created}})
-            </div>
-
-        </div>
-    {% elif item.type == 'note' %}
-        <div class="item-div">
-            <div class="item-pic">
-                {% if item.profile_picture %}
-                    <img src="{{ item.profile_picture }}" alt="Profile Picture">
-                {% endif %}
-            </div>
-            <div class="item-text">
-                <strong>{{ item.first_name|capfirst }} {{ item.last_name|capfirst }}</strong><br>{{item.body|ljust:10|striptags|safe|urlize}}
-                <br>
-                (posted {{item.created}})
-                <br>
-                {% if request.user.username == item.username %}
-                    <a href="{% url 'delete_note' item.id %}" class="edit-delete-button">Delete</a>
-                    <a href="{% url 'edit_note' item.id %}" class="edit-delete-button">Edit</a>
-                {% endif %}
-            </div>
-        </div>
-
-    {% endif %}
-
-
-{% endfor %}
-        </div>
-</div>
+    </div>
 <div id="homepage-pages">
 {% if page_obj.has_other_pages %}
     <div class="pagination">
@@ -151,13 +155,23 @@
 {% endif %}
 <script>
 var currentPage = 1;
-let isLoading = false;  // Define isLoading
+let isLoading = false;
+
+// Define `requestUserEmail` from a Django template variable
+const requestUserEmail = "{{ request.user.email }}";
+
 // Create a single, reusable event handler
 const handleScroll = () => {
     console.log('Scrolling...');
-    if (window.innerHeight + window.pageYOffset >= document.body.offsetHeight - 10 && !isLoading) {
-        console.log('Near bottom, should load more notes.');
-        loadMoreNotes();
+
+    if (isLoading) {
+        console.log('Already loading, skipping...');
+        return; // Prevent multiple requests if already loading
+    }
+
+    if (window.innerHeight + window.pageYOffset >= document.body.offsetHeight - 10) {
+        console.log('Near bottom, should load more items.');
+        loadMoreItems();
     }
 };
 
@@ -170,56 +184,59 @@ document.addEventListener("DOMContentLoaded", function() {
 
     if (totalItems <= 10) {
         console.log('Total items are 10 or less. No need for more loads.');
-        // You might want to hide some UI elements or disable scrolling functionality here
     } else {
         // Attach your scroll event listener here if more items are possible
         window.addEventListener('scroll', handleScroll);
     }
 });
 
-function loadMoreNotes() {
+function loadMoreItems() {
     if (isLoading) {
         return; // Already loading, do not proceed
     }
-    isLoading = true; // Set loading to true
-    console.log(`Attempting to load page ${currentPage + 1}`);
 
-    fetch(`/?page=${currentPage + 1}`, {
+    isLoading = true; // Set loading to true
+
+    const activeTab = document.querySelector('.tab-button.active').getAttribute('onclick').match(/'([^']+)'/)[1];
+    console.log(`Attempting to load page ${currentPage + 1} for ${activeTab}`);
+
+    fetch(`/?tab=${activeTab}&page=${currentPage + 1}`, {
         headers: { 'X-Requested-With': 'XMLHttpRequest' }
     })
     .then(response => response.json())
     .then(data => {
         console.log('DATA RECEIVED:', data);
-        console.log("DATA.ITEMS BEFORE =", data.items);
-        console.log("DATA.ITEMS.LENGTH BEFORE=", data.items.length);
-        console.log("HAS NEXT?", data.has_next);
+        console.log('Received items:', data.items); // Log received items
+
         if (data.items.length > 0) {
-            appendNotes(data.items);
+            appendItems(data.items, activeTab, requestUserEmail);
+            currentPage++; // Increment currentPage only if items are received
+        } else {
+            console.log('No items received');
         }
 
-        if (!data.has_next) {
+        if (!data.has_next || data.items.length < 10) {
             console.log('No more pages to load or not enough items on the last page.');
             window.removeEventListener('scroll', handleScroll); // Stop further loading
             document.getElementById('homepage-pages').style.display = 'none';
         }
 
-        currentPage++; // Adjust this to increment only when appropriate
         isLoading = false; // Reset loading flag after processing is complete
     })
     .catch(error => {
-        console.error('Error loading more notes:', error);
+        console.error('Error loading more items:', error);
         isLoading = false; // Ensure flag is reset even in case of error
     });
 }
 
-
-function appendNotes(items, requestUserUsername) { // Assuming requestUserUsername is passed to this function
+function appendItems(items, activeTab, requestUserEmail) {
     const container = document.getElementById('note_list');
-    console.log('Appending notes to container:', container);
+    console.log('Appending items to container:', container);
 
     items.forEach(item => {
-        const noteElement = document.createElement('div');
-        noteElement.className = 'item-div';
+        console.log('Item:', item); // Log each item to ensure structure
+        const itemElement = document.createElement('div');
+        itemElement.className = 'item-div';
 
         let picHTML = '';
         if (item.profile_picture) {
@@ -227,15 +244,17 @@ function appendNotes(items, requestUserUsername) { // Assuming requestUserUserna
         }
 
         let editDeleteButtonsHTML = '';
-        if (requestUserUsername === item.username) {
+        if (requestUserEmail === item.email) {
             editDeleteButtonsHTML = `
-                <a href="/delete/${item.id}" class="edit-delete-button">Delete</a>
-                <a href="/edit/${item.id}" class="edit-delete-button">Edit</a>
+                <a href="/delete_note/${item.id}" class="edit-delete-button">Delete</a>
+                <a href="/edit_note/${item.id}" class="edit-delete-button">Edit</a>
             `;
         }
 
+        console.log('Edit/Delete HTML:', editDeleteButtonsHTML); // Log for debugging
+
         let contentHTML = '';
-        if (item.type === 'note') {
+        if (item.type === 'note' && activeTab === 'notes') {
             contentHTML = `
                 ${picHTML}
                 <div class="item-text">
@@ -246,23 +265,35 @@ function appendNotes(items, requestUserUsername) { // Assuming requestUserUserna
                     ${editDeleteButtonsHTML}
                 </div>
             `;
-        }
-        else if (item.type === 'blog' || item.type === 'debate') {
+        } else if (item.type === 'blog' && activeTab === 'blogs') {
             contentHTML = `
                 ${picHTML}
                 <div class="item-text">
-                    <h2>${item.type.charAt(0).toUpperCase() + item.type.slice(1)}: <a href="${item.url}">${item.title}</a></h2>
+                    <h2>Blog: <a href="${item.url}">${item.title}</a></h2>
+                    (posted ${item.created})
+                </div>
+            `;
+        } else if (item.type === 'debate' && activeTab === 'debates') {
+            contentHTML = `
+                ${picHTML}
+                <div class="item-text">
+                    <h2>Debate: <a href="${item.url}">${item.title}</a></h2>
                     (posted ${item.created})
                 </div>
             `;
         }
 
         console.log('Adding item:', item.type, item.url);
-        noteElement.innerHTML = contentHTML;
-        container.appendChild(noteElement);
+        itemElement.innerHTML = contentHTML;
+        container.appendChild(itemElement);
     });
 }
 
+function showTab(tabName) {
+    const url = new URL(window.location);
+    url.searchParams.set('tab', tabName);
+    window.location = url.href;
+}
 
 
 </script>
